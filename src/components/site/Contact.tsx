@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail, Clock, Instagram, Facebook, MessageCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
 export function Contact() {
   return (
@@ -16,10 +16,10 @@ export function Contact() {
         <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
             {[
-              { icon: MapPin, label: "Location", value: "24 Velocity Lane, Studio Bay 3" },
-              { icon: Phone, label: "Call", value: "+1 (555) 123-4567" },
-              { icon: Mail, label: "Email", value: "studio@polishstation.com" },
-              { icon: Clock, label: "Hours", value: "Mon–Sat · 8:00 - 19:00" },
+              { icon: MapPin, label: "Location", value: "Saranankara Road, Dehiwala" },
+              { icon: Phone,  label: "Call",     value: "+94 74 100 4296" },
+              { icon: Mail,   label: "Email",    value: "studio@polishstation.com" },
+              { icon: Clock,  label: "Hours",    value: "Mon–Sat · 8:00 - 19:00" },
             ].map((i) => (
               <div key={i.label} className="flex items-start gap-4 rounded-2xl glass p-5">
                 <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-primary/15 text-primary">
@@ -33,26 +33,14 @@ export function Contact() {
                 </div>
               </div>
             ))}
-
-            <div className="flex gap-2 sm:col-span-2 lg:col-span-1">
-              {[Instagram, Facebook, MessageCircle].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="grid h-12 w-12 place-items-center rounded-xl glass hover:bg-primary hover:text-primary-foreground transition"
-                  aria-label="Social"
-                >
-                  <Icon className="h-5 w-5" />
-                </a>
-              ))}
-            </div>
           </div>
 
+          {/* Map centred on Saranankara Road, Dehiwala, Sri Lanka */}
           <div className="overflow-hidden rounded-3xl border border-border min-h-[420px]">
             <iframe
               title="Polish Station location"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-0.1357%2C51.5044%2C-0.1207%2C51.5144&layer=mapnik"
-              className="h-full w-full grayscale contrast-110"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=79.855%2C6.848%2C79.878%2C6.866&layer=mapnik&marker=6.857%2C79.866"
+              className="h-full w-full"
               style={{ filter: "grayscale(1) invert(0.92) hue-rotate(180deg)" }}
               loading="lazy"
             />
