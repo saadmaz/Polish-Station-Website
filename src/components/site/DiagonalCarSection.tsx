@@ -2,19 +2,21 @@ import { useEffect, useRef } from "react";
 import heroCar from "@/assets/hero-car.jpg";
 
 const reasons = [
-  { n: "01", title: "Paint Depth Analysis",    desc: "We measure every panel before touching it." },
-  { n: "02", title: "Certified Technicians",   desc: "Thousands of hours. Zero shortcuts." },
-  { n: "03", title: "Premium-Grade Products",  desc: "Only the coatings your paint deserves." },
-  { n: "04", title: "Multi-Light Inspection",  desc: "Nothing leaves without a flawless sign-off." },
+  { n: "01", title: "Paint Depth Analysis",   desc: "We measure every panel before touching it." },
+  { n: "02", title: "Certified Technicians",  desc: "Thousands of hours. Zero shortcuts." },
+  { n: "03", title: "Premium-Grade Products", desc: "Only the coatings your paint deserves." },
+  { n: "04", title: "Multi-Light Inspection", desc: "Nothing leaves without a flawless sign-off." },
 ];
 
 export function DiagonalCarSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const carRef     = useRef<HTMLDivElement>(null);
+  const linesRef   = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     const car     = carRef.current;
+    const lines   = linesRef.current;
     if (!section || !car) return;
 
     let raf = 0;
@@ -22,35 +24,37 @@ export function DiagonalCarSection() {
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const rect    = section.getBoundingClientRect();
-        const vh      = window.innerHeight;
-        const total   = rect.height - vh;
+        const rect     = section.getBoundingClientRect();
+        const vh       = window.innerHeight;
+        const total    = rect.height - vh;
         const scrolled = Math.max(0, -rect.top);
-        const p       = Math.min(1, scrolled / total); // 0 → 1
+        const p        = Math.min(1, scrolled / total);
 
-        /*
-         * p = 0 : section just locked into sticky (car above viewport)
-         * p = 1 : section about to unlock (car settled, starting to exit)
-         *
-         * rotateX  : 55° (entering, foreshortened = looks like undercarriage)
-         *           → 0° (settled flat = top-down view)
-         * translateY: -70vh → 0 (car falls into place)
-         * scale    : 0.72 → 1.0 (grows as it approaches)
-         * rotateZ  : constant -25° (the artistic diagonal tilt)
-         */
-        // Smoother ease so entry phase spans first 60% of scroll travel
-        const ease    = 1 - Math.pow(1 - p, 1.6);
-        const rotX    = 52  * (1 - ease);
-        const ty      = -vh * 0.55 * (1 - ease);
-        const scale   = 0.78 + 0.22 * ease;
+        // Ease-out so car decelerates as it parks
+        const ease = 1 - Math.pow(1 - p, 1.8);
 
-        car.style.transform =
-          `translateY(${ty}px) rotateX(${rotX}deg) rotateZ(-22deg) scale(${scale})`;
+        // Car anchor is at left: 68% (center of dark half).
+        // Travel: translateX +55vw (off right edge) → -15vw (settled in dark half)
+        // At final position: 68% - 15% = 53% center — right on the diagonal line
+        const tx = 55 - 70 * ease;
+
+        // Micro-bounce while moving (road feel), fades as car slows
+        const moving = Math.max(0, 1 - ease * 2.5);
+        const bounce = Math.sin(p * Math.PI * 8) * 6 * moving;
+
+        // Slight nose-up at speed, flattens as it parks
+        const rz = (1 - ease) * 2;
+
+        car.style.transform = `translateX(${tx}vw) translateY(${bounce}px) rotateZ(${rz}deg)`;
+
+        if (lines) {
+          lines.style.opacity = String(Math.max(0, moving * 0.45));
+        }
       });
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll(); // initialize
+    onScroll();
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
@@ -58,55 +62,77 @@ export function DiagonalCarSection() {
   }, []);
 
   return (
-    /*
-     * Outer wrapper is 230vh so the user spends real scroll-time on the section.
-     * The inner container is sticky/full-screen — it locks in place while the
-     * car animates through its travel arc.
-     */
     <section
       ref={sectionRef}
-      style={{ minHeight: "230vh" }}
+      data-diagonal-section
+      style={{ minHeight: "240vh" }}
       className="relative"
     >
-      <div
-        className="sticky top-0 h-screen overflow-hidden"
-        /* perspective is on the CONTAINER so that the car's rotateX
-           creates the dramatic "looking up at it from below" effect
-           as it enters from the top of the viewport */
-        style={{ perspective: "1000px", perspectiveOrigin: "52% 65%" }}
-      >
-        {/* ── Diagonal background ──────────────────────────────────────── */}
+      <div className="sticky top-0 h-screen overflow-hidden">
 
-        {/* Light half — warm white */}
+        {/* ── Background split ─────────────────────────────────────── */}
         <div className="absolute inset-0" style={{ background: "#F0EDEA" }} />
-
-        {/* Dark half — charcoal, hard diagonal clip */}
         <div
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(160deg, #181818 0%, #0e0e0e 100%)",
-            clipPath: "polygon(54% 0%, 100% 0%, 100% 100%, 20% 100%)",
+            background: "linear-gradient(170deg, #161616 0%, #0c0c0c 100%)",
+            clipPath: "polygon(52% 0%, 100% 0%, 100% 100%, 18% 100%)",
           }}
         />
-
-        {/* Diagonal shadow/depth line */}
+        {/* Diagonal edge depth */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(135deg, transparent 49.5%, rgba(0,0,0,0.18) 50%, transparent 51.5%)",
+              "linear-gradient(133deg, transparent 49%, rgba(0,0,0,0.25) 50%, transparent 52%)",
           }}
         />
 
-        {/* ── Text — lives on the light side ───────────────────────────── */}
-        <div className="absolute left-10 top-1/2 z-20 -translate-y-1/2 max-w-sm lg:left-20 lg:max-w-md">
+        {/* Spotlight — where the car parks */}
+        <div
+          className="pointer-events-none absolute"
+          style={{
+            left: "55%",
+            top: "45%",
+            width: "600px",
+            height: "400px",
+            transform: "translate(-50%, -50%)",
+            background:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(212,137,10,0.07) 0%, transparent 70%)",
+          }}
+        />
+
+        {/* ── Speed lines (fade with velocity) ─────────────────────── */}
+        <div
+          ref={linesRef}
+          className="pointer-events-none absolute"
+          style={{ right: "2%", top: "22%", width: "42%", height: "56%", overflow: "hidden", opacity: 0 }}
+        >
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute"
+              style={{
+                height: "1px",
+                width: `${42 + i * 6}%`,
+                right: 0,
+                top: `${7 + i * 9.5}%`,
+                background:
+                  "linear-gradient(to left, transparent 0%, rgba(255,255,255,0.65) 50%, transparent 100%)",
+                animation: `speed-line ${0.52 + i * 0.06}s linear ${i * 0.07}s infinite`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* ── Text — light side ─────────────────────────────────────── */}
+        <div className="absolute left-10 top-1/2 z-20 -translate-y-1/2 max-w-xs lg:left-16 lg:max-w-sm">
           <div
-            className="mb-4 text-xs font-bold uppercase tracking-[0.3em]"
+            className="mb-4 text-[10px] font-black uppercase tracking-[0.35em]"
             style={{ color: "#C8861A" }}
           >
             Our Advantage
           </div>
-
           <h2
             className="font-display text-5xl font-extrabold leading-[1.05] lg:text-6xl"
             style={{ color: "#111111" }}
@@ -114,17 +140,14 @@ export function DiagonalCarSection() {
             Why is it{" "}
             <span style={{ color: "#D4890A" }}>worth it?</span>
           </h2>
-
-          <p className="mt-5 text-sm leading-relaxed" style={{ color: "#555555" }}>
+          <p className="mt-4 text-sm leading-relaxed" style={{ color: "#666666" }}>
             Premium detailing is not a wash — it's a precision process.
-            Here's what sets Polish Station apart.
           </p>
-
-          <ul className="mt-8 space-y-4">
+          <ul className="mt-7 space-y-5">
             {reasons.map((r) => (
               <li key={r.n} className="flex items-start gap-4">
                 <span
-                  className="mt-0.5 shrink-0 text-[10px] font-black font-mono"
+                  className="mt-0.5 shrink-0 font-mono text-[10px] font-black"
                   style={{ color: "#D4890A" }}
                 >
                   {r.n}
@@ -136,7 +159,7 @@ export function DiagonalCarSection() {
                   >
                     {r.title}
                   </div>
-                  <div className="text-xs mt-0.5" style={{ color: "#777777" }}>
+                  <div className="mt-0.5 text-xs" style={{ color: "#888888" }}>
                     {r.desc}
                   </div>
                 </div>
@@ -145,59 +168,63 @@ export function DiagonalCarSection() {
           </ul>
         </div>
 
-        {/* ── Car — straddles the diagonal line ───────────────────────── */}
+        {/* ── Car — drives in from the right across the dark half ────── */}
+        {/*
+         * Two-div structure:
+         *   outer: static anchor for centering (no will-change, no blend)
+         *   carRef: receives scroll-driven translateX (will-change: transform)
+         *
+         * Background removal: CSS mask-image radial gradient vignettes the
+         * dark studio background away, leaving only the car silhouette.
+         * This is more reliable than mix-blend-mode which conflicts with
+         * will-change: transform GPU compositing layers.
+         */}
         <div
           className="absolute"
           style={{
-            left: "54%",
-            top: "54%",
+            left: "68%",
+            top: "52%",
             transform: "translateX(-50%) translateY(-50%)",
           }}
         >
-          {/* Ambient glow pool under the car */}
-          <div
-            className="pointer-events-none absolute"
-            style={{
-              width: "700px",
-              height: "200px",
-              left: "50%",
-              bottom: "-80px",
-              transform: "translateX(-50%)",
-              background: "radial-gradient(ellipse 60% 100% at 50% 100%, rgba(212,137,10,0.22) 0%, transparent 70%)",
-              filter: "blur(18px)",
-            }}
-          />
           <div
             ref={carRef}
             style={{
               willChange: "transform",
-              transform: "translateY(-55vh) rotateX(52deg) rotateZ(-22deg) scale(0.78)",
+              transform: "translateX(55vw)",
             }}
           >
             <img
               src={heroCar}
-              alt="Premium detailing — car overview"
+              alt="Premium detailing"
               draggable={false}
               style={{
-                width: "780px",
+                width: "820px",
                 maxWidth: "none",
                 userSelect: "none",
+                display: "block",
                 filter:
-                  "drop-shadow(0 50px 90px rgba(0,0,0,0.75)) drop-shadow(0 15px 30px rgba(0,0,0,0.55)) drop-shadow(0 0 40px rgba(212,137,10,0.15))",
+                  "brightness(1.12) contrast(1.08) drop-shadow(0 30px 60px rgba(0,0,0,0.9)) drop-shadow(0 0 80px rgba(212,137,10,0.12))",
+                // Radial mask: transparent edges → only car body remains
+                // The ellipse covers the car body; studio edges fade to transparent
+                maskImage:
+                  "radial-gradient(ellipse 88% 80% at 50% 52%, black 28%, rgba(0,0,0,0.95) 42%, rgba(0,0,0,0.5) 58%, transparent 72%)",
+                WebkitMaskImage:
+                  "radial-gradient(ellipse 88% 80% at 50% 52%, black 28%, rgba(0,0,0,0.95) 42%, rgba(0,0,0,0.5) 58%, transparent 72%)",
               }}
             />
           </div>
         </div>
 
-        {/* ── Bottom-right brand stamp (on dark half) ───────────────────── */}
+        {/* ── Brand stamp ───────────────────────────────────────────── */}
         <div
-          className="absolute bottom-10 right-10 z-20 text-right"
-          style={{ color: "rgba(255,255,255,0.18)" }}
+          className="absolute bottom-8 right-10 z-20 text-right"
+          style={{ color: "rgba(255,255,255,0.15)" }}
         >
-          <div className="font-display text-xs font-bold uppercase tracking-[0.3em]">
+          <div className="font-display text-[10px] font-bold uppercase tracking-[0.35em]">
             Polish Station
           </div>
-          <div className="text-[10px] tracking-[0.2em] mt-0.5">Premium Detailing Studio</div>
+          <div className="mt-0.5 text-[9px] tracking-[0.25em]">Premium Detailing Studio</div>
         </div>
       </div>
     </section>
