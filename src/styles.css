@@ -233,3 +233,99 @@
     0 52px 100px rgb(0 0 0 / 0.60),
     0 0    0   1px rgb(255 255 255 / 0.08);
 }
+
+/* ---- Scroll Reveal System ---- */
+
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
+  will-change: opacity, transform;
+}
+
+.reveal {
+  opacity: 0;
+  transform: perspective(900px) translateZ(-50px) translateY(44px);
+  transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: perspective(900px) translateZ(0) translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: perspective(900px) translateX(-65px) rotateY(18deg);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal-left.is-visible {
+  opacity: 1;
+  transform: perspective(900px) translateX(0) rotateY(0deg);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: perspective(900px) translateX(65px) rotateY(-18deg);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal-right.is-visible {
+  opacity: 1;
+  transform: perspective(900px) translateX(0) rotateY(0deg);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: perspective(900px) scale(0.88) translateZ(-60px);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal-scale.is-visible {
+  opacity: 1;
+  transform: perspective(900px) scale(1) translateZ(0);
+}
+
+/* ---- Vehicle Motion ---- */
+
+/* Speed lines — hero motion-blur streaks */
+@keyframes speed-line {
+  0%   { transform: translateX(-120vw); opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translateX(120vw);  opacity: 0; }
+}
+
+/* Animated road lane markings */
+@keyframes road-dash-move {
+  0%   { background-position: center 0px;  }
+  100% { background-position: center 24px; }
+}
+
+/* Top-down car traveling down the road strip */
+@keyframes car-travel-down {
+  0%   { top: -6%;  }
+  100% { top: 106%; }
+}
+
+/* Wheel/rim spinning */
+@keyframes wheel-spin {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+
+/* Gloss light sweep over panels */
+@keyframes gloss-sweep {
+  0%   { transform: translateX(-200%) skewX(-22deg); opacity: 0; }
+  35%  { opacity: 0.7; }
+  65%  { opacity: 0.7; }
+  100% { transform: translateX(300%)  skewX(-22deg); opacity: 0; }
+}
+
+/* Ambient orb drift */
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0px,   0px)  scale(1);    }
+  25%       { transform: translate(30px,  -20px) scale(1.05); }
+  50%       { transform: translate(10px,  30px)  scale(0.96); }
+  75%       { transform: translate(-20px, 10px)  scale(1.02); }
+}
+
+.animate-orb-drift   { animation: orb-drift   14s ease-in-out infinite; }
+.animate-gloss-sweep { animation: gloss-sweep  5s ease-in-out 2s infinite; }
