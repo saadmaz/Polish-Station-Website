@@ -30,13 +30,17 @@ export function DiagonalCarSection() {
         const scrolled = Math.max(0, -rect.top);
         const p        = Math.min(1, scrolled / total);
 
-        const ease  = 1 - Math.pow(1 - p, 2.2);
-        const rotX  = 52  * (1 - ease);
-        const ty    = -vh * 0.62 * (1 - ease);
-        const scale = 0.70 + 0.30 * ease;
+        // Ease-out: car decelerates as it parks into position
+        const ease  = 1 - Math.pow(1 - p, 2.6);
+
+        // Car drives in from the RIGHT (positive X) → settles at 0
+        const tx    = 78 * (1 - ease);   // vw units
+        // Slight downward drift as it "lands"
+        const ty    = 30 * (1 - ease);   // px
+        const scale = 0.78 + 0.22 * ease;
 
         car.style.transform =
-          `translateY(${ty}px) rotateX(${rotX}deg) rotateZ(-20deg) scale(${scale})`;
+          `translateX(${tx}vw) translateY(${ty}px) scale(${scale}) scaleX(-1)`;
       });
     };
 
@@ -54,7 +58,7 @@ export function DiagonalCarSection() {
     >
       <div
         className="sticky top-0 h-screen overflow-hidden"
-        style={{ perspective: "1100px", perspectiveOrigin: "50% 60%" }}
+        style={{ overflow: "hidden" }}
       >
 
         {/* WHITE left */}
@@ -187,7 +191,7 @@ export function DiagonalCarSection() {
             ref={carRef}
             style={{
               willChange: "transform",
-              transform: "translateY(-62vh) rotateX(52deg) rotateZ(-20deg) scale(0.70)",
+              transform: "translateX(78vw) translateY(30px) scale(0.78) scaleX(-1)",
             }}
           >
             <img
