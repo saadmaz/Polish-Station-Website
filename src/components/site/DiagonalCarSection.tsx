@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import heroCar from "@/assets/hero-car.jpg";
 
-// Pure palette: #FF6600 orange · #000000 black · #FFFFFF white
 const ORANGE = "#FF6600";
 
 const reasons = [
@@ -30,17 +29,15 @@ export function DiagonalCarSection() {
         const scrolled = Math.max(0, -rect.top);
         const p        = Math.min(1, scrolled / total);
 
-        // Ease-out: car decelerates as it parks into position
+        // Smooth ease-out deceleration
         const ease  = 1 - Math.pow(1 - p, 2.6);
 
-        // Car drives in from the RIGHT (positive X) → settles at 0
-        const tx    = 78 * (1 - ease);   // vw units
-        // Slight downward drift as it "lands"
-        const ty    = 30 * (1 - ease);   // px
-        const scale = 0.78 + 0.22 * ease;
+        // Car enters from the RIGHT side of the dark section → drives LEFT to park
+        // Front of car (left side of image) leads the motion — correct direction
+        const tx    = 55 * (1 - ease);  // vw: starts 55vw to the right, ends at 0
+        const scale = 0.80 + 0.20 * ease;
 
-        car.style.transform =
-          `translateX(${tx}vw) translateY(${ty}px) scale(${scale}) scaleX(-1)`;
+        car.style.transform = `translateX(${tx}vw) scale(${scale})`;
       });
     };
 
@@ -56,15 +53,12 @@ export function DiagonalCarSection() {
       style={{ minHeight: "250vh" }}
       className="relative"
     >
-      <div
-        className="sticky top-0 h-screen overflow-hidden"
-        style={{ overflow: "hidden" }}
-      >
+      <div className="sticky top-0 h-screen overflow-hidden">
 
-        {/* WHITE left */}
+        {/* ── WHITE left half ──────────────────────────────────── */}
         <div className="absolute inset-0" style={{ background: "#FFFFFF" }} />
 
-        {/* BLACK right */}
+        {/* ── BLACK right half ─────────────────────────────────── */}
         <div
           className="absolute inset-0"
           style={{
@@ -73,19 +67,17 @@ export function DiagonalCarSection() {
           }}
         />
 
-        {/* Orange glow behind car */}
+        {/* Orange glow pocket behind car */}
         <div
-          className="pointer-events-none absolute"
+          className="pointer-events-none absolute inset-0"
           style={{
-            left: "68%", top: "52%",
-            width: "700px", height: "420px",
-            transform: "translate(-50%,-50%)",
+            clipPath: "polygon(54% 0%, 100% 0%, 100% 100%, 20% 100%)",
             background:
-              "radial-gradient(ellipse 60% 50% at 50% 55%, rgba(255,102,0,0.10) 0%, rgba(255,102,0,0.03) 50%, transparent 70%)",
+              "radial-gradient(ellipse 55% 50% at 75% 55%, rgba(255,102,0,0.10) 0%, rgba(255,102,0,0.03) 50%, transparent 70%)",
           }}
         />
 
-        {/* Orange stripe — thin parallelogram locked onto the clip-path boundary */}
+        {/* Orange diagonal stripe on the boundary */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
@@ -94,23 +86,18 @@ export function DiagonalCarSection() {
           }}
         />
 
-        {/* ── TEXT LEFT ─────────────────────────────────────────── */}
+        {/* ── TEXT — left side ─────────────────────────────────── */}
         <div
           className="absolute top-1/2 z-20 -translate-y-1/2"
           style={{ left: "clamp(2rem, 5vw, 5rem)", maxWidth: "380px" }}
         >
-          {/* Eyebrow */}
           <div className="mb-6 flex items-center gap-3">
             <span className="block h-px w-8" style={{ background: ORANGE }} />
-            <span
-              className="text-[10px] font-black uppercase tracking-[0.4em]"
-              style={{ color: ORANGE }}
-            >
+            <span className="text-[10px] font-black uppercase tracking-[0.4em]" style={{ color: ORANGE }}>
               Our Advantage
             </span>
           </div>
 
-          {/* Headline */}
           <h2
             className="font-display font-extrabold leading-[0.95]"
             style={{ fontSize: "clamp(3rem, 5vw, 4.4rem)" }}
@@ -122,15 +109,10 @@ export function DiagonalCarSection() {
             <span style={{ color: ORANGE }}>worth it?</span>
           </h2>
 
-          <p
-            className="mt-5 text-sm leading-relaxed"
-            style={{ color: "#333333", maxWidth: "290px" }}
-          >
-            Because your paint deserves precision,
-            not guesswork.
+          <p className="mt-5 text-sm leading-relaxed" style={{ color: "#333333", maxWidth: "290px" }}>
+            Because your paint deserves precision, not guesswork.
           </p>
 
-          {/* Reason list */}
           <ul className="mt-8 space-y-[18px]">
             {reasons.map((r) => (
               <li key={r.n} className="flex items-start gap-[14px]">
@@ -146,16 +128,10 @@ export function DiagonalCarSection() {
                   {r.n}
                 </span>
                 <div>
-                  <p
-                    className="text-[13px] font-bold uppercase tracking-wide leading-tight"
-                    style={{ color: "#000000" }}
-                  >
+                  <p className="text-[13px] font-bold uppercase tracking-wide leading-tight" style={{ color: "#000000" }}>
                     {r.title}
                   </p>
-                  <p
-                    className="mt-[3px] text-[12px] leading-snug"
-                    style={{ color: "#444444" }}
-                  >
+                  <p className="mt-[3px] text-[12px] leading-snug" style={{ color: "#444444" }}>
                     {r.desc}
                   </p>
                 </div>
@@ -163,59 +139,59 @@ export function DiagonalCarSection() {
             ))}
           </ul>
 
-          {/* Bottom accent */}
           <div className="mt-10 flex items-center gap-3">
-            <span
-              className="block h-[2px] w-10 rounded-full"
-              style={{ background: ORANGE }}
-            />
-            <span
-              className="text-[9px] font-bold uppercase tracking-[0.35em]"
-              style={{ color: ORANGE }}
-            >
+            <span className="block h-[2px] w-10 rounded-full" style={{ background: ORANGE }} />
+            <span className="text-[9px] font-bold uppercase tracking-[0.35em]" style={{ color: ORANGE }}>
               Polish Station
             </span>
           </div>
         </div>
 
-        {/* ── CAR IMAGE ────────────────────────────────────────── */}
+        {/* ── CAR — clipped to the dark section polygon ────────── */}
+        {/*
+         * The clip-path on this wrapper matches the dark section exactly.
+         * The car is physically impossible to show in the white area.
+         * Car enters from the right (tx: 55vw → 0), front-facing-left leads.
+         */}
         <div
-          className="absolute"
-          style={{
-            left: "66%",
-            top: "50%",
-            transform: "translateX(-50%) translateY(-50%)",
-          }}
+          className="absolute inset-0 pointer-events-none"
+          style={{ clipPath: "polygon(54% 0%, 100% 0%, 100% 100%, 20% 100%)" }}
         >
+          {/* Anchor: centred in the dark half */}
           <div
-            ref={carRef}
-            style={{
-              willChange: "transform",
-              transform: "translateX(78vw) translateY(30px) scale(0.78) scaleX(-1)",
-            }}
+            className="absolute"
+            style={{ left: "71%", top: "50%", transform: "translateX(-50%) translateY(-50%)" }}
           >
-            <img
-              src={heroCar}
-              alt="Premium car detailing"
-              draggable={false}
+            <div
+              ref={carRef}
               style={{
-                width: "880px",
-                maxWidth: "none",
-                display: "block",
-                userSelect: "none",
-                filter: "brightness(1.08) contrast(1.06) saturate(1.1)",
-                maskImage: [
-                  "linear-gradient(to right,  transparent 3%, black 10%, black 91%, transparent 98%)",
-                  "linear-gradient(to bottom, black 0%,  black 60%, rgba(0,0,0,0.4) 70%, transparent 78%)",
-                ].join(", "),
-                WebkitMaskImage: [
-                  "linear-gradient(to right,  transparent 3%, black 10%, black 91%, transparent 98%)",
-                  "linear-gradient(to bottom, black 0%,  black 60%, rgba(0,0,0,0.4) 70%, transparent 78%)",
-                ].join(", "),
-                maskComposite: "intersect",
-                WebkitMaskComposite: "destination-in",
+                willChange: "transform",
+                transform: "translateX(55vw) scale(0.80)",
               }}
-            />
+            >
+              <img
+                src={heroCar}
+                alt="Premium car detailing"
+                draggable={false}
+                style={{
+                  width: "860px",
+                  maxWidth: "none",
+                  display: "block",
+                  userSelect: "none",
+                  filter: "brightness(1.08) contrast(1.06) saturate(1.1)",
+                  maskImage: [
+                    "linear-gradient(to right,  transparent 2%, black 8%, black 92%, transparent 98%)",
+                    "linear-gradient(to bottom, black 0%,   black 60%, rgba(0,0,0,0.4) 70%, transparent 78%)",
+                  ].join(", "),
+                  WebkitMaskImage: [
+                    "linear-gradient(to right,  transparent 2%, black 8%, black 92%, transparent 98%)",
+                    "linear-gradient(to bottom, black 0%,   black 60%, rgba(0,0,0,0.4) 70%, transparent 78%)",
+                  ].join(", "),
+                  maskComposite: "intersect",
+                  WebkitMaskComposite: "destination-in",
+                }}
+              />
+            </div>
           </div>
         </div>
 
@@ -224,13 +200,8 @@ export function DiagonalCarSection() {
           className="absolute bottom-8 right-10 z-20 text-right"
           style={{ color: "rgba(255,102,0,0.35)" }}
         >
-          <div className="text-[10px] font-bold uppercase tracking-[0.38em]">
-            Polish Station
-          </div>
-          <div
-            className="mt-0.5 text-[9px] tracking-[0.25em]"
-            style={{ color: "rgba(255,255,255,0.15)" }}
-          >
+          <div className="text-[10px] font-bold uppercase tracking-[0.38em]">Polish Station</div>
+          <div className="mt-0.5 text-[9px] tracking-[0.25em]" style={{ color: "rgba(255,255,255,0.15)" }}>
             Premium Detailing
           </div>
         </div>
@@ -241,11 +212,7 @@ export function DiagonalCarSection() {
             <span
               key={i}
               className="block rounded-full"
-              style={{
-                width: "6px",
-                height: "6px",
-                background: `rgba(255,102,0,${o})`,
-              }}
+              style={{ width: "6px", height: "6px", background: `rgba(255,102,0,${o})` }}
             />
           ))}
         </div>
