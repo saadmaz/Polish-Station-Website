@@ -81,20 +81,12 @@ export function DiagonalCarSection() {
           }}
         />
 
-        {/* Diagonal shadow depth */}
+        {/* Orange stripe — thin parallelogram locked onto the clip-path boundary */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
-            background:
-              "linear-gradient(134deg, transparent 49%, rgba(0,0,0,0.4) 50%, transparent 51.5%)",
-          }}
-        />
-
-        {/* Orange diagonal stripe — perpendicular to the clip-path boundary */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background: `linear-gradient(134deg, transparent 49.5%, ${ORANGE} 49.8%, ${ORANGE} 50.2%, transparent 50.5%)`,
+            background: ORANGE,
+            clipPath: "polygon(53.6% 0%, 54.4% 0%, 20.8% 100%, 19.8% 100%)",
           }}
         />
 
