@@ -188,3 +188,48 @@
 
 .animate-fade-up { animation: fade-up 0.8s ease-out both; }
 .animate-orange-pulse { animation: orange-pulse 3s ease-in-out infinite; }
+
+/* ---- 3D Design System ---- */
+
+@keyframes float-3d {
+  0%, 100% { transform: translateY(0px) rotateX(0deg); }
+  33%       { transform: translateY(-10px) rotateX(1.5deg) rotateY(-0.5deg); }
+  66%       { transform: translateY(-6px)  rotateX(-1deg)  rotateY(0.5deg); }
+}
+
+@keyframes depth-rise {
+  from {
+    opacity: 0;
+    transform: perspective(900px) translateZ(-80px) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(900px) translateZ(0) translateY(0);
+  }
+}
+
+@keyframes shine-travel {
+  0%   { transform: translateX(-180%) skewX(-22deg); opacity: 0; }
+  20%  { opacity: 0.7; }
+  80%  { opacity: 0.7; }
+  100% { transform: translateX(260%)  skewX(-22deg); opacity: 0; }
+}
+
+.animate-float-3d   { animation: float-3d   8s ease-in-out infinite; }
+.animate-depth-rise { animation: depth-rise 0.85s cubic-bezier(0.23, 1, 0.32, 1) both; }
+
+@utility depth-shadow {
+  box-shadow:
+    0 1px  4px  rgb(0 0 0 / 0.40),
+    0 6px  18px rgb(0 0 0 / 0.44),
+    0 24px 48px rgb(0 0 0 / 0.50),
+    0 0    0  1px rgb(255 255 255 / 0.04);
+}
+
+@utility depth-shadow-lift {
+  box-shadow:
+    0 4px  12px  rgb(0 0 0 / 0.50),
+    0 16px 40px  rgb(0 0 0 / 0.55),
+    0 52px 100px rgb(0 0 0 / 0.60),
+    0 0    0   1px rgb(255 255 255 / 0.08);
+}

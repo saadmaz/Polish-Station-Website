@@ -1,10 +1,11 @@
 import { Award, FlaskConical, Cpu, ScanSearch } from "lucide-react";
+import { TiltCard } from "@/components/ui/tilt-card";
 
 const items = [
-  { icon: Award, title: "Expert Technicians", desc: "Certified detailers with thousands of hours of paint experience." },
-  { icon: FlaskConical, title: "Premium Products", desc: "Only the top-tier coatings and compounds make it to your car." },
-  { icon: Cpu, title: "Advanced Equipment", desc: "Calibrated polishers, paint gauges and controlled environments." },
-  { icon: ScanSearch, title: "Attention to Detail", desc: "We inspect under multiple light sources — nothing is missed." },
+  { icon: Award,        title: "Expert Technicians", desc: "Certified detailers with thousands of hours of paint experience." },
+  { icon: FlaskConical, title: "Premium Products",   desc: "Only the top-tier coatings and compounds make it to your car." },
+  { icon: Cpu,          title: "Advanced Equipment", desc: "Calibrated polishers, paint gauges and controlled environments." },
+  { icon: ScanSearch,   title: "Attention to Detail",desc: "We inspect under multiple light sources — nothing is missed." },
 ];
 
 export function WhyUs() {
@@ -29,22 +30,46 @@ export function WhyUs() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {items.map((it, i) => (
-            <div
+            <TiltCard
               key={it.title}
-              className="group relative overflow-hidden rounded-2xl glass p-8 transition-transform hover:-translate-y-2"
+              intensity={9}
+              className="group relative overflow-hidden rounded-2xl glass depth-shadow cursor-default"
             >
-              <span className="absolute left-0 top-0 h-px w-12 bg-primary transition-all duration-500 group-hover:w-full" />
-              <div className="text-[10px] font-mono text-muted-foreground">
-                0{i + 1}
+              {/* Shine overlay */}
+              <div
+                data-shine
+                className="absolute inset-0 pointer-events-none opacity-0 rounded-2xl"
+                style={{ transition: "opacity 0.4s ease" }}
+              />
+              {/* Metallic top edge */}
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              {/* Orange accent bar that sweeps full width on hover */}
+              <span className="absolute left-0 top-0 h-px w-14 bg-primary transition-all duration-700 group-hover:w-full" />
+
+              {/* Large ghost number — gives sense of depth/dimension */}
+              <div className="absolute right-3 top-3 font-display text-[7rem] font-black leading-none select-none pointer-events-none text-white/[0.025]">
+                {String(i + 1).padStart(2, "0")}
               </div>
-              <it.icon className="mt-6 h-8 w-8 text-primary" strokeWidth={1.4} />
-              <h3 className="mt-8 font-display text-lg font-bold uppercase tracking-wide">
-                {it.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {it.desc}
-              </p>
-            </div>
+
+              <div className="relative p-8">
+                <div className="text-[10px] font-mono tracking-widest text-muted-foreground">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+
+                {/* Icon with cast shadow */}
+                <div className="relative mt-6 inline-block">
+                  <div className="absolute inset-x-1 bottom-0 top-2 rounded-full bg-black/50 blur-lg" />
+                  <it.icon className="relative h-8 w-8 text-primary" strokeWidth={1.4} />
+                </div>
+
+                <h3 className="mt-8 font-display text-lg font-bold uppercase tracking-wide">
+                  {it.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  {it.desc}
+                </p>
+              </div>
+            </TiltCard>
           ))}
         </div>
       </div>
