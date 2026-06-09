@@ -19,7 +19,7 @@ export function Contact() {
               { icon: MapPin, label: "Location", value: "24 Velocity Lane, Studio Bay 3" },
               { icon: Phone, label: "Call", value: "+1 (555) 123-4567" },
               { icon: Mail, label: "Email", value: "studio@polishstation.com" },
-              { icon: Clock, label: "Hours", value: "Mon–Sat · 8:00 — 19:00" },
+              { icon: Clock, label: "Hours", value: "Mon–Sat · 8:00 - 19:00" },
             ].map((i) => (
               <div key={i.label} className="flex items-start gap-4 rounded-2xl glass p-5">
                 <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-primary/15 text-primary">

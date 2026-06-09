@@ -6,7 +6,7 @@ import { Reveal } from "@/components/ui/reveal";
 export function CtaBanner() {
   const imgRef = useRef<HTMLImageElement>(null);
 
-  /* Parallax — bg image drifts opposite to scroll within the section */
+  /* Parallax - bg image drifts opposite to scroll within the section */
   useEffect(() => {
     let raf = 0;
     const onScroll = () => {

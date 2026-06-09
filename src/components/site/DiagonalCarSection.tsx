@@ -90,7 +90,7 @@ export function DiagonalCarSection() {
           }}
         />
 
-        {/* Orange diagonal stripe */}
+        {/* Orange diagonal stripe — perpendicular to the clip-path boundary */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{

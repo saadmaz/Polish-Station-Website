@@ -32,7 +32,7 @@ export function Services() {
               </h2>
             </div>
             <p className="max-w-sm text-muted-foreground">
-              From paint correction to ceramic protection — a complete catalogue of
+              From paint correction to ceramic protection - a complete catalogue of
               services performed with surgical precision.
             </p>
           </div>
@@ -46,7 +46,7 @@ export function Services() {
                 intensity={8}
                 className="group relative overflow-hidden rounded-2xl glass depth-shadow cursor-pointer h-full"
               >
-                {/* Shine overlay — updated by useTilt */}
+                {/* Shine overlay - updated by useTilt */}
                 <div
                   data-shine
                   className="absolute inset-0 pointer-events-none opacity-0 rounded-2xl"
@@ -54,7 +54,7 @@ export function Services() {
                 />
                 {/* Metallic top edge */}
                 <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/25 to-transparent" />
-                {/* Gloss sweep — periodic sheen */}
+                {/* Gloss sweep - periodic sheen */}
                 <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
                   <div
                     className="absolute inset-y-0 w-16 bg-linear-to-r from-transparent via-white/06 to-transparent"

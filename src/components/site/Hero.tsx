@@ -98,7 +98,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-linear-to-r from-background via-background/20 to-transparent" />
       </div>
 
-      {/* ── Speed lines — motion-blur streaks ──────────────────────────── */}
+      {/* ── Speed lines - motion-blur streaks ──────────────────────────── */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {SPEED_LINES.map((l, i) => (
           <div
@@ -207,7 +207,7 @@ export function Hero() {
 
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
             Premium automotive detailing engineered to keep your vehicle
-            showroom ready — every panel, every surface, every detail.
+            showroom ready - every panel, every surface, every detail.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">

@@ -19,13 +19,13 @@ import { ScrollProgress } from "@/components/site/ScrollProgress";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Polish Station — Premium Car Detailing & Ceramic Coating" },
+      { title: "Polish Station - Premium Car Detailing & Ceramic Coating" },
       {
         name: "description",
         content:
           "Polish Station is a premium automotive detailing studio offering paint correction, ceramic & graphene coating, interior detailing and luxury vehicle protection.",
       },
-      { property: "og:title", content: "Polish Station — Premium Car Detailing Studio" },
+      { property: "og:title", content: "Polish Station - Premium Car Detailing Studio" },
       {
         property: "og:description",
         content:

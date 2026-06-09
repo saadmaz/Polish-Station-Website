@@ -9,10 +9,10 @@ import { TiltCard } from "@/components/ui/tilt-card";
 import { Reveal } from "@/components/ui/reveal";
 
 const items = [
-  { src: g1, cat: "Sports",   label: "Silver Coupe — Cut & Polish", h: "row-span-2" },
-  { src: g2, cat: "SUV",      label: "Black SUV — Ceramic",         h: ""           },
+  { src: g1, cat: "Sports",   label: "Silver Coupe - Cut & Polish", h: "row-span-2" },
+  { src: g2, cat: "SUV",      label: "Black SUV - Ceramic",         h: ""           },
   { src: g3, cat: "Interior", label: "Leather Detail",              h: ""           },
-  { src: g4, cat: "Sedan",    label: "White Sedan — Paint Correction", h: "row-span-2" },
+  { src: g4, cat: "Sedan",    label: "White Sedan - Paint Correction", h: "row-span-2" },
   { src: g5, cat: "4x4",      label: "Matte 4x4 Protection",        h: ""           },
   { src: g6, cat: "Detail",   label: "Headlight Restoration",       h: ""           },
 ];
@@ -73,7 +73,7 @@ export function Gallery() {
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-background via-background/30 to-transparent opacity-60 transition-opacity group-hover:opacity-90" />
 
-                {/* Gloss sweep on hover — runs once then stops via animation-iteration-count trick */}
+                {/* Gloss sweep on hover - runs once then stops via animation-iteration-count trick */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                   <div className="absolute inset-y-0 w-20 bg-linear-to-r from-transparent via-white/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100"
                     style={{ animation: `gloss-sweep 1.2s ease-out` }}

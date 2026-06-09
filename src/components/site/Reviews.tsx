@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 const reviews = [
-  { name: "Marcus Holloway", car: "Porsche 911 Turbo S", text: "Picked up my car looking better than the day I bought it. The ceramic coating depth is unreal — water beads off like glass marbles. Worth every cent.", initials: "MH" },
+  { name: "Marcus Holloway", car: "Porsche 911 Turbo S", text: "Picked up my car looking better than the day I bought it. The ceramic coating depth is unreal - water beads off like glass marbles. Worth every cent.", initials: "MH" },
   { name: "Selena Cortez", car: "Mercedes G63 AMG", text: "Polish Station treats your car like it's their own. Total transparency throughout the process and the finish is flawless under any light.", initials: "SC" },
   { name: "Devon Pierce", car: "Tesla Model S Plaid", text: "Paint correction removed swirls I'd lived with for years. The car looks deeper, wetter, and the orange ambient glow of their studio is something else.", initials: "DP" },
   { name: "Anya Reyes", car: "BMW M4 Competition", text: "These guys are obsessed in the best way. Multiple lighting inspections, photos at every stage. The standard is just on a different level.", initials: "AR" },

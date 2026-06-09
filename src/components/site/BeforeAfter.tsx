@@ -26,7 +26,7 @@ export function BeforeAfter() {
             See the <span className="text-gradient-primary">difference.</span>
           </h2>
           <p className="mt-5 text-muted-foreground">
-            Drag the slider to reveal the transformation — same paint, restored to perfection.
+            Drag the slider to reveal the transformation - same paint, restored to perfection.
           </p>
         </div>
 

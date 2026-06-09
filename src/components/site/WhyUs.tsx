@@ -6,7 +6,7 @@ const items = [
   { icon: Award,        title: "Expert Technicians", desc: "Certified detailers with thousands of hours of paint experience." },
   { icon: FlaskConical, title: "Premium Products",   desc: "Only the top-tier coatings and compounds make it to your car." },
   { icon: Cpu,          title: "Advanced Equipment", desc: "Calibrated polishers, paint gauges and controlled environments." },
-  { icon: ScanSearch,   title: "Attention to Detail",desc: "We inspect under multiple light sources — nothing is missed." },
+  { icon: ScanSearch,   title: "Attention to Detail",desc: "We inspect under multiple light sources - nothing is missed." },
 ];
 
 export function WhyUs() {

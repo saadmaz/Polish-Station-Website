@@ -285,7 +285,7 @@
 
 /* ---- Vehicle Motion ---- */
 
-/* Speed lines — hero motion-blur streaks */
+/* Speed lines - hero motion-blur streaks */
 @keyframes speed-line {
   0%   { transform: translateX(-120vw); opacity: 0; }
   8%   { opacity: 1; }

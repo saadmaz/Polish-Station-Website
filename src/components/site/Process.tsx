@@ -17,7 +17,7 @@ function TopDownCar() {
         d="M3 8 Q3 2 12 2 Q21 2 21 8 L22 34 Q22 42 12 43 Q2 42 2 34 Z"
         fill="var(--color-primary)"
       />
-      {/* Windshield (front = bottom — car moves downward) */}
+      {/* Windshield (front = bottom - car moves downward) */}
       <path
         d="M6 10 Q6 6 12 5 Q18 6 18 10 L18 17 Q12 18 6 17 Z"
         fill="rgba(180,220,255,0.4)"
@@ -102,9 +102,9 @@ export function Process() {
           <div className="relative hidden w-12 flex-none md:block">
             {/* Road tarmac */}
             <div className="absolute inset-0 rounded-full bg-graphite depth-shadow" />
-            {/* Road edge highlight — left */}
+            {/* Road edge highlight - left */}
             <div className="absolute inset-y-0 left-0.5 w-px bg-linear-to-b from-transparent via-white/12 to-transparent" />
-            {/* Road edge highlight — right */}
+            {/* Road edge highlight - right */}
             <div className="absolute inset-y-0 right-0.5 w-px bg-linear-to-b from-transparent via-white/12 to-transparent" />
 
             {/* Animated center lane dashes */}
@@ -118,7 +118,7 @@ export function Process() {
               }}
             />
 
-            {/* Traveling car container — positioned absolute for top animation */}
+            {/* Traveling car container - positioned absolute for top animation */}
             <div
               className="absolute overflow-hidden"
               style={{

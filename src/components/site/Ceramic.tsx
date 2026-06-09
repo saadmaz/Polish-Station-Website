@@ -15,7 +15,7 @@ export function Ceramic() {
   return (
     <section className="section-padding relative overflow-hidden">
 
-      {/* ── Ambient glass orb — the signature ceramic shimmer ───────────── */}
+      {/* ── Ambient glass orb - the signature ceramic shimmer ───────────── */}
       <div
         className="pointer-events-none absolute -left-20 top-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full animate-orb-drift hidden lg:block"
         style={{
@@ -24,7 +24,7 @@ export function Ceramic() {
           border: "1px solid rgba(255,255,255,0.05)",
         }}
       />
-      {/* Smaller orb — contrasting position */}
+      {/* Smaller orb - contrasting position */}
       <div
         className="pointer-events-none absolute right-10 bottom-10 h-64 w-64 rounded-full animate-orb-drift hidden lg:block"
         style={{
@@ -65,7 +65,7 @@ export function Ceramic() {
             </h2>
             <p className="mt-6 max-w-md text-muted-foreground">
               A liquid polymer that bonds chemically with your paint to create a
-              permanent shield — years of unmatched gloss and protection in a
+              permanent shield - years of unmatched gloss and protection in a
               single application.
             </p>
 

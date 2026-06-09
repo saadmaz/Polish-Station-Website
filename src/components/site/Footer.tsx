@@ -14,7 +14,7 @@ export function Footer() {
             </div>
             <p className="mt-5 max-w-sm text-sm text-muted-foreground">
               Premium automotive detailing studio. We preserve and elevate
-              automotive excellence — one car at a time.
+              automotive excellence - one car at a time.
             </p>
           </div>
 
