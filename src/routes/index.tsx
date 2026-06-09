@@ -6,7 +6,6 @@ import { Services } from "@/components/site/Services";
 import { BeforeAfter } from "@/components/site/BeforeAfter";
 import { WhyUs } from "@/components/site/WhyUs";
 import { Process } from "@/components/site/Process";
-import { Packages } from "@/components/site/Packages";
 import { Gallery } from "@/components/site/Gallery";
 import { Reviews } from "@/components/site/Reviews";
 import { Ceramic } from "@/components/site/Ceramic";
@@ -44,7 +43,7 @@ export const Route = createFileRoute("/")({
           name: "Polish Station",
           description:
             "Premium automotive detailing studio specializing in paint correction, ceramic coating, and luxury vehicle care.",
-          priceRange: "$$$",
+
           openingHours: "Mo-Sa 08:00-19:00",
         }),
       },
@@ -65,7 +64,6 @@ function Index() {
         <BeforeAfter />
         <WhyUs />
         <Process />
-        <Packages />
         <Gallery />
         <Reviews />
         <Ceramic />

@@ -106,7 +106,6 @@ export function Footer() {
             <div className="text-xs font-bold uppercase tracking-[0.2em] text-foreground">Studio</div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li><a href="#gallery" className="hover:text-primary">Gallery</a></li>
-              <li><a href="#packages" className="hover:text-primary">Packages</a></li>
               <li><a href="#process" className="hover:text-primary">Process</a></li>
               <li><a href="#contact" className="hover:text-primary">Contact</a></li>
             </ul>
