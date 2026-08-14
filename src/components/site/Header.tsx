@@ -27,9 +27,11 @@ export function Header() {
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center gap-2 group">
-          <span className="grid h-9 w-9 place-items-center rounded-md bg-gradient-to-br from-primary to-primary/60 text-primary-foreground font-black">
-            P
-          </span>
+          <img
+            src="/Logo/Polish%20Station%20-%20Logo.png"
+            alt="Polish Station"
+            className="h-11 w-11 object-contain"
+          />
           <span className="font-display text-sm font-bold tracking-[0.25em]">
             POLISH<span className="text-primary">·</span>STATION
           </span>

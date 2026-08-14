@@ -52,7 +52,11 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-md bg-gradient-to-br from-primary to-primary/60 text-primary-foreground font-black">P</span>
+              <img
+                src="/Logo/Polish%20Station%20-%20Logo.png"
+                alt="Polish Station"
+                className="h-11 w-11 object-contain"
+              />
               <span className="font-display text-sm font-bold tracking-[0.25em]">
                 POLISH<span className="text-primary">·</span>STATION
               </span>
