@@ -15,6 +15,8 @@ export function DiagonalCarSection() {
   const carRef     = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Below xl the diagonal split is replaced by a simple stacked layout (see JSX) — skip the scroll rig entirely.
+    if (window.innerWidth < 1280) return;
     const section = sectionRef.current;
     const car     = carRef.current;
     if (!section || !car) return;
@@ -47,12 +49,15 @@ export function DiagonalCarSection() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      data-diagonal-section
-      style={{ minHeight: "250vh" }}
-      className="relative"
-    >
+    <>
+      {/* ── Diagonal split — xl screens and up only; the fixed clip-path        ──
+         percentages below only stay clear of the text/car at wide viewports. ── */}
+      <section
+        ref={sectionRef}
+        data-diagonal-section
+        style={{ minHeight: "250vh" }}
+        className="relative hidden xl:block"
+      >
       <div className="sticky top-0 h-screen overflow-hidden">
 
         {/* ── WHITE left half ──────────────────────────────────── */}
@@ -218,6 +223,53 @@ export function DiagonalCarSection() {
         </div>
 
       </div>
-    </section>
+      </section>
+
+      {/* ── Stacked fallback — below xl, where the diagonal split has no room ── */}
+      <section className="section-padding relative xl:hidden">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-6 flex items-center gap-3">
+            <span className="h-px w-8 bg-primary" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">
+              Our Advantage
+            </span>
+          </div>
+
+          <h2 className="font-display text-4xl font-extrabold uppercase leading-[0.95] sm:text-5xl">
+            Why<br />
+            <span className="text-primary">is it</span><br />
+            <span className="text-primary">worth it?</span>
+          </h2>
+
+          <p className="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">
+            Because your paint deserves precision, not guesswork.
+          </p>
+
+          <div className="mt-8 overflow-hidden rounded-2xl">
+            <img
+              src={heroCar}
+              alt="Premium car detailing"
+              draggable={false}
+              className="h-56 w-full object-cover sm:h-72"
+              style={{ filter: "brightness(1.08) contrast(1.06) saturate(1.1)" }}
+            />
+          </div>
+
+          <ul className="mt-8 grid gap-x-8 gap-y-5 sm:grid-cols-2">
+            {reasons.map((r) => (
+              <li key={r.n} className="flex items-start gap-[14px]">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[9px] font-black text-primary ring-1 ring-primary">
+                  {r.n}
+                </span>
+                <div>
+                  <p className="text-[13px] font-bold uppercase tracking-wide leading-tight">{r.title}</p>
+                  <p className="mt-[3px] text-[12px] leading-snug text-muted-foreground">{r.desc}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </>
   );
 }

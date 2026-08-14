@@ -66,7 +66,7 @@ export function Header() {
       </div>
 
       {open && (
-        <div className="md:hidden glass-strong border-t border-border/60 px-6 py-6 animate-fade-up">
+        <div className="md:hidden bg-background border-t border-border/60 px-6 py-6 animate-fade-up">
           <div className="flex flex-col gap-4">
             {links.map((l) => (
               <a
