@@ -1,6 +1,60 @@
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { MapPin, Phone, Mail, Clock, Loader2, CheckCircle2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { submitToWeb3Forms } from "@/lib/forms/web3forms";
+
+const inquirySchema = z.object({
+  name: z.string().min(2, "Enter your name"),
+  email: z.string().email("Enter a valid email"),
+  message: z.string().min(5, "Tell us a little about your question"),
+  company: z.string().max(0).optional(), // honeypot
+});
+
+type InquiryValues = z.infer<typeof inquirySchema>;
 
 export function Contact() {
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const form = useForm<InquiryValues>({
+    resolver: zodResolver(inquirySchema),
+    defaultValues: { name: "", email: "", message: "", company: "" },
+  });
+
+  async function onSubmit(values: InquiryValues) {
+    if (values.company) return; // honeypot tripped
+
+    setStatus("submitting");
+    const result = await submitToWeb3Forms({
+      subject: "New inquiry - Polish Station website",
+      from_name: "Polish Station website",
+      name: values.name,
+      email: values.email,
+      message: values.message,
+    });
+
+    if (result.ok) {
+      setStatus("success");
+      form.reset();
+    } else {
+      setErrorMessage(result.error);
+      setStatus("error");
+    }
+  }
+
   return (
     <section id="contact" className="section-padding relative">
       <div className="mx-auto max-w-7xl px-6">
@@ -13,7 +67,7 @@ export function Contact() {
           </h2>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
+        <div className="grid gap-6 lg:grid-cols-2">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
             {[
               {
@@ -23,14 +77,21 @@ export function Contact() {
                 href: "https://www.google.com/maps/search/?api=1&query=22C+Saranankara+Road+Dehiwala",
               },
               { icon: Phone, label: "Call", value: "+94 74 100 4296", href: "tel:+94741004296" },
-              { icon: Mail, label: "Email", value: "studio@polishstation.com", href: "mailto:studio@polishstation.com" },
+              {
+                icon: Mail,
+                label: "Email",
+                value: "studio@polishstation.com",
+                href: "mailto:studio@polishstation.com",
+              },
               { icon: Clock, label: "Hours", value: "Mon–Sat · 8:00 - 19:00", href: undefined },
             ].map((i) => {
               const Tag = i.href ? "a" : "div";
               return (
                 <Tag
                   key={i.label}
-                  {...(i.href ? { href: i.href, target: "_blank", rel: "noopener noreferrer" } : {})}
+                  {...(i.href
+                    ? { href: i.href, target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
                   className="flex items-start gap-4 rounded-2xl glass p-5 transition-colors hover:bg-primary/5"
                 >
                   <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-primary/15 text-primary">
@@ -47,16 +108,91 @@ export function Contact() {
             })}
           </div>
 
-          {/* Map centred on Saranankara Road, Dehiwala, Sri Lanka */}
-          <div className="overflow-hidden rounded-3xl border border-border min-h-[420px]">
-            <iframe
-              title="Polish Station location"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=79.855%2C6.848%2C79.878%2C6.866&layer=mapnik&marker=6.857%2C79.866"
-              className="h-full w-full"
-              style={{ filter: "grayscale(1) invert(0.92) hue-rotate(180deg)" }}
-              loading="lazy"
-            />
+          <div className="rounded-3xl glass-strong p-8">
+            {status === "success" ? (
+              <div className="flex h-full flex-col items-center justify-center text-center">
+                <CheckCircle2 className="h-10 w-10 text-primary" />
+                <p className="mt-4 font-display text-lg font-bold uppercase">Message sent.</p>
+                <p className="mt-2 text-sm text-muted-foreground">We'll get back to you shortly.</p>
+              </div>
+            ) : (
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="contact-company">Company</label>
+                    <input
+                      id="contact-company"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      {...form.register("company")}
+                    />
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Your name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input type="email" placeholder="you@example.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Message</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="How can we help?" rows={4} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {status === "error" && <p className="text-sm text-destructive">{errorMessage}</p>}
+
+                  <Button
+                    type="submit"
+                    disabled={status === "submitting"}
+                    className="w-full rounded-full py-6 text-sm font-semibold uppercase tracking-wider shadow-glow-primary"
+                  >
+                    {status === "submitting" && <Loader2 className="h-4 w-4 animate-spin" />}
+                    Send Message
+                  </Button>
+                </form>
+              </Form>
+            )}
           </div>
+        </div>
+
+        {/* Map centred on Saranankara Road, Dehiwala, Sri Lanka */}
+        <div className="mt-6 overflow-hidden rounded-3xl border border-border min-h-[320px]">
+          <iframe
+            title="Polish Station location"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=79.855%2C6.848%2C79.878%2C6.866&layer=mapnik&marker=6.857%2C79.866"
+            className="h-full w-full"
+            style={{ filter: "grayscale(1) invert(0.92) hue-rotate(180deg)" }}
+            loading="lazy"
+          />
         </div>
       </div>
     </section>

@@ -1,34 +1,12 @@
-import { Check } from "lucide-react";
+import { Check, Clock } from "lucide-react";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { Reveal } from "@/components/ui/reveal";
-
-const packages = [
-  {
-    name: "Basic Detail",
-    price: "149",
-    desc: "Essential refresh for daily drivers.",
-    features: ["Exterior hand wash", "Wheel & tire dressing", "Interior vacuum", "Window cleaning", "Tire shine"],
-  },
-  {
-    name: "Premium Detail",
-    price: "349",
-    desc: "Deep care for enthusiasts.",
-    popular: true,
-    features: ["Full decontamination", "Single-stage polish", "Interior shampoo", "Leather conditioning", "6-month sealant", "Engine bay clean"],
-  },
-  {
-    name: "Ultimate Protection",
-    price: "899",
-    desc: "Showroom-grade ceramic protection.",
-    features: ["Multi-stage correction", "9H ceramic coating", "Interior protection", "Wheel coating", "Glass coating", "5-year warranty"],
-  },
-];
+import { packages, formatLkr } from "@/lib/data/pricing";
 
 export function Packages() {
   return (
     <section id="packages" className="section-padding relative">
       <div className="mx-auto max-w-7xl px-6">
-
         <Reveal variant="up">
           <div className="mb-16 max-w-2xl">
             <div className="eyebrow mb-4">
@@ -42,7 +20,7 @@ export function Packages() {
 
         <div className="grid gap-6 lg:grid-cols-3">
           {packages.map((p, i) => (
-            <Reveal key={p.name} variant="scale" delay={i * 130}>
+            <Reveal key={p.slug} variant="scale" delay={i * 130}>
               <TiltCard
                 intensity={7}
                 className={`relative overflow-hidden rounded-3xl depth-shadow h-full ${
@@ -58,11 +36,13 @@ export function Packages() {
                   style={{ transition: "opacity 0.4s ease" }}
                 />
                 {/* Metallic edge */}
-                <div className={`absolute inset-x-0 top-0 h-px bg-linear-to-r ${
-                  p.popular
-                    ? "from-transparent via-primary/70 to-transparent"
-                    : "from-transparent via-white/25 to-transparent"
-                }`} />
+                <div
+                  className={`absolute inset-x-0 top-0 h-px bg-linear-to-r ${
+                    p.popular
+                      ? "from-transparent via-primary/70 to-transparent"
+                      : "from-transparent via-white/25 to-transparent"
+                  }`}
+                />
                 {/* Gloss sweep */}
                 <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
                   <div
@@ -71,9 +51,11 @@ export function Packages() {
                   />
                 </div>
                 {/* Top bloom */}
-                <div className={`absolute -top-24 left-1/2 -translate-x-1/2 h-48 w-48 rounded-full blur-3xl pointer-events-none ${
-                  p.popular ? "bg-primary/20" : "bg-white/4"
-                }`} />
+                <div
+                  className={`absolute -top-24 left-1/2 -translate-x-1/2 h-48 w-48 rounded-full blur-3xl pointer-events-none ${
+                    p.popular ? "bg-primary/20" : "bg-white/4"
+                  }`}
+                />
 
                 <div className="relative p-8">
                   {p.popular && (
@@ -86,9 +68,14 @@ export function Packages() {
                     {p.name}
                   </h3>
                   <div className="mt-6 flex items-baseline gap-1">
-                    <span className="font-display text-5xl font-bold text-gradient-silver">${p.price}</span>
+                    <span className="font-display text-4xl font-bold text-gradient-silver">
+                      {formatLkr(p.priceLkr)}
+                    </span>
                   </div>
                   <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
+                  <div className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                    <Clock className="h-3.5 w-3.5" /> {p.timeEstimate}
+                  </div>
 
                   <div className="my-8 h-px bg-border" />
 
@@ -104,7 +91,7 @@ export function Packages() {
                   </ul>
 
                   <a
-                    href="#contact"
+                    href={`/book?package=${p.slug}`}
                     className={`mt-10 inline-flex w-full items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold uppercase tracking-wider transition-all hover:scale-[1.02] ${
                       p.popular
                         ? "bg-primary text-primary-foreground shadow-glow-primary"

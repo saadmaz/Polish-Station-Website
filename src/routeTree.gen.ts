@@ -9,50 +9,153 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as LayoutRouteImport } from './routes/_layout'
+import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
+import { Route as LayoutFaqRouteImport } from './routes/_layout/faq'
+import { Route as LayoutBookRouteImport } from './routes/_layout/book'
+import { Route as LayoutAboutRouteImport } from './routes/_layout/about'
+import { Route as LayoutServicesSlugRouteImport } from './routes/_layout/services/$slug'
 
-const IndexRoute = IndexRouteImport.update({
+const LayoutRoute = LayoutRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LayoutIndexRoute = LayoutIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutFaqRoute = LayoutFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutBookRoute = LayoutBookRouteImport.update({
+  id: '/book',
+  path: '/book',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutAboutRoute = LayoutAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutServicesSlugRoute = LayoutServicesSlugRouteImport.update({
+  id: '/services/$slug',
+  path: '/services/$slug',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof LayoutIndexRoute
+  '/about': typeof LayoutAboutRoute
+  '/book': typeof LayoutBookRoute
+  '/faq': typeof LayoutFaqRoute
+  '/services/$slug': typeof LayoutServicesSlugRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/about': typeof LayoutAboutRoute
+  '/book': typeof LayoutBookRoute
+  '/faq': typeof LayoutFaqRoute
+  '/': typeof LayoutIndexRoute
+  '/services/$slug': typeof LayoutServicesSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_layout': typeof LayoutRouteWithChildren
+  '/_layout/about': typeof LayoutAboutRoute
+  '/_layout/book': typeof LayoutBookRoute
+  '/_layout/faq': typeof LayoutFaqRoute
+  '/_layout/': typeof LayoutIndexRoute
+  '/_layout/services/$slug': typeof LayoutServicesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/about' | '/book' | '/faq' | '/services/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/about' | '/book' | '/faq' | '/' | '/services/$slug'
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/_layout/about'
+    | '/_layout/book'
+    | '/_layout/faq'
+    | '/_layout/'
+    | '/_layout/services/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  LayoutRoute: typeof LayoutRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_layout/': {
+      id: '/_layout/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof LayoutIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/faq': {
+      id: '/_layout/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof LayoutFaqRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/book': {
+      id: '/_layout/book'
+      path: '/book'
+      fullPath: '/book'
+      preLoaderRoute: typeof LayoutBookRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/about': {
+      id: '/_layout/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof LayoutAboutRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/services/$slug': {
+      id: '/_layout/services/$slug'
+      path: '/services/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof LayoutServicesSlugRouteImport
+      parentRoute: typeof LayoutRoute
     }
   }
 }
 
+interface LayoutRouteChildren {
+  LayoutAboutRoute: typeof LayoutAboutRoute
+  LayoutBookRoute: typeof LayoutBookRoute
+  LayoutFaqRoute: typeof LayoutFaqRoute
+  LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutServicesSlugRoute: typeof LayoutServicesSlugRoute
+}
+
+const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutAboutRoute: LayoutAboutRoute,
+  LayoutBookRoute: LayoutBookRoute,
+  LayoutFaqRoute: LayoutFaqRoute,
+  LayoutIndexRoute: LayoutIndexRoute,
+  LayoutServicesSlugRoute: LayoutServicesSlugRoute,
+}
+
+const LayoutRouteWithChildren =
+  LayoutRoute._addFileChildren(LayoutRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  LayoutRoute: LayoutRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -9,12 +9,26 @@ import { TiltCard } from "@/components/ui/tilt-card";
 import { Reveal } from "@/components/ui/reveal";
 
 const items = [
-  { src: g1, cat: "Sports",   label: "Silver Coupe - Cut & Polish", h: "row-span-2" },
-  { src: g2, cat: "SUV",      label: "Black SUV - Ceramic",         h: ""           },
-  { src: g3, cat: "Interior", label: "Leather Detail",              h: ""           },
-  { src: g4, cat: "Sedan",    label: "White Sedan - Paint Correction", h: "row-span-2" },
-  { src: g5, cat: "4x4",      label: "Matte 4x4 Protection",        h: ""           },
-  { src: g6, cat: "Detail",   label: "Headlight Restoration",       h: ""           },
+  {
+    src: g1,
+    w: 800,
+    h_: 800,
+    cat: "Sports",
+    label: "Silver Coupe - Cut & Polish",
+    h: "row-span-2",
+  },
+  { src: g2, w: 800, h_: 1000, cat: "SUV", label: "Black SUV - Ceramic", h: "" },
+  { src: g3, w: 800, h_: 600, cat: "Interior", label: "Leather Detail", h: "" },
+  {
+    src: g4,
+    w: 800,
+    h_: 900,
+    cat: "Sedan",
+    label: "White Sedan - Paint Correction",
+    h: "row-span-2",
+  },
+  { src: g5, w: 800, h_: 700, cat: "4x4", label: "Matte 4x4 Protection", h: "" },
+  { src: g6, w: 800, h_: 800, cat: "Detail", label: "Headlight Restoration", h: "" },
 ];
 
 const cats = ["All", "Sports", "SUV", "Sedan", "4x4", "Interior", "Detail"];
@@ -26,7 +40,6 @@ export function Gallery() {
   return (
     <section id="gallery" className="section-padding relative">
       <div className="mx-auto max-w-7xl px-6">
-
         <Reveal variant="up">
           <div className="mb-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
             <div className="max-w-2xl">
@@ -68,20 +81,26 @@ export function Gallery() {
                 <img
                   src={it.src}
                   alt={it.label}
+                  width={it.w}
+                  height={it.h_}
                   loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-background via-background/30 to-transparent opacity-60 transition-opacity group-hover:opacity-90" />
 
                 {/* Gloss sweep on hover - runs once then stops via animation-iteration-count trick */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                  <div className="absolute inset-y-0 w-20 bg-linear-to-r from-transparent via-white/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100"
+                  <div
+                    className="absolute inset-y-0 w-20 bg-linear-to-r from-transparent via-white/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100"
                     style={{ animation: `gloss-sweep 1.2s ease-out` }}
                   />
                 </div>
 
                 <div className="absolute inset-x-0 bottom-0 p-5 translate-y-2 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                  <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{it.cat}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+                    {it.cat}
+                  </div>
                   <div className="mt-1 font-display text-base font-bold">{it.label}</div>
                 </div>
               </TiltCard>

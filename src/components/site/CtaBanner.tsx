@@ -16,9 +16,9 @@ export function CtaBanner() {
         if (!el) return;
         const section = el.closest("section") as HTMLElement | null;
         if (!section) return;
-        const rect  = section.getBoundingClientRect();
-        const cx    = rect.top + rect.height / 2;
-        const vc    = window.innerHeight / 2;
+        const rect = section.getBoundingClientRect();
+        const cx = rect.top + rect.height / 2;
+        const vc = window.innerHeight / 2;
         const offset = (cx - vc) * 0.22;
         el.style.transform = `translateY(${offset}px) scale(1.12)`;
       });
@@ -68,11 +68,11 @@ export function CtaBanner() {
             </div>
             <div className="flex flex-col justify-center gap-6 md:items-end">
               <p className="max-w-sm text-muted-foreground md:text-right">
-                Book a professional detailing session today. Limited weekly bays
-                ensure each car gets undivided attention.
+                Book a professional detailing session today. Limited weekly bays ensure each car
+                gets undivided attention.
               </p>
               <a
-                href="#contact"
+                href="/book"
                 className="group inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-semibold uppercase tracking-wider text-primary-foreground shadow-glow-primary transition-transform hover:scale-105"
               >
                 Book Appointment

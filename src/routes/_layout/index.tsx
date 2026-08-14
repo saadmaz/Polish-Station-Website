@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
 import { DiagonalCarSection } from "@/components/site/DiagonalCarSection";
 import { Services } from "@/components/site/Services";
@@ -11,11 +10,8 @@ import { Reviews } from "@/components/site/Reviews";
 import { Ceramic } from "@/components/site/Ceramic";
 import { CtaBanner } from "@/components/site/CtaBanner";
 import { Contact } from "@/components/site/Contact";
-import { Footer } from "@/components/site/Footer";
-import { FloatingWhatsApp } from "@/components/site/FloatingWhatsApp";
-import { ScrollProgress } from "@/components/site/ScrollProgress";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_layout/")({
   head: () => ({
     meta: [
       { title: "Polish Station - Premium Car Detailing & Ceramic Coating" },
@@ -62,23 +58,17 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <>
-      <ScrollProgress />
-      <Header />
-      <main>
-        <Hero />
-        <DiagonalCarSection />
-        <Services />
-        <BeforeAfter />
-        <WhyUs />
-        <Process />
-        <Gallery />
-        <Reviews />
-        <Ceramic />
-        <CtaBanner />
-        <Contact />
-      </main>
-      <Footer />
-      <FloatingWhatsApp />
+      <Hero />
+      <DiagonalCarSection />
+      <Services />
+      <BeforeAfter />
+      <WhyUs />
+      <Process />
+      <Gallery />
+      <Reviews />
+      <Ceramic />
+      <CtaBanner />
+      <Contact />
     </>
   );
 }

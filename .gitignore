@@ -16,6 +16,11 @@ dist-ssr
 .nitro
 *.local
 
+# Env files with real secrets/keys - .env.example is the committed template
+.env
+.env.*
+!.env.example
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars

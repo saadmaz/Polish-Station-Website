@@ -62,8 +62,8 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-5 max-w-sm text-sm text-muted-foreground">
-              Premium automotive detailing studio. We preserve and elevate
-              automotive excellence - one car at a time.
+              Premium automotive detailing studio. We preserve and elevate automotive excellence -
+              one car at a time.
             </p>
 
             <div className="mt-4 space-y-1 text-sm text-muted-foreground">
@@ -116,21 +116,58 @@ export function Footer() {
           </div>
 
           <div>
-            <div className="text-xs font-bold uppercase tracking-[0.2em] text-foreground">Services</div>
+            <div className="text-xs font-bold uppercase tracking-[0.2em] text-foreground">
+              Services
+            </div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li><a href="#services" className="hover:text-primary">Paint Correction</a></li>
-              <li><a href="#services" className="hover:text-primary">Ceramic Coating</a></li>
-              <li><a href="#services" className="hover:text-primary">Interior Detail</a></li>
-              <li><a href="#services" className="hover:text-primary">Headlight Restore</a></li>
+              <li>
+                <a href="/#services" className="hover:text-primary">
+                  Paint Correction
+                </a>
+              </li>
+              <li>
+                <a href="/#services" className="hover:text-primary">
+                  Ceramic Coating
+                </a>
+              </li>
+              <li>
+                <a href="/#services" className="hover:text-primary">
+                  Interior Detail
+                </a>
+              </li>
+              <li>
+                <a href="/#services" className="hover:text-primary">
+                  Headlight Restore
+                </a>
+              </li>
             </ul>
           </div>
 
           <div>
-            <div className="text-xs font-bold uppercase tracking-[0.2em] text-foreground">Studio</div>
+            <div className="text-xs font-bold uppercase tracking-[0.2em] text-foreground">
+              Studio
+            </div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li><a href="#gallery" className="hover:text-primary">Gallery</a></li>
-              <li><a href="#process" className="hover:text-primary">Process</a></li>
-              <li><a href="#contact" className="hover:text-primary">Contact</a></li>
+              <li>
+                <a href="/#gallery" className="hover:text-primary">
+                  Gallery
+                </a>
+              </li>
+              <li>
+                <a href="/#process" className="hover:text-primary">
+                  Process
+                </a>
+              </li>
+              <li>
+                <a href="/about" className="hover:text-primary">
+                  About
+                </a>
+              </li>
+              <li>
+                <a href="/faq" className="hover:text-primary">
+                  FAQ
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -139,12 +176,13 @@ export function Footer() {
           <div className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} Polish Station. All rights reserved.
           </div>
-          <a
-            href="#top"
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-xs font-semibold uppercase tracking-widest hover:bg-primary hover:text-primary-foreground transition"
           >
             <ArrowUp className="h-3 w-3" /> Back to Top
-          </a>
+          </button>
         </div>
       </div>
     </footer>

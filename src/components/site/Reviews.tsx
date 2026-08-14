@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import generatedReviews from "@/lib/data/reviews.generated.json";
 
-const reviews = [
-  { name: "Marcus Holloway", car: "Porsche 911 Turbo S", text: "Picked up my car looking better than the day I bought it. The ceramic coating depth is unreal - water beads off like glass marbles. Worth every cent.", initials: "MH" },
-  { name: "Selena Cortez", car: "Mercedes G63 AMG", text: "Polish Station treats your car like it's their own. Total transparency throughout the process and the finish is flawless under any light.", initials: "SC" },
-  { name: "Devon Pierce", car: "Tesla Model S Plaid", text: "Paint correction removed swirls I'd lived with for years. The car looks deeper, wetter, and the orange ambient glow of their studio is something else.", initials: "DP" },
-  { name: "Anya Reyes", car: "BMW M4 Competition", text: "These guys are obsessed in the best way. Multiple lighting inspections, photos at every stage. The standard is just on a different level.", initials: "AR" },
-];
+type Review = { name: string; rating: number; text: string; relativeTime: string };
+
+const reviews = generatedReviews as Review[];
+
+const GOOGLE_REVIEWS_URL =
+  "https://www.google.com/maps/search/?api=1&query=Polish+Station+Dehiwala";
 
 export function Reviews() {
   const [idx, setIdx] = useState(0);
-  const r = reviews[idx];
 
   return (
     <section className="section-padding relative">
@@ -24,61 +24,95 @@ export function Reviews() {
           </h2>
         </div>
 
-        <div className="relative overflow-hidden rounded-3xl glass-strong p-10 md:p-14">
-          <Quote className="absolute -right-4 -top-4 h-40 w-40 text-primary/10" strokeWidth={1} />
-
-          <div className="flex gap-0.5 text-primary">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} className="h-5 w-5 fill-current" />
-            ))}
+        {reviews.length === 0 ? (
+          <div className="rounded-3xl glass-strong p-10 text-center md:p-14">
+            <p className="text-muted-foreground">
+              Our Google reviews are being synced - in the meantime, see them directly.
+            </p>
+            <a
+              href={GOOGLE_REVIEWS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold uppercase tracking-wider text-primary-foreground shadow-glow-primary transition-transform hover:scale-105"
+            >
+              Read our reviews on Google
+            </a>
           </div>
+        ) : (
+          <div className="relative overflow-hidden rounded-3xl glass-strong p-10 md:p-14">
+            <Quote className="absolute -right-4 -top-4 h-40 w-40 text-primary/10" strokeWidth={1} />
 
-          <p className="relative mt-8 font-display text-2xl leading-snug text-foreground md:text-3xl">
-            "{r.text}"
-          </p>
+            <div className="flex gap-0.5 text-primary">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star
+                  key={i}
+                  className={`h-5 w-5 ${i < reviews[idx].rating ? "fill-current" : "fill-none opacity-30"}`}
+                />
+              ))}
+            </div>
 
-          <div className="mt-10 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-primary to-primary/40 font-display font-bold text-primary-foreground">
-                {r.initials}
-              </div>
-              <div>
-                <div className="font-display font-bold uppercase tracking-wide">
-                  {r.name}
+            <p className="relative mt-8 font-display text-2xl leading-snug text-foreground md:text-3xl">
+              "{reviews[idx].text}"
+            </p>
+
+            <div className="mt-10 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-primary to-primary/40 font-display font-bold text-primary-foreground">
+                  {reviews[idx].name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .slice(0, 2)
+                    .join("")}
                 </div>
-                <div className="text-xs text-muted-foreground">{r.car}</div>
+                <div>
+                  <div className="font-display font-bold uppercase tracking-wide">
+                    {reviews[idx].name}
+                  </div>
+                  <div className="text-xs text-muted-foreground">{reviews[idx].relativeTime}</div>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setIdx((i) => (i - 1 + reviews.length) % reviews.length)}
+                  className="grid h-11 w-11 place-items-center rounded-full glass hover:bg-primary hover:text-primary-foreground transition"
+                  aria-label="Previous"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => setIdx((i) => (i + 1) % reviews.length)}
+                  className="grid h-11 w-11 place-items-center rounded-full glass hover:bg-primary hover:text-primary-foreground transition"
+                  aria-label="Next"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
               </div>
             </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={() => setIdx((i) => (i - 1 + reviews.length) % reviews.length)}
-                className="grid h-11 w-11 place-items-center rounded-full glass hover:bg-primary hover:text-primary-foreground transition"
-                aria-label="Previous"
+            <div className="mt-8 flex justify-center gap-1.5">
+              {reviews.map((_, i) => (
+                <span
+                  key={i}
+                  className={`h-1 rounded-full transition-all ${
+                    i === idx ? "w-8 bg-primary" : "w-2 bg-border"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <div className="mt-6 text-center">
+              <a
+                href={GOOGLE_REVIEWS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-semibold uppercase tracking-widest text-primary hover:underline"
               >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                onClick={() => setIdx((i) => (i + 1) % reviews.length)}
-                className="grid h-11 w-11 place-items-center rounded-full glass hover:bg-primary hover:text-primary-foreground transition"
-                aria-label="Next"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
+                See all reviews on Google
+              </a>
             </div>
           </div>
-
-          <div className="mt-8 flex justify-center gap-1.5">
-            {reviews.map((_, i) => (
-              <span
-                key={i}
-                className={`h-1 rounded-full transition-all ${
-                  i === idx ? "w-8 bg-primary" : "w-2 bg-border"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
+        )}
       </div>
     </section>
   );
