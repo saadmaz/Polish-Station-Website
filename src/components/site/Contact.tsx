@@ -184,14 +184,16 @@ export function Contact() {
           </div>
         </div>
 
-        {/* Map centred on Saranankara Road, Dehiwala, Sri Lanka */}
+        {/* Google Maps: 22 Sri Saranankara Rd, Dehiwala-Mount Lavinia */}
         <div className="mt-6 h-80 overflow-hidden rounded-3xl border border-border">
           <iframe
             title="Polish Station location"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=79.862%2C6.848%2C79.905%2C6.866&layer=mapnik&marker=6.857%2C79.866"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d247.57248777915166!2d79.86722355195928!3d6.871447290620591!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25bb139e473a9%3A0xbddd057f638bc802!2s22%20Sri%20Saranankara%20Rd%2C%20Dehiwala-Mount%20Lavinia!5e0!3m2!1sen!2slk!4v1786726646611!5m2!1sen!2slk"
             className="h-full w-full"
-            style={{ filter: "grayscale(1) invert(0.92) hue-rotate(180deg)" }}
+            style={{ border: 0, filter: "grayscale(1) invert(0.92) hue-rotate(180deg)" }}
             loading="lazy"
+            allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
           />
         </div>
       </div>
