@@ -37,16 +37,17 @@ jobs:
           git commit -m "Deploy ${GITHUB_SHA::7}"
           git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" deploy
 
-      # Optional: fully automatic deploy. Once SSH access to Zircon works and
-      # the three secrets below exist, uncomment this step so every push to
-      # main goes live without touching cPanel.
-      # - name: Trigger cPanel pull & deploy over SSH
-      #   uses: appleboy/ssh-action@v1
-      #   with:
-      #     host: ${{ secrets.ZIRCON_SSH_HOST }}
-      #     port: ${{ secrets.ZIRCON_SSH_PORT }}
-      #     username: ${{ secrets.ZIRCON_SSH_USER }}
-      #     key: ${{ secrets.ZIRCON_SSH_KEY }}
-      #     script: |
-      #       uapi VersionControl update repository_root=$HOME/repos/polish-station branch=deploy
-      #       uapi VersionControlDeployment create repository_root=$HOME/repos/polish-station
+      - name: Trigger cPanel pull & deploy over SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.ZIRCON_SSH_HOST }}
+          port: ${{ secrets.ZIRCON_SSH_PORT }}
+          username: ${{ secrets.ZIRCON_SSH_USER }}
+          key: ${{ secrets.ZIRCON_SSH_KEY }}
+          script: |
+            set -e
+            REPO=$HOME/repositories/polish-station
+            git -C "$REPO" fetch origin
+            git -C "$REPO" checkout deploy
+            git -C "$REPO" reset --hard origin/deploy
+            uapi VersionControlDeployment create repository_root="$REPO"

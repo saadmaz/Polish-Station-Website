@@ -9,3 +9,6 @@ deployment:
     # .cpanel.yml, .well-known and cgi-bin are preserved/excluded on purpose.
     - /bin/find $HOME/public_html -mindepth 1 ! -path "$HOME/public_html/.well-known*" ! -path "$HOME/public_html/cgi-bin*" -delete
     - /bin/tar -cf - --exclude=.git --exclude=.cpanel.yml --exclude=.well-known --exclude=cgi-bin . | (cd $HOME/public_html && /bin/tar -xf -)
+    # The cloned repo directory is private (700); tar carries that mode onto
+    # public_html's "." entry on extraction, which would lock Apache out.
+    - /bin/chmod 755 $HOME/public_html
