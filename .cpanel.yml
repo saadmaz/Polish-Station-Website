@@ -4,4 +4,8 @@
 # It syncs the built site (the deploy branch contents) into public_html.
 deployment:
   tasks:
-    - /usr/bin/rsync -a --delete --exclude=.git --exclude=.cpanel.yml --exclude=.well-known --exclude=cgi-bin ./ $HOME/public_html/
+    # rsync isn't available in Zircon's jailshell, so this uses tar (present
+    # everywhere) to copy the built site into public_html instead. .git,
+    # .cpanel.yml, .well-known and cgi-bin are preserved/excluded on purpose.
+    - /bin/find $HOME/public_html -mindepth 1 ! -path "$HOME/public_html/.well-known*" ! -path "$HOME/public_html/cgi-bin*" -delete
+    - /bin/tar -cf - --exclude=.git --exclude=.cpanel.yml --exclude=.well-known --exclude=cgi-bin . | (cd $HOME/public_html && /bin/tar -xf -)
