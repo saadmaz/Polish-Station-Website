@@ -16,23 +16,35 @@ export function Contact() {
         <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
             {[
-              { icon: MapPin, label: "Location", value: "Saranankara Road, Dehiwala" },
-              { icon: Phone,  label: "Call",     value: "+94 74 100 4296" },
-              { icon: Mail,   label: "Email",    value: "studio@polishstation.com" },
-              { icon: Clock,  label: "Hours",    value: "Mon–Sat · 8:00 - 19:00" },
-            ].map((i) => (
-              <div key={i.label} className="flex items-start gap-4 rounded-2xl glass p-5">
-                <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-primary/15 text-primary">
-                  <i.icon className="h-5 w-5" strokeWidth={1.5} />
-                </span>
-                <div>
-                  <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                    {i.label}
+              {
+                icon: MapPin,
+                label: "Location",
+                value: "22C, Saranankara Road, Dehiwala.",
+                href: "https://www.google.com/maps/search/?api=1&query=22C+Saranankara+Road+Dehiwala",
+              },
+              { icon: Phone, label: "Call", value: "+94 74 100 4296", href: "tel:+94741004296" },
+              { icon: Mail, label: "Email", value: "studio@polishstation.com", href: "mailto:studio@polishstation.com" },
+              { icon: Clock, label: "Hours", value: "Mon–Sat · 8:00 - 19:00", href: undefined },
+            ].map((i) => {
+              const Tag = i.href ? "a" : "div";
+              return (
+                <Tag
+                  key={i.label}
+                  {...(i.href ? { href: i.href, target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="flex items-start gap-4 rounded-2xl glass p-5 transition-colors hover:bg-primary/5"
+                >
+                  <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-primary/15 text-primary">
+                    <i.icon className="h-5 w-5" strokeWidth={1.5} />
+                  </span>
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                      {i.label}
+                    </div>
+                    <div className="mt-1 text-sm font-medium">{i.value}</div>
                   </div>
-                  <div className="mt-1 text-sm font-medium">{i.value}</div>
-                </div>
-              </div>
-            ))}
+                </Tag>
+              );
+            })}
           </div>
 
           {/* Map centred on Saranankara Road, Dehiwala, Sri Lanka */}

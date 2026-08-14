@@ -82,6 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Polish Station" },
       { property: "og:description", content: "Professional auto detailing and ceramic coating services" },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://polishstation.lk" },
       { name: "twitter:card", content: "summary" },
     ],
     links: [

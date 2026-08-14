@@ -11,7 +11,7 @@ const steps = [
 /* ── Top-down car SVG ──────────────────────────────────────────────────── */
 function TopDownCar() {
   return (
-    <svg viewBox="0 0 24 44" fill="none" className="w-full h-auto drop-shadow-[0_0_6px_rgba(255,106,0,0.8)]">
+    <svg viewBox="0 0 24 44" fill="none" className="w-full h-auto drop-shadow-[0_0_6px_rgba(210,11,11,0.8)]">
       {/* Body */}
       <path
         d="M3 8 Q3 2 12 2 Q21 2 21 8 L22 34 Q22 42 12 43 Q2 42 2 34 Z"
@@ -111,7 +111,7 @@ export function Process() {
             <div
               className="absolute inset-0 rounded-full overflow-hidden"
               style={{
-                backgroundImage: "repeating-linear-gradient(to bottom, transparent 0px, transparent 8px, rgba(255,106,0,0.55) 8px, rgba(255,106,0,0.55) 24px)",
+                backgroundImage: "repeating-linear-gradient(to bottom, transparent 0px, transparent 8px, rgba(210,11,11,0.55) 8px, rgba(210,11,11,0.55) 24px)",
                 backgroundSize: "4px 24px",
                 backgroundPosition: "center 0",
                 animation: "road-dash-move 0.45s linear infinite",
@@ -137,7 +137,7 @@ export function Process() {
                   transform: "translateX(-50%)",
                   width: "3px",
                   height: "48px",
-                  background: "linear-gradient(to top, rgba(255,106,0,0.5), transparent)",
+                  background: "linear-gradient(to top, rgba(210,11,11,0.5), transparent)",
                   borderRadius: "2px",
                 }}
               />

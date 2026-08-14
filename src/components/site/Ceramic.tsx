@@ -19,8 +19,8 @@ export function Ceramic() {
       <div
         className="pointer-events-none absolute -left-20 top-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full animate-orb-drift hidden lg:block"
         style={{
-          background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.06), rgba(255,106,0,0.04) 40%, transparent 70%)",
-          boxShadow: "inset 0 0 80px rgba(255,255,255,0.04), 0 0 120px rgba(255,106,0,0.06)",
+          background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.06), rgba(210,11,11,0.04) 40%, transparent 70%)",
+          boxShadow: "inset 0 0 80px rgba(255,255,255,0.04), 0 0 120px rgba(210,11,11,0.06)",
           border: "1px solid rgba(255,255,255,0.05)",
         }}
       />
@@ -29,8 +29,8 @@ export function Ceramic() {
         className="pointer-events-none absolute right-10 bottom-10 h-64 w-64 rounded-full animate-orb-drift hidden lg:block"
         style={{
           animationDelay: "-6s",
-          background: "radial-gradient(circle at 60% 40%, rgba(255,106,0,0.08), transparent 70%)",
-          border: "1px solid rgba(255,106,0,0.06)",
+          background: "radial-gradient(circle at 60% 40%, rgba(210,11,11,0.08), transparent 70%)",
+          border: "1px solid rgba(210,11,11,0.06)",
         }}
       />
 

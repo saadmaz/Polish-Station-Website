@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import heroCar from "@/assets/hero-car.jpg";
 
-const ORANGE = "#FF6600";
+const ORANGE = "#D20B0B"; // Polish Station brand red, sampled from the logo
 
 const reasons = [
   { n: "01", title: "Paint Depth Analysis",   desc: "We measure every panel before touching it." },
@@ -73,7 +73,7 @@ export function DiagonalCarSection() {
           style={{
             clipPath: "polygon(54% 0%, 100% 0%, 100% 100%, 20% 100%)",
             background:
-              "radial-gradient(ellipse 55% 50% at 75% 55%, rgba(255,102,0,0.10) 0%, rgba(255,102,0,0.03) 50%, transparent 70%)",
+              "radial-gradient(ellipse 55% 50% at 75% 55%, rgba(210,11,11,0.10) 0%, rgba(210,11,11,0.03) 50%, transparent 70%)",
           }}
         />
 
@@ -119,7 +119,7 @@ export function DiagonalCarSection() {
                 <span
                   className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[9px] font-black"
                   style={{
-                    background: "rgba(255,102,0,0.10)",
+                    background: "rgba(210,11,11,0.10)",
                     color: ORANGE,
                     border: `1.5px solid ${ORANGE}`,
                     minWidth: "24px",
@@ -198,7 +198,7 @@ export function DiagonalCarSection() {
         {/* Bottom-right stamp */}
         <div
           className="absolute bottom-8 right-10 z-20 text-right"
-          style={{ color: "rgba(255,102,0,0.35)" }}
+          style={{ color: "rgba(210,11,11,0.35)" }}
         >
           <div className="text-[10px] font-bold uppercase tracking-[0.38em]">Polish Station</div>
           <div className="mt-0.5 text-[9px] tracking-[0.25em]" style={{ color: "rgba(255,255,255,0.15)" }}>
@@ -212,7 +212,7 @@ export function DiagonalCarSection() {
             <span
               key={i}
               className="block rounded-full"
-              style={{ width: "6px", height: "6px", background: `rgba(255,102,0,${o})` }}
+              style={{ width: "6px", height: "6px", background: `rgba(210,11,11,${o})` }}
             />
           ))}
         </div>

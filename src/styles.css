@@ -54,9 +54,9 @@
   --popover: oklch(0.20 0 0);
   --popover-foreground: oklch(0.97 0 0);
 
-  /* Burnt Orange #FF6A00 */
-  --primary: oklch(0.70 0.205 45);
-  --primary-foreground: oklch(0.14 0 0);
+  /* Polish Station Red — sampled from logo #D20B0B */
+  --primary: oklch(0.56 0.223 29);
+  --primary-foreground: oklch(0.98 0 0);
 
   --secondary: oklch(0.24 0 0);
   --secondary-foreground: oklch(0.97 0 0);
@@ -64,18 +64,18 @@
   --muted: oklch(0.24 0 0);
   --muted-foreground: oklch(0.68 0.005 250);
 
-  --accent: oklch(0.70 0.205 45);
-  --accent-foreground: oklch(0.14 0 0);
+  --accent: oklch(0.56 0.223 29);
+  --accent-foreground: oklch(0.98 0 0);
 
   --destructive: oklch(0.62 0.22 25);
   --destructive-foreground: oklch(0.97 0 0);
 
   --border: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 10%);
-  --ring: oklch(0.70 0.205 45 / 60%);
+  --ring: oklch(0.56 0.223 29 / 60%);
 
   --gradient-bg: radial-gradient(ellipse at top, oklch(0.22 0 0) 0%, oklch(0.10 0 0) 70%);
-  --gradient-primary: linear-gradient(135deg, oklch(0.72 0.205 50), oklch(0.62 0.21 35));
+  --gradient-primary: linear-gradient(135deg, oklch(0.64 0.25 29), oklch(0.44 0.18 29));
   --gradient-metallic: linear-gradient(135deg, oklch(0.35 0 0), oklch(0.20 0 0) 50%, oklch(0.28 0 0));
 }
 

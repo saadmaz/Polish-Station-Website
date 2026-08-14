@@ -151,7 +151,7 @@ export function Hero() {
               top:    `${(i * 37) % 100}%`,
               width:  `${1.5 + (i % 3) * 1.5}px`,
               height: `${1.5 + (i % 3) * 1.5}px`,
-              background: i % 4 === 0 ? "rgba(255,106,0,0.55)" : "rgba(255,255,255,0.22)",
+              background: i % 4 === 0 ? "rgba(210,11,11,0.55)" : "rgba(255,255,255,0.22)",
               filter: i % 5 === 0 ? "blur(1px)" : "none",
               animation: `float-particle ${6 + (i % 5)}s ease-in-out ${i * 0.3}s infinite`,
             }}

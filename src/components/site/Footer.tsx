@@ -66,6 +66,25 @@ export function Footer() {
               automotive excellence - one car at a time.
             </p>
 
+            <div className="mt-4 space-y-1 text-sm text-muted-foreground">
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=22C+Saranankara+Road+Dehiwala"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block hover:text-primary"
+              >
+                22C, Saranankara Road, Dehiwala.
+              </a>
+              <a
+                href="https://polishstation.lk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block hover:text-primary"
+              >
+                polishstation.lk
+              </a>
+            </div>
+
             {/* Social icons */}
             <div className="mt-6 flex flex-wrap items-center gap-2">
               {socials.map((s) => (
