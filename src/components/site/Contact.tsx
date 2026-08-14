@@ -185,10 +185,10 @@ export function Contact() {
         </div>
 
         {/* Map centred on Saranankara Road, Dehiwala, Sri Lanka */}
-        <div className="mt-6 overflow-hidden rounded-3xl border border-border min-h-[320px]">
+        <div className="mt-6 h-80 overflow-hidden rounded-3xl border border-border">
           <iframe
             title="Polish Station location"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=79.855%2C6.848%2C79.878%2C6.866&layer=mapnik&marker=6.857%2C79.866"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=79.862%2C6.848%2C79.905%2C6.866&layer=mapnik&marker=6.857%2C79.866"
             className="h-full w-full"
             style={{ filter: "grayscale(1) invert(0.92) hue-rotate(180deg)" }}
             loading="lazy"
