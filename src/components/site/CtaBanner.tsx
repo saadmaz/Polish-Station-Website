@@ -8,6 +8,7 @@ export function CtaBanner() {
 
   /* Parallax - bg image drifts opposite to scroll within the section */
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let raf = 0;
     const onScroll = () => {
       cancelAnimationFrame(raf);

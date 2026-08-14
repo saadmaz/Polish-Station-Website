@@ -91,7 +91,12 @@ export function Footer() {
                 <a
                   key={s.label}
                   href={s.href}
+                  target={s.href === "#" ? undefined : "_blank"}
+                  rel={s.href === "#" ? undefined : "noopener noreferrer"}
                   aria-label={s.label}
+                  onClick={(e) => {
+                    if (s.href === "#") e.preventDefault();
+                  }}
                   className="group flex h-9 w-9 items-center justify-center rounded-full border border-border transition-all duration-200"
                   style={{ ["--brand" as string]: s.color }}
                   onMouseEnter={(e) => {

@@ -62,6 +62,7 @@ export function Hero() {
 
   /* Parallax: background car drifts slower than scroll */
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let raf = 0;
     const onScroll = () => {
       cancelAnimationFrame(raf);

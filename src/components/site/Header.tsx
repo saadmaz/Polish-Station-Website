@@ -20,6 +20,23 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = overflow;
+    };
+  }, [open]);
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
@@ -60,14 +77,19 @@ export function Header() {
         <button
           onClick={() => setOpen((o) => !o)}
           className="md:hidden grid h-10 w-10 place-items-center rounded-md glass"
-          aria-label="Menu"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-nav"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
       {open && (
-        <div className="md:hidden bg-background border-t border-border/60 px-6 py-6 animate-fade-up">
+        <div
+          id="mobile-nav"
+          className="md:hidden bg-background border-t border-border/60 px-6 py-6 animate-fade-up"
+        >
           <div className="flex flex-col gap-4">
             {links.map((l) => (
               <a

@@ -20,6 +20,12 @@ export function DiagonalCarSection() {
     const section = sectionRef.current;
     const car     = carRef.current;
     if (!section || !car) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // Skip the drive-in scroll-jack; park the car in its resting position immediately.
+      car.style.transform = "translateX(0vw) scale(1)";
+      return;
+    }
     let raf = 0;
 
     const onScroll = () => {

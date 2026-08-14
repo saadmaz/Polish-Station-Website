@@ -39,7 +39,10 @@ export function Reviews() {
             </a>
           </div>
         ) : (
-          <div className="relative overflow-hidden rounded-3xl glass-strong p-10 md:p-14">
+          <div
+            className="relative overflow-hidden rounded-3xl glass-strong p-10 md:p-14"
+            aria-live="polite"
+          >
             <Quote className="absolute -right-4 -top-4 h-40 w-40 text-primary/10" strokeWidth={1} />
 
             <div className="flex gap-0.5 text-primary">
