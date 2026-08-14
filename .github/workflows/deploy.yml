@@ -50,4 +50,20 @@ jobs:
             git -C "$REPO" fetch origin
             git -C "$REPO" checkout deploy
             git -C "$REPO" reset --hard origin/deploy
-            uapi VersionControlDeployment create repository_root="$REPO"
+
+            # The deployment task runs in cPanel's background task queue, and
+            # its process gets killed once this SSH session closes (jailshell
+            # doesn't let it linger past the session). So wait here and
+            # confirm it actually finished before disconnecting.
+            OUT=$(uapi --output=jsonpretty VersionControlDeployment create repository_root="$REPO")
+            LOG=$(echo "$OUT" | grep -o '"log_path" : "[^"]*"' | sed 's/.*: "\(.*\)"/\1/')
+            for i in $(seq 1 30); do
+              if grep -q "Build completed" "$LOG" 2>/dev/null; then
+                cat "$LOG"
+                exit 0
+              fi
+              sleep 1
+            done
+            echo "Timed out waiting for deployment to finish"
+            cat "$LOG" 2>/dev/null
+            exit 1
