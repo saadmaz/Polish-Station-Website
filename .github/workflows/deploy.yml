@@ -16,6 +16,16 @@ on:
 permissions:
   contents: write
 
+# A single Sanity publish can fire several webhook deliveries in the same
+# few seconds (one per underlying document mutation), each triggering its
+# own run here - without this, they race to force-push the same `deploy`
+# branch and GitHub's ref-lock rejects all but one as a hard failure.
+# Queuing them and cancelling superseded ones is safe: every queued run
+# builds from the same `main`, so only the newest one actually needs to run.
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
