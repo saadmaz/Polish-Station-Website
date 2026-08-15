@@ -1,9 +1,10 @@
 # Polish Station Blog Studio
 
-This is the admin UI for writing/publishing blog posts. It's a separate app
-from the main website - it only talks to Sanity's API, and doesn't affect
-the site's build in any way. You deploy it once and it lives at its own
-`*.sanity.studio` URL, independent of polishstation.lk.
+This is the admin UI for writing/publishing blog posts, deployed at
+**https://polishstation.sanity.studio/** - bookmark that, it's where you
+write and publish posts from. It's a separate app from the main website -
+it only talks to Sanity's API, and doesn't affect the site's build in any
+way.
 
 The `post` schema here (`schemaTypes/post.ts`) defines exactly the fields
 the website expects in `src/lib/data/blog.ts` - don't rename fields there
