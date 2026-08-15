@@ -29,6 +29,17 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      # TODO(sanity-debug): remove once VITE_SANITY_PROJECT_ID is confirmed
+      # reaching the build - prints only whether the secrets are non-empty,
+      # never their value (GitHub also redacts secret values in logs).
+      - name: Debug Sanity secrets presence
+        env:
+          VITE_SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+          VITE_SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
+        run: |
+          echo "SANITY_PROJECT_ID length: ${#VITE_SANITY_PROJECT_ID}"
+          echo "SANITY_DATASET length: ${#VITE_SANITY_DATASET}"
+
       - name: Build static site
         env:
           VITE_SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
