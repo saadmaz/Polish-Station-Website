@@ -15,8 +15,15 @@ export const post = defineType({
       name: "slug",
       title: "Slug",
       type: "slug",
+      description: "Click Generate - don't type this by hand. It becomes the post's URL.",
       options: { source: "title", maxLength: 96 },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().custom((slug) => {
+          if (!slug?.current) return "Required - click Generate above.";
+          return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug.current)
+            ? true
+            : "Invalid slug - click Generate instead of typing it manually (no spaces or capital letters allowed).";
+        }),
     }),
     defineField({
       name: "excerpt",

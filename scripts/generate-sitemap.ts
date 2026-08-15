@@ -26,6 +26,10 @@ const STATIC_ROUTES: Array<{ path: string; changefreq: string; priority: string 
   { path: "/services/headlight-restoration", changefreq: "monthly", priority: "0.8" },
 ];
 
+// Mirrors the validation in src/lib/data/blog.ts - a slug typed by hand
+// instead of generated (e.g. containing spaces) must never break the build.
+const VALID_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
 async function getBlogSlugs(): Promise<string[]> {
   const projectId = process.env.VITE_SANITY_PROJECT_ID;
   if (!projectId) return [];
@@ -37,9 +41,10 @@ async function getBlogSlugs(): Promise<string[]> {
     useCdn: true,
   });
 
-  return client.fetch(
+  const slugs: string[] = await client.fetch(
     `*[_type == "post" && defined(slug.current) && publishedAt <= now()].slug.current`,
   );
+  return slugs.filter((slug) => VALID_SLUG.test(slug));
 }
 
 function toUrlEntry(loc: string, changefreq: string, priority: string) {

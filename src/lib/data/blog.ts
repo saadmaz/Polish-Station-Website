@@ -51,17 +51,24 @@ const SUMMARY_FIELDS = `
   "tags": coalesce(tags, [])
 `;
 
+// Studio schema validation requires a well-formed slug before a post can be
+// published, but this filters defensively too: one malformed slug (e.g.
+// typed by hand instead of clicking "Generate") must never be able to crash
+// the entire prerendered build over a single bad post.
+const VALID_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
 export async function getAllPosts(): Promise<BlogPostSummary[]> {
   if (!sanityClient) return [];
-  return sanityClient.fetch(
+  const posts: BlogPostSummary[] = await sanityClient.fetch(
     `*[_type == "post" && defined(slug.current) && publishedAt <= now()] | order(publishedAt desc){
       ${SUMMARY_FIELDS}
     }`,
   );
+  return posts.filter((post) => VALID_SLUG.test(post.slug));
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
-  if (!sanityClient) return null;
+  if (!sanityClient || !VALID_SLUG.test(slug)) return null;
   const post = await sanityClient.fetch(
     `*[_type == "post" && slug.current == $slug && publishedAt <= now()][0]{
       ${SUMMARY_FIELDS},
@@ -71,12 +78,4 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     { slug },
   );
   return post ?? null;
-}
-
-export async function getAllPostSlugs(): Promise<string[]> {
-  if (!sanityClient) return [];
-  const slugs: string[] = await sanityClient.fetch(
-    `*[_type == "post" && defined(slug.current) && publishedAt <= now()].slug.current`,
-  );
-  return slugs;
 }
