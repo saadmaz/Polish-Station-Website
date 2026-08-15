@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
-import bg from "@/assets/cta-banner.jpg";
+import bg from "@/assets/cta-banner.webp";
 import { Reveal } from "@/components/ui/reveal";
 
 export function CtaBanner() {

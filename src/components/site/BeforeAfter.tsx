@@ -1,7 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { Move } from "lucide-react";
-import before from "@/assets/before.jpg";
-import after from "@/assets/after.jpg";
+import before from "@/assets/before.webp";
+import after from "@/assets/after.webp";
 
 const STEP = 3;
 

@@ -1,0 +1,29 @@
+# Polish Station
+
+> Premium automotive detailing studio in Dehiwala, Sri Lanka, specializing in paint correction, ceramic and graphene coating, and interior/exterior detailing.
+
+Polish Station restores, protects and perfects vehicle finishes using paint depth analysis, certified technicians, premium-grade products and multi-light inspection. Based at 22C, Saranankara Road, Dehiwala. Open Mon-Sat, 8:00-19:00.
+
+## Pages
+
+- [Home](https://www.polishstation.lk/): Studio overview, process, gallery and customer reviews.
+- [About](https://www.polishstation.lk/about): Studio background and approach.
+- [Book](https://www.polishstation.lk/book): Book an appointment.
+- [FAQ](https://www.polishstation.lk/faq): Frequently asked questions.
+
+## Services
+
+- [Paint Correction](https://www.polishstation.lk/services/paint-correction): Multi-stage compounding to erase swirls, scratches and oxidation.
+- [Cut & Polish](https://www.polishstation.lk/services/cut-and-polish): Restore depth and clarity to factory paintwork.
+- [Ceramic Coating](https://www.polishstation.lk/services/ceramic-coating): 9H hardness, hydrophobic, years of glass-like protection.
+- [Graphene Coating](https://www.polishstation.lk/services/graphene-coating): Next-gen protection with extreme heat dissipation.
+- [Interior Detailing](https://www.polishstation.lk/services/interior-detailing): Deep extraction, leather conditioning, sanitization.
+- [Exterior Detailing](https://www.polishstation.lk/services/exterior-detailing): Decontamination, clay treatment, finish refinement.
+- [Engine Bay Cleaning](https://www.polishstation.lk/services/engine-bay-cleaning): Safe degreasing and dressing for showroom engines.
+- [Headlight Restoration](https://www.polishstation.lk/services/headlight-restoration): Clarity, UV protection and brighter night vision.
+
+## Contact
+
+- Phone: +94 74 100 4296
+- Email: studio@polishstation.com
+- Address: 22C, Saranankara Road, Dehiwala, Sri Lanka

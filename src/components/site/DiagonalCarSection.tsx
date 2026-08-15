@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import heroCar from "@/assets/hero-car.jpg";
+import heroCar from "@/assets/hero-car.webp";
 
 const ORANGE = "#D20B0B"; // Polish Station brand red, sampled from the logo
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { ArrowRight, Play, Star } from "lucide-react";
-import heroCar from "@/assets/hero-car.jpg";
+import heroCar from "@/assets/hero-car.webp";
 import { useCountUp } from "@/hooks/use-count-up";
 
 /* ── Speed lines config ────────────────────────────────────────────────── */

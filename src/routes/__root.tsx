@@ -10,6 +10,8 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import interFont from "../assets/fonts/inter-latin.woff2?url";
+import manropeFont from "../assets/fonts/manrope-latin.woff2?url";
 import { reportError } from "../lib/error-reporting";
 
 function NotFoundComponent() {
@@ -88,12 +90,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "icon", type: "image/png", href: "/Logo/Polish%20Station%20-%20Logo.png" },
       { rel: "apple-touch-icon", href: "/Logo/Polish%20Station%20-%20Logo.png" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800;900&display=swap",
-      },
+      { rel: "preload", href: interFont, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
+      { rel: "preload", href: manropeFont, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: appCss },
     ],
   }),
@@ -110,29 +108,6 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
-        {/* Google tag (gtag.js) */}
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-
-gtag('config', '${GA_MEASUREMENT_ID}');`,
-          }}
-        />
-        {/* End Google tag (gtag.js) */}
-        {/* Google Tag Manager */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${GTM_ID}');`,
-          }}
-        />
-        {/* End Google Tag Manager */}
         <HeadContent />
       </head>
       <body>
@@ -148,6 +123,40 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         {/* End Google Tag Manager (noscript) */}
         {children}
         <Scripts />
+        {/* Google tag (gtag.js) + Google Tag Manager, loaded lazily on first
+            interaction (or shortly after load as a fallback) so they don't
+            compete with the initial render for the main thread. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){
+  var loaded = false;
+  function loadAnalytics(){
+    if (loaded) return;
+    loaded = true;
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', '${GA_MEASUREMENT_ID}');
+
+    var gtagScript = document.createElement('script');
+    gtagScript.async = true;
+    gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}';
+    document.head.appendChild(gtagScript);
+
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','${GTM_ID}');
+  }
+  ["scroll","mousemove","touchstart","keydown","click"].forEach(function(evt){
+    window.addEventListener(evt, loadAnalytics, { once: true, passive: true });
+  });
+  window.addEventListener('load', function(){ setTimeout(loadAnalytics, 3500); });
+})();`,
+          }}
+        />
       </body>
     </html>
   );
