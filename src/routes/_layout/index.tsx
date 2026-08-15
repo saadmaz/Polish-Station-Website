@@ -27,9 +27,9 @@ export const Route = createFileRoute("/_layout/")({
           "Paint correction, ceramic coating, and luxury automotive detailing. Restore. Protect. Perfect.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://polishstation.lk" },
+      { property: "og:url", content: "https://www.polishstation.lk" },
     ],
-    links: [{ rel: "canonical", href: "https://polishstation.lk" }],
+    links: [{ rel: "canonical", href: "https://www.polishstation.lk" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/_layout/")({
           name: "Polish Station",
           description:
             "Premium automotive detailing studio specializing in paint correction, ceramic coating, and luxury vehicle care.",
-          url: "https://polishstation.lk",
+          url: "https://www.polishstation.lk",
           telephone: "+94741004296",
           address: {
             "@type": "PostalAddress",

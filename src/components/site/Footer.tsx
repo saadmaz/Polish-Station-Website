@@ -76,7 +76,7 @@ export function Footer() {
                 22C, Saranankara Road, Dehiwala.
               </a>
               <a
-                href="https://polishstation.lk"
+                href="https://www.polishstation.lk"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block hover:text-primary"

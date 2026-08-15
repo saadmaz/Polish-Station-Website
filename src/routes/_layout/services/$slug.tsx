@@ -30,7 +30,7 @@ export const Route = createFileRoute("/_layout/services/$slug")({
             provider: {
               "@type": "AutoBodyShop",
               name: "Polish Station",
-              url: "https://polishstation.lk",
+              url: "https://www.polishstation.lk",
             },
             areaServed: "Dehiwala, Sri Lanka",
           }),
