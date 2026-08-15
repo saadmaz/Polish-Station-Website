@@ -22,6 +22,9 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Build static site
+        env:
+          VITE_SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+          VITE_SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
         run: bun run build
 
       - name: Add cPanel deploy file

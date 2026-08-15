@@ -14,7 +14,9 @@ import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutFaqRouteImport } from './routes/_layout/faq'
 import { Route as LayoutBookRouteImport } from './routes/_layout/book'
 import { Route as LayoutAboutRouteImport } from './routes/_layout/about'
+import { Route as LayoutBlogIndexRouteImport } from './routes/_layout/blog/index'
 import { Route as LayoutServicesSlugRouteImport } from './routes/_layout/services/$slug'
+import { Route as LayoutBlogSlugRouteImport } from './routes/_layout/blog/$slug'
 
 const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
@@ -40,9 +42,19 @@ const LayoutAboutRoute = LayoutAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutBlogIndexRoute = LayoutBlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => LayoutRoute,
+} as any)
 const LayoutServicesSlugRoute = LayoutServicesSlugRouteImport.update({
   id: '/services/$slug',
   path: '/services/$slug',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutBlogSlugRoute = LayoutBlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -51,14 +63,18 @@ export interface FileRoutesByFullPath {
   '/about': typeof LayoutAboutRoute
   '/book': typeof LayoutBookRoute
   '/faq': typeof LayoutFaqRoute
+  '/blog/$slug': typeof LayoutBlogSlugRoute
   '/services/$slug': typeof LayoutServicesSlugRoute
+  '/blog/': typeof LayoutBlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/about': typeof LayoutAboutRoute
   '/book': typeof LayoutBookRoute
   '/faq': typeof LayoutFaqRoute
   '/': typeof LayoutIndexRoute
+  '/blog/$slug': typeof LayoutBlogSlugRoute
   '/services/$slug': typeof LayoutServicesSlugRoute
+  '/blog': typeof LayoutBlogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -67,13 +83,29 @@ export interface FileRoutesById {
   '/_layout/book': typeof LayoutBookRoute
   '/_layout/faq': typeof LayoutFaqRoute
   '/_layout/': typeof LayoutIndexRoute
+  '/_layout/blog/$slug': typeof LayoutBlogSlugRoute
   '/_layout/services/$slug': typeof LayoutServicesSlugRoute
+  '/_layout/blog/': typeof LayoutBlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/book' | '/faq' | '/services/$slug'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/book'
+    | '/faq'
+    | '/blog/$slug'
+    | '/services/$slug'
+    | '/blog/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/about' | '/book' | '/faq' | '/' | '/services/$slug'
+  to:
+    | '/about'
+    | '/book'
+    | '/faq'
+    | '/'
+    | '/blog/$slug'
+    | '/services/$slug'
+    | '/blog'
   id:
     | '__root__'
     | '/_layout'
@@ -81,7 +113,9 @@ export interface FileRouteTypes {
     | '/_layout/book'
     | '/_layout/faq'
     | '/_layout/'
+    | '/_layout/blog/$slug'
     | '/_layout/services/$slug'
+    | '/_layout/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -125,11 +159,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAboutRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/blog/': {
+      id: '/_layout/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof LayoutBlogIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
     '/_layout/services/$slug': {
       id: '/_layout/services/$slug'
       path: '/services/$slug'
       fullPath: '/services/$slug'
       preLoaderRoute: typeof LayoutServicesSlugRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/blog/$slug': {
+      id: '/_layout/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof LayoutBlogSlugRouteImport
       parentRoute: typeof LayoutRoute
     }
   }
@@ -140,7 +188,9 @@ interface LayoutRouteChildren {
   LayoutBookRoute: typeof LayoutBookRoute
   LayoutFaqRoute: typeof LayoutFaqRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutBlogSlugRoute: typeof LayoutBlogSlugRoute
   LayoutServicesSlugRoute: typeof LayoutServicesSlugRoute
+  LayoutBlogIndexRoute: typeof LayoutBlogIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
@@ -148,7 +198,9 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutBookRoute: LayoutBookRoute,
   LayoutFaqRoute: LayoutFaqRoute,
   LayoutIndexRoute: LayoutIndexRoute,
+  LayoutBlogSlugRoute: LayoutBlogSlugRoute,
   LayoutServicesSlugRoute: LayoutServicesSlugRoute,
+  LayoutBlogIndexRoute: LayoutBlogIndexRoute,
 }
 
 const LayoutRouteWithChildren =
