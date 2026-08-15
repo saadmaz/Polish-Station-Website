@@ -68,9 +68,35 @@ instantly update the live site** - the site is fully static (see
 
 - push any commit to `main` (triggers the existing deploy workflow), or
 - manually re-run the "Build & publish deploy branch" GitHub Action, or
-- (recommended once you're publishing regularly) add a Sanity webhook that
-  fires the GitHub Action automatically on publish - ask for this to be set
-  up when you're ready.
+- set up the auto-deploy webhook below (one-time, ~5 min) so publishing
+  triggers a rebuild automatically.
+
+## Auto-deploy on publish (optional, one-time setup)
+
+The GitHub Actions workflow (`.github/workflows/deploy.yml`) already listens
+for this - you just need to tell Sanity to call it. Two steps, both need
+your own login (can't be automated by an agent):
+
+1. **Create a GitHub Personal Access Token:**
+   [github.com/settings/tokens](https://github.com/settings/personal-access-tokens/new) -> generate a fine-grained token
+   scoped to just this repository, with **Contents: read and write** access.
+   Copy the token.
+
+2. **Add a webhook in Sanity:** go to your project at
+   [sanity.io/manage](https://sanity.io/manage) -> API -> Webhooks -> Create
+   webhook:
+   - **URL:** `https://api.github.com/repos/<your-github-username>/Polish-Station-Website/dispatches`
+   - **Dataset:** `production`
+   - **Trigger on:** Create, Update, Delete
+   - **HTTP method:** `POST`
+   - **HTTP Headers:**
+     - `Authorization: Bearer <the PAT from step 1>`
+     - `Accept: application/vnd.github+json`
+   - **Payload:** custom body `{"event_type": "sanity-publish"}` (must be
+     exactly this - the workflow only listens for `sanity-publish`)
+
+From then on, publishing/unpublishing a post in the Studio kicks off a full
+rebuild + redeploy automatically within a couple minutes.
 
 ## Local development
 

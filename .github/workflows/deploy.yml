@@ -4,6 +4,14 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Fired by a Sanity webhook (Settings > API > Webhooks in sanity.io/manage)
+  # on every publish/unpublish, so a new blog post goes live without anyone
+  # having to push a commit or click "Run workflow" manually. The webhook
+  # POSTs to https://api.github.com/repos/<owner>/<repo>/dispatches with
+  # body {"event_type": "sanity-publish"} and an Authorization header
+  # carrying a GitHub PAT (repo scope) - see studio/README.md.
+  repository_dispatch:
+    types: [sanity-publish]
 
 permissions:
   contents: write
