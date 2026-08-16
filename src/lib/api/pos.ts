@@ -1,0 +1,65 @@
+// Client-side calls to pos.polishstation.lk's public intake endpoints
+// (/api/public/*). These are cross-origin, unauthenticated, and expected to
+// be rate-limited + honeypot-checked server-side - this file only shapes the
+// request and normalizes the response, it does no validation of its own.
+//
+// The POS side of these three endpoints doesn't exist yet (tracked
+// separately in the Polish-Station-POS repo). Until it does, every call here
+// resolves to a network/404 failure and callers surface that as the existing
+// "please call or WhatsApp us instead" error state.
+
+export type ApiResult = { ok: true } | { ok: false; error: string };
+
+const POS_BASE_URL = import.meta.env.VITE_POS_API_BASE_URL as string | undefined;
+
+async function postToPos(path: string, payload: Record<string, unknown>): Promise<ApiResult> {
+  if (!POS_BASE_URL) {
+    return {
+      ok: false,
+      error: "Online submission isn't set up yet - please call or WhatsApp us instead.",
+    };
+  }
+
+  try {
+    const res = await fetch(`${POS_BASE_URL}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
+    if (res.ok && data?.ok) return { ok: true };
+    return {
+      ok: false,
+      error: data?.error ?? "Something went wrong - please try again or WhatsApp us.",
+    };
+  } catch {
+    return { ok: false, error: "Network error - please try again or WhatsApp us." };
+  }
+}
+
+export function createContactLead(payload: {
+  name: string;
+  email: string;
+  message: string;
+  company?: string;
+}) {
+  return postToPos("/api/public/contact", payload);
+}
+
+export function createNewsletterSubscriber(payload: { email: string; company?: string }) {
+  return postToPos("/api/public/newsletter", payload);
+}
+
+export function createBooking(payload: {
+  name: string;
+  phone: string;
+  email?: string;
+  vehicle: string;
+  serviceId: string;
+  preferredDate: string;
+  timeWindow: string;
+  notes: string;
+  company?: string;
+}) {
+  return postToPos("/api/public/booking", payload);
+}

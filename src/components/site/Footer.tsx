@@ -1,4 +1,5 @@
 import { ArrowUp } from "lucide-react";
+import { Newsletter } from "./Newsletter";
 
 const socials = [
   {
@@ -65,6 +66,8 @@ export function Footer() {
               Premium automotive detailing studio. We preserve and elevate automotive excellence -
               one car at a time.
             </p>
+
+            <Newsletter />
 
             <div className="mt-4 space-y-1 text-sm text-muted-foreground">
               <a

@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { submitToWeb3Forms } from "@/lib/forms/web3forms";
+import { createContactLead } from "@/lib/api/pos";
 
 const inquirySchema = z.object({
   name: z.string().min(2, "Enter your name"),
@@ -38,12 +38,11 @@ export function Contact() {
     if (values.company) return; // honeypot tripped
 
     setStatus("submitting");
-    const result = await submitToWeb3Forms({
-      subject: "New inquiry - Polish Station website",
-      from_name: "Polish Station website",
+    const result = await createContactLead({
       name: values.name,
       email: values.email,
       message: values.message,
+      company: values.company,
     });
 
     if (result.ok) {

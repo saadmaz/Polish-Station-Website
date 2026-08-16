@@ -26,7 +26,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { services } from "@/lib/data/services";
 import { packages } from "@/lib/data/pricing";
-import { submitToWeb3Forms } from "@/lib/forms/web3forms";
+import { createBooking } from "@/lib/api/pos";
 
 const TIME_WINDOWS = [
   "8:00 AM - 11:00 AM",
@@ -121,17 +121,25 @@ function BookPage() {
     const waMessage = encodeURIComponent(summary);
     setWhatsappHref(`https://wa.me/94741004296?text=${waMessage}`);
 
-    const result = await submitToWeb3Forms({
-      subject: "New booking request - Polish Station",
-      from_name: "Polish Station website",
+    // POS bookings currently take one serviceId, but this form lets a
+    // customer pick several - the first pick becomes the booking's service
+    // and any others ride along in notes until POS supports a list.
+    const primaryServiceSlug = values.serviceSlugs[0];
+    const extraServiceTitles = chosenServices.slice(1);
+    const notesWithExtras = extraServiceTitles.length
+      ? `${values.notes ? `${values.notes}\n\n` : ""}Also interested in: ${extraServiceTitles.join(", ")}`
+      : values.notes;
+
+    const result = await createBooking({
       name: values.name,
       phone: values.phone,
       email: values.email || undefined,
       vehicle: values.vehicle,
-      services: chosenServices.join(", "),
-      preferred_date: values.preferredDate,
-      time_window: values.timeWindow,
-      notes: values.notes,
+      serviceId: primaryServiceSlug,
+      preferredDate: values.preferredDate,
+      timeWindow: values.timeWindow,
+      notes: notesWithExtras,
+      company: values.company,
     });
 
     if (result.ok) {
