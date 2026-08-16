@@ -1,7 +1,7 @@
 export function FloatingWhatsApp() {
   return (
     <a
-      href="https://wa.me/94741004296"
+      href="https://wa.me/94711885252"
       target="_blank"
       rel="noreferrer"
       aria-label="WhatsApp booking"

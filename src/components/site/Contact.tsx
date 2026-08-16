@@ -75,12 +75,12 @@ export function Contact() {
                 value: "22C, Saranankara Road, Dehiwala.",
                 href: "https://www.google.com/maps/search/?api=1&query=22C+Saranankara+Road+Dehiwala",
               },
-              { icon: Phone, label: "Call", value: "+94 74 100 4296", href: "tel:+94741004296" },
+              { icon: Phone, label: "Call", value: "+94 71 188 5252", href: "tel:+94711885252" },
               {
                 icon: Mail,
                 label: "Email",
-                value: "studio@polishstation.com",
-                href: "mailto:studio@polishstation.com",
+                value: "info@polishstation.lk",
+                href: "mailto:info@polishstation.lk",
               },
               { icon: Clock, label: "Hours", value: "Mon–Sat · 8:00 - 19:00", href: undefined },
             ].map((i) => {

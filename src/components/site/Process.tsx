@@ -1,11 +1,11 @@
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const steps = [
-  { n: "01", title: "Inspection",             desc: "Paint depth measurement, defect mapping, surface assessment." },
-  { n: "02", title: "Wash & Decontamination", desc: "Foam pre-wash, two-bucket method, clay decontamination." },
-  { n: "03", title: "Paint Correction",       desc: "Multi-stage machine polishing to remove defects." },
-  { n: "04", title: "Protection",             desc: "Application of ceramic, graphene, or premium wax." },
-  { n: "05", title: "Final Inspection",       desc: "Multi-light inspection and hand-finished delivery." },
+  { n: "01", title: "Pre Wash",               desc: "Active foam dissolves dirt and road grime before you physically touch the paint, preventing swirl marks and scratches." },
+  { n: "02", title: "Paint Correction",       desc: "Safely polishing your paint to permanently remove swirl marks, scratches, and haze, restoring a smooth, mirror-like finish." },
+  { n: "03", title: "Surface Preparation",    desc: "A deep-cleaning step that strips away leftover polishes, oils, and waxes so the coating can bond properly using a specialised cleaning agent." },
+  { n: "04", title: "Coating Application",    desc: "The liquid ceramic or graphene coating is carefully spread over the paint, left to flash, and wiped flat to form a permanent protective barrier." },
+  { n: "05", title: "Controlled Curing",      desc: "The critical waiting period where the coating is kept away from water, moisture, and harsh elements while it fully hardens and permanently bonds to the paint." },
 ];
 
 /* ── Top-down car SVG ──────────────────────────────────────────────────── */

@@ -3,10 +3,12 @@ import { Menu, X } from "lucide-react";
 
 const links = [
   { href: "/#services", label: "Services" },
+  { href: "/#packages", label: "Pricing" },
   { href: "/#gallery", label: "Gallery" },
   { href: "/about", label: "About" },
   { href: "/blog", label: "Blog" },
   { href: "/faq", label: "FAQ" },
+  { href: "/aftercare", label: "Aftercare" },
   { href: "/#contact", label: "Contact" },
 ];
 

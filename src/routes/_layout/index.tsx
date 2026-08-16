@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Hero } from "@/components/site/Hero";
 import { DiagonalCarSection } from "@/components/site/DiagonalCarSection";
 import { Services } from "@/components/site/Services";
+import { Packages } from "@/components/site/Packages";
 import { BeforeAfter } from "@/components/site/BeforeAfter";
 import { WhyUs } from "@/components/site/WhyUs";
 import { Process } from "@/components/site/Process";
@@ -40,7 +41,7 @@ export const Route = createFileRoute("/_layout/")({
           description:
             "Premium automotive detailing studio specializing in paint correction, ceramic coating, and luxury vehicle care.",
           url: "https://www.polishstation.lk",
-          telephone: "+94741004296",
+          telephone: "+94711885252",
           address: {
             "@type": "PostalAddress",
             streetAddress: "22C, Saranankara Road",
@@ -61,6 +62,7 @@ function Index() {
       <Hero />
       <DiagonalCarSection />
       <Services />
+      <Packages />
       <BeforeAfter />
       <WhyUs />
       <Process />

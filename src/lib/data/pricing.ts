@@ -1,13 +1,15 @@
-// TODO(pricing): every priceLkr / timeEstimate below is a placeholder.
-// Replace with real figures before launch - do not display these to customers as-is.
-
 export type Package = {
   slug: string;
   name: string;
   desc: string;
-  /** Price in LKR. `null` means "price not yet supplied" - render as "Contact for pricing". */
+  /** Price in LKR for a car. `null` means "price not yet supplied" - render as "Contact for pricing". */
   priceLkr: number | null;
-  timeEstimate: string;
+  /** Price in LKR for an SUV, if it differs from the car price. */
+  priceLkrSuv?: number | null;
+  /** Coating durability, e.g. "3 Year Durability". Omitted for non-coating packages. */
+  durability?: string;
+  /** Groups cards on the pricing section: cut & polish / interior work vs. protective coatings. */
+  category: "detailing" | "coating";
   popular?: boolean;
   /** Slugs from src/lib/data/services.ts bundled into this package. */
   includedServiceSlugs: string[];
@@ -16,61 +18,93 @@ export type Package = {
 
 export const packages: Package[] = [
   {
-    slug: "basic-detail",
-    name: "Basic Detail",
-    desc: "Essential refresh for daily drivers.",
-    priceLkr: null,
-    timeEstimate: "TODO(pricing): confirm turnaround",
-    includedServiceSlugs: ["exterior-detailing", "interior-detailing"],
+    slug: "cut-and-polish",
+    name: "Cut & Polish",
+    desc: "Restore depth and clarity to factory paintwork.",
+    priceLkr: 18500,
+    priceLkrSuv: 22500,
+    category: "detailing",
+    includedServiceSlugs: ["cut-and-polish"],
     features: [
-      "Exterior hand wash",
-      "Wheel & tire dressing",
-      "Interior vacuum",
-      "Window cleaning",
-      "Tire shine",
+      "Paint preparation included",
+      "Removes swirl marks & oxidation",
+      "Removes light scratches",
+      "Restores gloss and clarity",
     ],
   },
   {
-    slug: "premium-detail",
-    name: "Premium Detail",
-    desc: "Deep care for enthusiasts.",
-    priceLkr: null,
-    timeEstimate: "TODO(pricing): confirm turnaround",
+    slug: "interior-restore",
+    name: "Interior Restore",
+    desc: "Deep cleaning and conditioning, seat to headliner.",
+    priceLkr: 12500,
+    priceLkrSuv: 14500,
+    category: "detailing",
+    includedServiceSlugs: ["interior-detailing"],
+    features: [
+      "Seats & carpets deep-cleaned",
+      "Dashboard conditioning",
+      "Full interior surface detail",
+    ],
+  },
+  {
+    slug: "cut-polish-interior",
+    name: "2 in 1 Package",
+    desc: "Cut & Polish plus Interior Restore, bundled.",
+    priceLkr: 24500,
+    priceLkrSuv: 28500,
+    category: "detailing",
     popular: true,
-    includedServiceSlugs: [
-      "exterior-detailing",
-      "cut-and-polish",
-      "interior-detailing",
-      "engine-bay-cleaning",
-    ],
+    includedServiceSlugs: ["cut-and-polish", "interior-detailing"],
     features: [
-      "Full decontamination",
-      "Single-stage polish",
-      "Interior shampoo",
-      "Leather conditioning",
-      "6-month sealant",
-      "Engine bay clean",
+      "Everything in Cut & Polish",
+      "Everything in Interior Restore",
+      "Bundled at a lower combined price",
     ],
   },
   {
-    slug: "ultimate-protection",
-    name: "Ultimate Protection",
-    desc: "Showroom-grade ceramic protection.",
-    priceLkr: null,
-    timeEstimate: "TODO(pricing): confirm turnaround",
-    includedServiceSlugs: [
-      "paint-correction",
-      "ceramic-coating",
-      "interior-detailing",
-      "headlight-restoration",
-    ],
+    slug: "9h-ceramic-coating",
+    name: "9H Ceramic Coating",
+    desc: "A hard, glass-like shield that locks in a high-gloss finish.",
+    priceLkr: 60000,
+    durability: "3 Year Durability",
+    category: "coating",
+    includedServiceSlugs: ["ceramic-coating"],
     features: [
-      "Multi-stage correction",
-      "9H ceramic coating",
-      "Interior protection",
-      "Wheel coating",
-      "Glass coating",
-      "5-year warranty",
+      "Includes professional paint correction",
+      "9H hardness shield",
+      "Repels water, dirt & UV damage",
+      "High-gloss finish",
+    ],
+  },
+  {
+    slug: "10h-ceramic-coating",
+    name: "10H Ceramic Coating",
+    desc: "Our toughest ceramic shield, for maximum durability.",
+    priceLkr: 75000,
+    durability: "3 Year Durability",
+    category: "coating",
+    popular: true,
+    includedServiceSlugs: ["ceramic-coating"],
+    features: [
+      "Includes professional paint correction",
+      "10H hardness shield",
+      "Repels water, dirt & UV damage",
+      "High-gloss finish",
+    ],
+  },
+  {
+    slug: "graphene-coating",
+    name: "Graphene Coating",
+    desc: "Carbon-infused protection with our longest durability.",
+    priceLkr: 145000,
+    durability: "5 Year Durability",
+    category: "coating",
+    includedServiceSlugs: ["graphene-coating"],
+    features: [
+      "Includes professional paint correction",
+      "Repels heat & water spots",
+      "Long-lasting hydrophobic protection",
+      "High-gloss finish",
     ],
   },
 ];

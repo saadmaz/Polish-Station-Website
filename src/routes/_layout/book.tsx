@@ -119,7 +119,7 @@ function BookPage() {
       (values.notes ? `Notes: ${values.notes}` : "");
 
     const waMessage = encodeURIComponent(summary);
-    setWhatsappHref(`https://wa.me/94741004296?text=${waMessage}`);
+    setWhatsappHref(`https://wa.me/94711885252?text=${waMessage}`);
 
     // POS bookings currently take one serviceId, but this form lets a
     // customer pick several - the first pick becomes the booking's service
@@ -370,7 +370,7 @@ function BookPage() {
               <p className="text-center text-xs text-muted-foreground">
                 Prefer WhatsApp?{" "}
                 <a
-                  href="https://wa.me/94741004296"
+                  href="https://wa.me/94711885252"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:underline"

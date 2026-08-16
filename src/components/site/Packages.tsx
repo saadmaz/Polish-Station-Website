@@ -1,7 +1,10 @@
-import { Check, Clock } from "lucide-react";
+import { Check, ShieldCheck } from "lucide-react";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { Reveal } from "@/components/ui/reveal";
-import { packages, formatLkr } from "@/lib/data/pricing";
+import { packages, formatLkr, type Package } from "@/lib/data/pricing";
+
+const detailingPackages = packages.filter((p) => p.category === "detailing");
+const coatingPackages = packages.filter((p) => p.category === "coating");
 
 export function Packages() {
   return (
@@ -10,17 +13,41 @@ export function Packages() {
         <Reveal variant="up">
           <div className="mb-16 max-w-2xl">
             <div className="eyebrow mb-4">
-              <span className="h-px w-8 bg-primary" /> Packages
+              <span className="h-px w-8 bg-primary" /> Packages & Pricing
             </div>
             <h2 className="font-display text-4xl font-bold uppercase leading-tight md:text-6xl">
               Choose your <span className="text-gradient-primary">level.</span>
             </h2>
+            <p className="mt-4 text-muted-foreground">
+              Prices include paint preparation and professional application. Every coating
+              application includes professional paint correction before it goes on.
+            </p>
           </div>
         </Reveal>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          {packages.map((p, i) => (
-            <Reveal key={p.slug} variant="scale" delay={i * 130}>
+        <Reveal variant="up" delay={60}>
+          <h3 className="font-display text-sm font-bold uppercase tracking-[0.25em] text-muted-foreground">
+            Cut & Polish and Interior
+          </h3>
+        </Reveal>
+        <PackageGrid items={detailingPackages} offset={0} />
+
+        <Reveal variant="up" delay={60}>
+          <h3 className="mt-16 font-display text-sm font-bold uppercase tracking-[0.25em] text-muted-foreground">
+            Protective Coatings
+          </h3>
+        </Reveal>
+        <PackageGrid items={coatingPackages} offset={detailingPackages.length} />
+      </div>
+    </section>
+  );
+}
+
+function PackageGrid({ items, offset }: { items: Package[]; offset: number }) {
+  return (
+    <div className="mt-6 grid gap-6 lg:grid-cols-3">
+      {items.map((p, i) => (
+        <Reveal key={p.slug} variant="scale" delay={(offset + i) * 130}>
               <TiltCard
                 intensity={7}
                 className={`relative overflow-hidden rounded-3xl depth-shadow h-full ${
@@ -71,11 +98,19 @@ export function Packages() {
                     <span className="font-display text-4xl font-bold text-gradient-silver">
                       {formatLkr(p.priceLkr)}
                     </span>
+                    <span className="text-xs font-medium text-muted-foreground">/ car</span>
                   </div>
+                  {p.priceLkrSuv != null && (
+                    <div className="mt-1 text-xs font-medium text-muted-foreground">
+                      SUV: {formatLkr(p.priceLkrSuv)}
+                    </div>
+                  )}
                   <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
-                  <div className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                    <Clock className="h-3.5 w-3.5" /> {p.timeEstimate}
-                  </div>
+                  {p.durability && (
+                    <div className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                      <ShieldCheck className="h-3.5 w-3.5" /> {p.durability}
+                    </div>
+                  )}
 
                   <div className="my-8 h-px bg-border" />
 
@@ -102,10 +137,8 @@ export function Packages() {
                   </a>
                 </div>
               </TiltCard>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
+        </Reveal>
+      ))}
+    </div>
   );
 }

@@ -19,7 +19,7 @@ export type Service = {
   why: string;
   /** Ordered process steps specific to this service. */
   process: string[];
-  /** Rough turnaround estimate, e.g. "2-3 hrs", "Full day". TODO(pricing): confirm real estimates. */
+  /** Rough turnaround estimate, e.g. "2-3 hrs", "Full day". */
   timeEstimate: string;
 };
 
@@ -28,15 +28,15 @@ export const services: Service[] = [
     slug: "paint-correction",
     icon: Sparkles,
     title: "Paint Correction",
-    shortDesc: "Multi-stage compounding to erase swirls, scratches and oxidation.",
-    why: "Daily washing, automated car washes and everyday road grit leave behind swirl marks and fine scratches that dull a car's finish over time. Paint correction machine-polishes those defects out in stages, restoring the paint's original clarity and depth before any protective coating goes on top - skipping this step means sealing swirls under the coating permanently.",
+    shortDesc: "Removes swirl marks, oxidation and light scratches, and restores the gloss.",
+    why: "Daily washing, automated car washes and everyday road grit leave behind swirl marks and fine scratches that dull a car's finish over time. Paint correction machine-polishes those defects out in stages, restoring the paint's original clarity and depth before any protective coating goes on top - skipping this step means sealing swirls under the coating permanently. Every coating application at Polish Station includes professional paint correction before application.",
     process: [
-      "Wash & decontaminate to strip embedded contaminants",
-      "Paint depth reading to confirm safe correction margin",
-      "Multi-stage compounding and polishing under raking light",
-      "Panel wipe-down and finish inspection",
+      "Pre-wash: active foam dissolves dirt and road grime before contact",
+      "Paint correction: safely polishes out swirls, scratches and haze",
+      "Surface preparation: strips leftover polishes, oils and waxes",
+      "Panel wipe-down and finish inspection under raking light",
     ],
-    timeEstimate: "TODO(pricing): confirm turnaround",
+    timeEstimate: "Contact us to confirm turnaround",
   },
   {
     slug: "cut-and-polish",
@@ -49,49 +49,49 @@ export const services: Service[] = [
       "Single-stage machine polish",
       "Wipe-down and gloss check",
     ],
-    timeEstimate: "TODO(pricing): confirm turnaround",
+    timeEstimate: "Contact us to confirm turnaround",
   },
   {
     slug: "ceramic-coating",
     icon: Shield,
     title: "Ceramic Coating",
-    shortDesc: "9H hardness, hydrophobic, years of glass-like protection.",
-    why: "Wax and sealants wear off in weeks. A ceramic coating chemically bonds to the clear coat, forming a hard, hydrophobic layer that protects against UV fading, bird droppings, road salt and light abrasion for years, not weeks - and it's what makes a car sheet water off on the highway instead of pooling. For a $1,000+ line item, the honest case for it is protection economics: it's cheaper than repeated paint correction from unprotected wear.",
+    shortDesc: "A hard, glass-like shield that locks in a high-gloss shine and repels water, dirt and UV damage.",
+    why: "Wax and sealants wear off in weeks. A ceramic coating chemically bonds to the clear coat, forming a hard, hydrophobic layer that protects against UV fading, bird droppings, road salt and light abrasion for years, not weeks - and it's what makes a car sheet water off on the highway instead of pooling. Every coating application includes professional paint correction beforehand, and comes in 9H (3-year durability) or 10H (3-year durability) grades.",
     process: [
       "Full paint correction (a coating locks in whatever is underneath it)",
-      "Surface prep wipe-down to remove polishing oils",
-      "Coating applied panel-by-panel and leveled",
-      "Cure time before the car can get wet",
+      "Surface preparation wipe-down with a specialised cleaning agent to leave the paint bare",
+      "Coating applied panel-by-panel, left to flash, then wiped flat",
+      "Controlled curing away from water and moisture while it bonds permanently",
     ],
-    timeEstimate: "TODO(pricing): confirm turnaround",
+    timeEstimate: "Contact us to confirm turnaround",
   },
   {
     slug: "graphene-coating",
     icon: Atom,
     title: "Graphene Coating",
-    shortDesc: "Next-gen protection with extreme heat dissipation.",
-    why: "A newer coating chemistry that layers graphene with the ceramic base for better heat dissipation and slightly more flexibility than pure ceramic, which matters most on dark-colored cars that run hotter in direct sun and on wraps/PPF where a rigid ceramic layer can micro-crack.",
+    shortDesc: "An advanced, carbon-infused shield with a high-gloss finish and long-lasting hydrophobic protection.",
+    why: "An advanced coating chemistry that layers graphene with the ceramic base for better heat dissipation and slightly more flexibility than pure ceramic, which matters most on dark-colored cars that run hotter in direct sun. It's our longest-lasting protective option, rated for 5 years of durability, and repels heat and water spots while delivering a high-gloss finish.",
     process: [
       "Full paint correction",
-      "Surface prep wipe-down",
-      "Graphene coating applied and leveled",
-      "Cure time before the car can get wet",
+      "Surface preparation to leave the paint completely bare",
+      "Graphene coating applied and leveled panel-by-panel",
+      "Controlled curing: no water for the first 24-48 hours, no soap for the first week",
     ],
-    timeEstimate: "TODO(pricing): confirm turnaround",
+    timeEstimate: "Contact us to confirm turnaround",
   },
   {
     slug: "interior-detailing",
     icon: Sofa,
     title: "Interior Detailing",
-    shortDesc: "Deep extraction, leather conditioning, sanitization.",
+    shortDesc: "Deep cleaning and conditioning for seats, carpets, dashboard and interior surfaces.",
     why: "Interior wear is what actually shows up at resale time - cracked leather, stained fabric and faded trim age a car faster than the exterior does. Deep extraction and conditioning gets ahead of that instead of just vacuuming around it.",
     process: [
       "Full interior vacuum, including seat tracks and vents",
       "Steam extraction on carpets and fabric seats",
-      "Leather cleaning and conditioning",
+      "Leather and dashboard cleaning and conditioning",
       "Trim, glass and vent detailing",
     ],
-    timeEstimate: "TODO(pricing): confirm turnaround",
+    timeEstimate: "Contact us to confirm turnaround",
   },
   {
     slug: "exterior-detailing",
@@ -105,7 +105,7 @@ export const services: Service[] = [
       "Wheel, tire and trim detailing",
       "Finish wipe-down",
     ],
-    timeEstimate: "TODO(pricing): confirm turnaround",
+    timeEstimate: "Contact us to confirm turnaround",
   },
   {
     slug: "engine-bay-cleaning",
@@ -119,7 +119,7 @@ export const services: Service[] = [
       "Low-pressure rinse",
       "Dress plastics and rubber seals",
     ],
-    timeEstimate: "TODO(pricing): confirm turnaround",
+    timeEstimate: "Contact us to confirm turnaround",
   },
   {
     slug: "headlight-restoration",
@@ -133,7 +133,7 @@ export const services: Service[] = [
       "Polish to optical clarity",
       "Apply UV-protective sealant",
     ],
-    timeEstimate: "TODO(pricing): confirm turnaround",
+    timeEstimate: "Contact us to confirm turnaround",
   },
 ];
 

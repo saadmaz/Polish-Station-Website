@@ -86,6 +86,9 @@ export function Footer() {
               >
                 polishstation.lk
               </a>
+              <a href="tel:+94711885252" className="block hover:text-primary">
+                07 11 88 52 52
+              </a>
             </div>
 
             {/* Social icons */}
@@ -179,6 +182,11 @@ export function Footer() {
               <li>
                 <a href="/faq" className="hover:text-primary">
                   FAQ
+                </a>
+              </li>
+              <li>
+                <a href="/aftercare" className="hover:text-primary">
+                  Aftercare
                 </a>
               </li>
             </ul>

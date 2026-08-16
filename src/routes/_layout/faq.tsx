@@ -32,6 +32,14 @@ const faqs = [
     q: "What's the difference between ceramic and graphene coating?",
     a: "Both bond to the clear coat for long-term hydrophobic protection. Graphene adds better heat dissipation and slightly more flexibility, which matters most on dark-colored cars and on wraps/PPF. See the Ceramic Coating and Graphene Coating service pages for more detail.",
   },
+  {
+    q: "How soon can I wash my car after a coating is applied?",
+    a: "Ceramic needs at least two weeks before its first wash, with the full cure taking 2-3 weeks. Graphene is quicker - no water for the first 24-48 hours, no soap for the first week, then normal washing resumes. See our full Aftercare Guide for the complete curing timeline and dos/don'ts.",
+  },
+  {
+    q: "Water isn't beading on my car anymore - is the coating ruined?",
+    a: "No - that's the most common sign your coating needs a maintenance refresh, not that it has failed. A wash with a pH-neutral coating soap and a coating-safe detailer usually restores it. Full troubleshooting steps are in our Aftercare Guide.",
+  },
 ];
 
 export const Route = createFileRoute("/_layout/faq")({
@@ -94,7 +102,7 @@ function FaqPage() {
             </a>{" "}
             or{" "}
             <a
-              href="https://wa.me/94741004296"
+              href="https://wa.me/94711885252"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"

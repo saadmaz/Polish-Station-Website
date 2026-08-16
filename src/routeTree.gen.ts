@@ -13,6 +13,7 @@ import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutFaqRouteImport } from './routes/_layout/faq'
 import { Route as LayoutBookRouteImport } from './routes/_layout/book'
+import { Route as LayoutAftercareRouteImport } from './routes/_layout/aftercare'
 import { Route as LayoutAboutRouteImport } from './routes/_layout/about'
 import { Route as LayoutBlogIndexRouteImport } from './routes/_layout/blog/index'
 import { Route as LayoutServicesSlugRouteImport } from './routes/_layout/services/$slug'
@@ -35,6 +36,11 @@ const LayoutFaqRoute = LayoutFaqRouteImport.update({
 const LayoutBookRoute = LayoutBookRouteImport.update({
   id: '/book',
   path: '/book',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutAftercareRoute = LayoutAftercareRouteImport.update({
+  id: '/aftercare',
+  path: '/aftercare',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutAboutRoute = LayoutAboutRouteImport.update({
@@ -61,6 +67,7 @@ const LayoutBlogSlugRoute = LayoutBlogSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof LayoutIndexRoute
   '/about': typeof LayoutAboutRoute
+  '/aftercare': typeof LayoutAftercareRoute
   '/book': typeof LayoutBookRoute
   '/faq': typeof LayoutFaqRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
@@ -69,6 +76,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/about': typeof LayoutAboutRoute
+  '/aftercare': typeof LayoutAftercareRoute
   '/book': typeof LayoutBookRoute
   '/faq': typeof LayoutFaqRoute
   '/': typeof LayoutIndexRoute
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_layout': typeof LayoutRouteWithChildren
   '/_layout/about': typeof LayoutAboutRoute
+  '/_layout/aftercare': typeof LayoutAftercareRoute
   '/_layout/book': typeof LayoutBookRoute
   '/_layout/faq': typeof LayoutFaqRoute
   '/_layout/': typeof LayoutIndexRoute
@@ -92,6 +101,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/aftercare'
     | '/book'
     | '/faq'
     | '/blog/$slug'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/about'
+    | '/aftercare'
     | '/book'
     | '/faq'
     | '/'
@@ -110,6 +121,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_layout'
     | '/_layout/about'
+    | '/_layout/aftercare'
     | '/_layout/book'
     | '/_layout/faq'
     | '/_layout/'
@@ -152,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutBookRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/aftercare': {
+      id: '/_layout/aftercare'
+      path: '/aftercare'
+      fullPath: '/aftercare'
+      preLoaderRoute: typeof LayoutAftercareRouteImport
+      parentRoute: typeof LayoutRoute
+    }
     '/_layout/about': {
       id: '/_layout/about'
       path: '/about'
@@ -185,6 +204,7 @@ declare module '@tanstack/react-router' {
 
 interface LayoutRouteChildren {
   LayoutAboutRoute: typeof LayoutAboutRoute
+  LayoutAftercareRoute: typeof LayoutAftercareRoute
   LayoutBookRoute: typeof LayoutBookRoute
   LayoutFaqRoute: typeof LayoutFaqRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
@@ -195,6 +215,7 @@ interface LayoutRouteChildren {
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutAboutRoute: LayoutAboutRoute,
+  LayoutAftercareRoute: LayoutAftercareRoute,
   LayoutBookRoute: LayoutBookRoute,
   LayoutFaqRoute: LayoutFaqRoute,
   LayoutIndexRoute: LayoutIndexRoute,

@@ -80,13 +80,13 @@ export function Ceramic() {
                 />
               </div>
               <div className="relative">
-                <div className="font-display text-4xl font-bold text-gradient-primary">9H</div>
+                <div className="font-display text-4xl font-bold text-gradient-primary">9H-10H</div>
                 <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Hardness</div>
               </div>
               <div className="h-12 w-px bg-border" />
               <div className="relative">
-                <div className="font-display text-4xl font-bold text-gradient-silver">5yr</div>
-                <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Warranty</div>
+                <div className="font-display text-4xl font-bold text-gradient-silver">3yr</div>
+                <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Durability</div>
               </div>
             </div>
           </div>
