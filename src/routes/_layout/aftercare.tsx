@@ -67,7 +67,9 @@ export const Route = createFileRoute("/_layout/aftercare")({
         content:
           "How to care for your ceramic or graphene coating: curing timelines, washing do's and don'ts, maintenance schedules, and troubleshooting.",
       },
+      { property: "og:url", content: "https://www.polishstation.lk/aftercare" },
     ],
+    links: [{ rel: "canonical", href: "https://www.polishstation.lk/aftercare" }],
   }),
   component: AftercarePage,
 });

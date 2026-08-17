@@ -51,7 +51,9 @@ export const Route = createFileRoute("/_layout/faq")({
         content:
           "Answers to common questions about booking, pricing, and detailing services at Polish Station.",
       },
+      { property: "og:url", content: "https://www.polishstation.lk/faq" },
     ],
+    links: [{ rel: "canonical", href: "https://www.polishstation.lk/faq" }],
     scripts: [
       {
         type: "application/ld+json",

@@ -11,7 +11,9 @@ export const Route = createFileRoute("/_layout/about")({
         content:
           "Polish Station is an independent automotive detailing studio in Dehiwala, Sri Lanka - here's the standard we hold every car to.",
       },
+      { property: "og:url", content: "https://www.polishstation.lk/about" },
     ],
+    links: [{ rel: "canonical", href: "https://www.polishstation.lk/about" }],
   }),
   component: AboutPage,
 });

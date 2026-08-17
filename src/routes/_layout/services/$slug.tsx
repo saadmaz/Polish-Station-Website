@@ -14,11 +14,14 @@ export const Route = createFileRoute("/_layout/services/$slug")({
   head: ({ params }) => {
     const service = getServiceBySlug(params.slug);
     if (!service) return {};
+    const url = `https://www.polishstation.lk/services/${service.slug}`;
     return {
       meta: [
         { title: `${service.title} - Polish Station` },
         { name: "description", content: service.why },
+        { property: "og:url", content: url },
       ],
+      links: [{ rel: "canonical", href: url }],
       scripts: [
         {
           type: "application/ld+json",

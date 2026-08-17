@@ -62,7 +62,9 @@ export const Route = createFileRoute("/_layout/book")({
         content:
           "Request a detailing appointment at Polish Station, Dehiwala. Tell us your car and preferred time and we'll confirm your slot.",
       },
+      { property: "og:url", content: "https://www.polishstation.lk/book" },
     ],
+    links: [{ rel: "canonical", href: "https://www.polishstation.lk/book" }],
   }),
   component: BookPage,
 });
