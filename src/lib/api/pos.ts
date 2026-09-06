@@ -3,10 +3,13 @@
 // be rate-limited + honeypot-checked server-side - this file only shapes the
 // request and normalizes the response, it does no validation of its own.
 //
-// The POS side of these three endpoints doesn't exist yet (tracked
-// separately in the Polish-Station-POS repo). Until it does, every call here
-// resolves to a network/404 failure and callers surface that as the existing
-// "please call or WhatsApp us instead" error state.
+// The POS side of these endpoints doesn't exist yet (tracked separately in
+// the Polish-Station-POS repo). Until it does, every call here resolves to a
+// network/404 failure and callers surface that as the existing "please call
+// or WhatsApp us instead" error state.
+//
+// The contact form does not use this file - it writes directly to the POS's
+// Firestore project instead (see src/lib/api/inquiries.ts).
 
 export type ApiResult = { ok: true } | { ok: false; error: string };
 
@@ -35,15 +38,6 @@ async function postToPos(path: string, payload: Record<string, unknown>): Promis
   } catch {
     return { ok: false, error: "Network error - please try again or WhatsApp us." };
   }
-}
-
-export function createContactLead(payload: {
-  name: string;
-  email: string;
-  message: string;
-  company?: string;
-}) {
-  return postToPos("/api/public/contact", payload);
 }
 
 export function createNewsletterSubscriber(payload: { email: string; company?: string }) {

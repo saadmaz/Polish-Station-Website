@@ -14,12 +14,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { createContactLead } from "@/lib/api/pos";
+import { createInquiry } from "@/lib/api/inquiries";
 
 const inquirySchema = z.object({
-  name: z.string().min(2, "Enter your name"),
-  email: z.string().email("Enter a valid email"),
-  message: z.string().min(5, "Tell us a little about your question"),
+  name: z.string().min(2, "Enter your name").max(80, "Name is too long"),
+  contactNumber: z
+    .string()
+    .min(7, "Enter a valid contact number")
+    .max(20, "Contact number is too long"),
+  email: z.string().email("Enter a valid email").or(z.literal("")),
+  message: z
+    .string()
+    .min(5, "Tell us a little about your question")
+    .max(2000, "Message is too long"),
   company: z.string().max(0).optional(), // honeypot
 });
 
@@ -31,18 +38,18 @@ export function Contact() {
 
   const form = useForm<InquiryValues>({
     resolver: zodResolver(inquirySchema),
-    defaultValues: { name: "", email: "", message: "", company: "" },
+    defaultValues: { name: "", contactNumber: "", email: "", message: "", company: "" },
   });
 
   async function onSubmit(values: InquiryValues) {
     if (values.company) return; // honeypot tripped
 
     setStatus("submitting");
-    const result = await createContactLead({
-      name: values.name,
-      email: values.email,
-      message: values.message,
-      company: values.company,
+    const result = await createInquiry({
+      name: values.name.trim(),
+      contactNumber: values.contactNumber.trim(),
+      email: values.email.trim() || null,
+      message: values.message.trim(),
     });
 
     if (result.ok) {
@@ -142,10 +149,23 @@ export function Contact() {
                   />
                   <FormField
                     control={form.control}
+                    name="contactNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Contact Number</FormLabel>
+                        <FormControl>
+                          <Input type="tel" placeholder="+94 71 234 5678" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>Email (optional)</FormLabel>
                         <FormControl>
                           <Input type="email" placeholder="you@example.com" {...field} />
                         </FormControl>
