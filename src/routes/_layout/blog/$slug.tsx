@@ -2,6 +2,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
+import { BlogSubscribe } from "@/components/site/BlogSubscribe";
 import { getPostBySlug, urlForImage } from "@/lib/data/blog";
 
 export const Route = createFileRoute("/_layout/blog/$slug")({
@@ -140,6 +141,14 @@ function BlogPost() {
         <div className="mx-auto max-w-3xl px-6 py-12">
           <Reveal variant="up">
             <PortableText value={post.body} components={portableTextComponents} />
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="relative">
+        <div className="mx-auto max-w-3xl px-6 pb-12">
+          <Reveal variant="scale">
+            <BlogSubscribe />
           </Reveal>
         </div>
       </section>
