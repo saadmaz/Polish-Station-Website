@@ -24,7 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { services } from "@/lib/data/services";
+import { services, getServiceBySlug } from "@/lib/data/services";
 import { packages } from "@/lib/data/pricing";
 import { createBooking } from "@/lib/api/pos";
 
@@ -35,17 +35,30 @@ const TIME_WINDOWS = [
   "5:00 PM - 7:00 PM",
 ];
 
-const bookingSchema = z.object({
-  name: z.string().min(2, "Enter your name"),
-  phone: z.string().min(7, "Enter a valid phone number"),
-  email: z.union([z.string().email("Enter a valid email"), z.literal("")]),
-  vehicle: z.string().min(2, "Tell us the make & model"),
-  serviceSlugs: z.array(z.string()).min(1, "Select at least one service"),
-  preferredDate: z.string().min(1, "Pick a preferred date"),
-  timeWindow: z.string().min(1, "Pick a time window"),
-  notes: z.string(),
-  company: z.string().max(0).optional(), // honeypot - real users never fill this
-});
+// The POS's /api/public/booking only accepts these exact strings in
+// `services` (case-sensitive) - the first 8 happen to already match this
+// site's service titles verbatim, "Other" doesn't correspond to a real
+// service and needs its own free-text field (`otherService`) when picked.
+const OTHER_SERVICE = "Other";
+const SERVICE_OPTIONS = [...services.map((s) => s.title), OTHER_SERVICE];
+
+const bookingSchema = z
+  .object({
+    name: z.string().min(2, "Enter your name").max(100, "Name is too long"),
+    phone: z.string().min(6, "Enter a valid phone number").max(24, "Phone number is too long"),
+    email: z.union([z.string().email("Enter a valid email"), z.literal("")]),
+    vehicle: z.string().min(2, "Tell us the make & model"),
+    services: z.array(z.string()).min(1, "Select at least one service"),
+    otherService: z.string(),
+    preferredDate: z.string().min(1, "Pick a preferred date"),
+    timeWindow: z.string().min(1, "Pick a time window"),
+    notes: z.string(),
+    company: z.string().max(0).optional(), // honeypot - real users never fill this
+  })
+  .refine((data) => !data.services.includes(OTHER_SERVICE) || data.otherService.trim().length > 0, {
+    message: "Tell us what the other service is",
+    path: ["otherService"],
+  });
 
 type BookingFormValues = z.infer<typeof bookingSchema>;
 
@@ -104,11 +117,14 @@ function todayIso() {
 function BookPage() {
   const { service, package: packageSlug } = Route.useSearch();
   const preselectedPackage = packages.find((p) => p.slug === packageSlug);
-  const initialServices = preselectedPackage
+  const preselectedSlugs = preselectedPackage
     ? preselectedPackage.includedServiceSlugs
     : service
       ? [service]
       : [];
+  const initialServices = preselectedSlugs
+    .map((slug) => getServiceBySlug(slug)?.title)
+    .filter((title): title is string => Boolean(title));
 
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -121,7 +137,8 @@ function BookPage() {
       phone: "",
       email: "",
       vehicle: "",
-      serviceSlugs: initialServices,
+      services: initialServices,
+      otherService: "",
       preferredDate: "",
       timeWindow: "",
       notes: packageSlug
@@ -135,41 +152,37 @@ function BookPage() {
     if (values.company) return; // honeypot tripped - silently drop
 
     setStatus("submitting");
-    const chosenServices = services
-      .filter((s) => values.serviceSlugs.includes(s.slug))
-      .map((s) => s.title);
+
+    const serviceLabel = values.services.includes(OTHER_SERVICE)
+      ? [...values.services.filter((s) => s !== OTHER_SERVICE), values.otherService].join(", ")
+      : values.services.join(", ");
 
     const summary =
       `New booking request from ${values.name}\n` +
       `Phone: ${values.phone}\n` +
       (values.email ? `Email: ${values.email}\n` : "") +
       `Vehicle: ${values.vehicle}\n` +
-      `Services: ${chosenServices.join(", ")}\n` +
+      `Services: ${serviceLabel}\n` +
       `Preferred: ${values.preferredDate} (${values.timeWindow})\n` +
       (values.notes ? `Notes: ${values.notes}` : "");
 
     const waMessage = encodeURIComponent(summary);
     setWhatsappHref(`https://wa.me/94711885252?text=${waMessage}`);
 
-    // POS bookings currently take one serviceId, but this form lets a
-    // customer pick several - the first pick becomes the booking's service
-    // and any others ride along in notes until POS supports a list.
-    const primaryServiceSlug = values.serviceSlugs[0];
-    const extraServiceTitles = chosenServices.slice(1);
-    const notesWithExtras = extraServiceTitles.length
-      ? `${values.notes ? `${values.notes}\n\n` : ""}Also interested in: ${extraServiceTitles.join(", ")}`
-      : values.notes;
+    // The backend has no dedicated field for a preferred time window, so it
+    // rides along in notes instead of being dropped from the request.
+    const notesWithTimeWindow = `${values.notes ? `${values.notes}\n\n` : ""}Preferred time: ${values.timeWindow}`;
 
     const result = await createBooking({
       name: values.name,
       phone: values.phone,
-      email: values.email || undefined,
+      email: values.email,
       vehicle: values.vehicle,
-      serviceId: primaryServiceSlug,
+      services: values.services,
+      otherService: values.services.includes(OTHER_SERVICE) ? values.otherService : "",
       preferredDate: values.preferredDate,
-      timeWindow: values.timeWindow,
-      notes: notesWithExtras,
-      company: values.company,
+      notes: notesWithTimeWindow,
+      company: values.company ?? "",
     });
 
     if (result.ok) {
@@ -226,16 +239,21 @@ function BookPage() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="mt-10 space-y-6 rounded-3xl glass-strong p-8"
             >
-              {/* Honeypot - hidden from real users, visible to bots */}
-              <div className="hidden" aria-hidden="true">
-                <label htmlFor="company">Company</label>
-                <input
-                  id="company"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  {...form.register("company")}
-                />
-              </div>
+              {/* Honeypot - hidden via CSS positioning (not display:none, which
+                  some bots specifically skip fields hidden that way), never
+                  reachable by Tab. Real visitors never see or fill this. */}
+              <label
+                style={{
+                  position: "absolute",
+                  left: "-9999px",
+                  width: "1px",
+                  height: "1px",
+                  overflow: "hidden",
+                }}
+              >
+                Company
+                <input type="text" tabIndex={-1} autoComplete="off" {...form.register("company")} />
+              </label>
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <FormField
@@ -296,31 +314,31 @@ function BookPage() {
 
               <FormField
                 control={form.control}
-                name="serviceSlugs"
+                name="services"
                 render={() => (
                   <FormItem>
                     <FormLabel>Services</FormLabel>
                     <div className="grid gap-3 sm:grid-cols-2">
-                      {services.map((s) => (
+                      {SERVICE_OPTIONS.map((title) => (
                         <FormField
-                          key={s.slug}
+                          key={title}
                           control={form.control}
-                          name="serviceSlugs"
+                          name="services"
                           render={({ field }) => {
-                            const checked = field.value?.includes(s.slug);
+                            const checked = field.value?.includes(title);
                             return (
                               <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/60 bg-card/40 px-4 py-3 text-sm">
                                 <Checkbox
                                   checked={checked}
                                   onCheckedChange={(v) => {
-                                    if (v) field.onChange([...(field.value ?? []), s.slug]);
+                                    if (v) field.onChange([...(field.value ?? []), title]);
                                     else
                                       field.onChange(
-                                        (field.value ?? []).filter((slug) => slug !== s.slug),
+                                        (field.value ?? []).filter((t) => t !== title),
                                       );
                                   }}
                                 />
-                                {s.title}
+                                {title}
                               </label>
                             );
                           }}
@@ -331,6 +349,22 @@ function BookPage() {
                   </FormItem>
                 )}
               />
+
+              {form.watch("services")?.includes(OTHER_SERVICE) && (
+                <FormField
+                  control={form.control}
+                  name="otherService"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tell us the other service</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g. Pet hair removal" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <FormField
