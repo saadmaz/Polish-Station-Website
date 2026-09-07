@@ -11,10 +11,15 @@ import { FaqTeaser } from "@/components/site/FaqTeaser";
 import { Reviews } from "@/components/site/Reviews";
 import { CtaBanner } from "@/components/site/CtaBanner";
 import { ContactStrip } from "@/components/site/ContactStrip";
+import { faqs } from "@/lib/data/faq";
 
 // The 3 packages featured on the home teaser - the two "popular" tiers plus
 // the flagship coating, spanning the price range. Full catalogue is /services.
 const PACKAGE_TEASER_SLUGS = ["cut-polish-interior", "10h-ceramic-coating", "graphene-coating"];
+
+// Matches the FaqTeaser component's cap - keeps the homepage's FAQPage
+// structured data in sync with what's actually rendered there.
+const FAQ_TEASER_COUNT = 8;
 
 export const Route = createFileRoute("/_layout/")({
   head: () => ({
@@ -67,6 +72,18 @@ export const Route = createFileRoute("/_layout/")({
           },
           areaServed: "Dehiwala, Sri Lanka",
           openingHours: "Mo-Sa 08:00-19:00",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.slice(0, FAQ_TEASER_COUNT).map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
         }),
       },
     ],

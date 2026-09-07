@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Reveal } from "@/components/ui/reveal";
 import { Services } from "@/components/site/Services";
 import { Packages } from "@/components/site/Packages";
+import ogServices from "@/assets/og/og-services.jpg";
+import { absoluteUrl } from "@/lib/seo";
 
 export const Route = createFileRoute("/_layout/services/")({
   head: () => ({
@@ -20,9 +22,23 @@ export const Route = createFileRoute("/_layout/services/")({
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.polishstation.lk/services" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: absoluteUrl(ogServices) },
+      { name: "twitter:image", content: absoluteUrl(ogServices) },
     ],
     links: [{ rel: "canonical", href: "https://www.polishstation.lk/services" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.polishstation.lk/" },
+            { "@type": "ListItem", position: 2, name: "Services", item: "https://www.polishstation.lk/services" },
+          ],
+        }),
+      },
+    ],
   }),
   component: ServicesIndexPage,
 });

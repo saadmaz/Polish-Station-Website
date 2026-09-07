@@ -7,19 +7,21 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { faqs } from "@/lib/data/faq";
+import { SITE_URL } from "@/lib/seo";
+
+const DESCRIPTION =
+  "Answers to common questions about booking, pricing, and detailing services at Polish Station.";
 
 export const Route = createFileRoute("/_layout/faq")({
   head: () => ({
     meta: [
       { title: "FAQ - Polish Station" },
-      {
-        name: "description",
-        content:
-          "Answers to common questions about booking, pricing, and detailing services at Polish Station.",
-      },
-      { property: "og:url", content: "https://www.polishstation.lk/faq" },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: "FAQ - Polish Station" },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:url", content: `${SITE_URL}/faq` },
     ],
-    links: [{ rel: "canonical", href: "https://www.polishstation.lk/faq" }],
+    links: [{ rel: "canonical", href: `${SITE_URL}/faq` }],
     scripts: [
       {
         type: "application/ld+json",
@@ -31,6 +33,17 @@ export const Route = createFileRoute("/_layout/faq")({
             name: f.q,
             acceptedAnswer: { "@type": "Answer", text: f.a },
           })),
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+            { "@type": "ListItem", position: 2, name: "FAQ", item: `${SITE_URL}/faq` },
+          ],
         }),
       },
     ],

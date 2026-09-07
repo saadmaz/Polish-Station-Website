@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { BlogSubscribe } from "@/components/site/BlogSubscribe";
 import { getPostBySlug, urlForImage } from "@/lib/data/blog";
+import { SITE_URL } from "@/lib/seo";
 
 export const Route = createFileRoute("/_layout/blog/$slug")({
   loader: async ({ params }) => {
@@ -15,7 +16,11 @@ export const Route = createFileRoute("/_layout/blog/$slug")({
     if (!loaderData) return {};
     const { post } = loaderData;
     const description = post.seoDescription || post.excerpt;
-    const url = `https://www.polishstation.lk/blog/${post.slug}`;
+    const url = `${SITE_URL}/blog/${post.slug}`;
+    const ogImageUrl = post.coverImage
+      ? urlForImage(post.coverImage)?.width(1200).height(630).fit("crop").url()
+      : undefined;
+
     return {
       meta: [
         { title: `${post.title} - Polish Station` },
@@ -24,6 +29,12 @@ export const Route = createFileRoute("/_layout/blog/$slug")({
         { property: "og:description", content: description },
         { property: "og:type", content: "article" },
         { property: "og:url", content: url },
+        ...(ogImageUrl
+          ? [
+              { property: "og:image", content: ogImageUrl },
+              { name: "twitter:image", content: ogImageUrl },
+            ]
+          : []),
       ],
       links: [{ rel: "canonical", href: url }],
       scripts: [
@@ -38,6 +49,18 @@ export const Route = createFileRoute("/_layout/blog/$slug")({
             author: { "@type": "Person", name: post.author },
             publisher: { "@type": "Organization", name: "Polish Station" },
             mainEntityOfPage: url,
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+              { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+              { "@type": "ListItem", position: 3, name: post.title, item: url },
+            ],
           }),
         },
       ],

@@ -11,7 +11,9 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import interFont from "../assets/fonts/inter-latin.woff2?url";
 import manropeFont from "../assets/fonts/manrope-latin.woff2?url";
+import ogDefault from "../assets/og/og-default.jpg";
 import { reportError } from "../lib/error-reporting";
+import { absoluteUrl } from "../lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -84,7 +86,11 @@ export const Route = createRootRoute({
       { property: "og:description", content: "Professional auto detailing and ceramic coating services" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.polishstation.lk" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:image", content: absoluteUrl(ogDefault) },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: absoluteUrl(ogDefault) },
     ],
     links: [
       { rel: "icon", type: "image/png", href: "/Logo/favicon-180.png" },

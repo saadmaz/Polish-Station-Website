@@ -2,6 +2,9 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { ArrowRight, Check, X } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { getServiceBySlug, services } from "@/lib/data/services";
+import { packages } from "@/lib/data/pricing";
+import ogServices from "@/assets/og/og-services.jpg";
+import { absoluteUrl, SITE_URL } from "@/lib/seo";
 
 export const Route = createFileRoute("/_layout/services/$slug")({
   loader: ({ params }) => {
@@ -14,12 +17,20 @@ export const Route = createFileRoute("/_layout/services/$slug")({
   head: ({ params }) => {
     const service = getServiceBySlug(params.slug);
     if (!service) return {};
-    const url = `https://www.polishstation.lk/services/${service.slug}`;
+    const url = `${SITE_URL}/services/${service.slug}`;
+    const relatedPackages = packages.filter(
+      (p) => p.includedServiceSlugs.includes(service.slug) && p.priceLkr != null,
+    );
+
     return {
       meta: [
         { title: `${service.title} - Polish Station` },
         { name: "description", content: service.why },
+        { property: "og:title", content: `${service.title} - Polish Station` },
+        { property: "og:description", content: service.shortDesc },
         { property: "og:url", content: url },
+        { property: "og:image", content: absoluteUrl(ogServices) },
+        { name: "twitter:image", content: absoluteUrl(ogServices) },
       ],
       links: [{ rel: "canonical", href: url }],
       scripts: [
@@ -33,9 +44,31 @@ export const Route = createFileRoute("/_layout/services/$slug")({
             provider: {
               "@type": "AutoBodyShop",
               name: "Polish Station",
-              url: "https://www.polishstation.lk",
+              url: SITE_URL,
             },
             areaServed: "Dehiwala, Sri Lanka",
+            ...(relatedPackages.length > 0 && {
+              offers: relatedPackages.map((p) => ({
+                "@type": "Offer",
+                name: p.name,
+                price: p.priceLkr,
+                priceCurrency: "LKR",
+                availability: "https://schema.org/InStock",
+                url: `${SITE_URL}/book?service=${service.slug}`,
+              })),
+            }),
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+              { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/services` },
+              { "@type": "ListItem", position: 3, name: service.title, item: url },
+            ],
           }),
         },
       ],

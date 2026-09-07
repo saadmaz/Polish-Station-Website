@@ -3,6 +3,10 @@ import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { getAllPosts, sanityConfigured, urlForImage, type BlogPostSummary } from "@/lib/data/blog";
+import { SITE_URL } from "@/lib/seo";
+
+const DESCRIPTION =
+  "Detailing tips, coating breakdowns and behind-the-scenes work from the Polish Station studio.";
 
 export const Route = createFileRoute("/_layout/blog/")({
   loader: async () => {
@@ -12,13 +16,25 @@ export const Route = createFileRoute("/_layout/blog/")({
   head: () => ({
     meta: [
       { title: "Blog - Polish Station" },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: "Blog - Polish Station" },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:url", content: `${SITE_URL}/blog` },
+    ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/blog` }],
+    scripts: [
       {
-        name: "description",
-        content:
-          "Detailing tips, coating breakdowns and behind-the-scenes work from the Polish Station studio.",
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+            { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+          ],
+        }),
       },
     ],
-    links: [{ rel: "canonical", href: "https://www.polishstation.lk/blog" }],
   }),
   component: BlogIndex,
 });

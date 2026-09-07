@@ -2,6 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Reveal } from "@/components/ui/reveal";
 import { Gallery } from "@/components/site/Gallery";
 import { BeforeAfter } from "@/components/site/BeforeAfter";
+import ogGallery from "@/assets/og/og-gallery.jpg";
+import { absoluteUrl, SITE_URL } from "@/lib/seo";
+import galleryImages from "@/lib/data/gallery-images";
 
 export const Route = createFileRoute("/_layout/gallery/")({
   head: () => ({
@@ -19,9 +22,34 @@ export const Route = createFileRoute("/_layout/gallery/")({
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.polishstation.lk/gallery" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: absoluteUrl(ogGallery) },
+      { name: "twitter:image", content: absoluteUrl(ogGallery) },
     ],
     links: [{ rel: "canonical", href: "https://www.polishstation.lk/gallery" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+            { "@type": "ListItem", position: 2, name: "Gallery", item: `${SITE_URL}/gallery` },
+          ],
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          galleryImages.map((img) => ({
+            "@context": "https://schema.org",
+            "@type": "ImageObject",
+            contentUrl: absoluteUrl(img.src),
+            name: img.label,
+          })),
+        ),
+      },
+    ],
   }),
   component: GalleryPage,
 });
