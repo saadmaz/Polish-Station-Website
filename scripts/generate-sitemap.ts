@@ -13,9 +13,11 @@ const BASE_URL = "https://www.polishstation.lk";
 const STATIC_ROUTES: Array<{ path: string; changefreq: string; priority: string }> = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/about", changefreq: "monthly", priority: "0.7" },
+  { path: "/services", changefreq: "monthly", priority: "0.9" },
+  { path: "/gallery", changefreq: "weekly", priority: "0.7" },
+  { path: "/contact", changefreq: "monthly", priority: "0.7" },
   { path: "/faq", changefreq: "monthly", priority: "0.6" },
   { path: "/book", changefreq: "monthly", priority: "0.9" },
-  { path: "/aftercare", changefreq: "monthly", priority: "0.6" },
   { path: "/blog", changefreq: "weekly", priority: "0.8" },
   { path: "/services/paint-correction", changefreq: "monthly", priority: "0.8" },
   { path: "/services/cut-and-polish", changefreq: "monthly", priority: "0.8" },

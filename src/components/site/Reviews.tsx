@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
-import generatedReviews from "@/lib/data/reviews.generated.json";
-
-type Review = { name: string; rating: number; text: string; relativeTime: string };
-
-const reviews = generatedReviews as Review[];
-
-const GOOGLE_REVIEWS_URL =
-  "https://www.google.com/maps/search/?api=1&query=Polish+Station+Dehiwala";
+import { reviews, GOOGLE_REVIEWS_URL } from "@/lib/data/reviews";
 
 export function Reviews() {
   const [idx, setIdx] = useState(0);

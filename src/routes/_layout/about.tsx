@@ -1,19 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Award, Users, MapPin } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
+import { SITE_URL } from "@/lib/seo";
+
+const DESCRIPTION =
+  "Polish Station is an independent automotive detailing studio in Dehiwala, Sri Lanka - here's the standard we hold every car to.";
 
 export const Route = createFileRoute("/_layout/about")({
   head: () => ({
     meta: [
       { title: "About - Polish Station" },
-      {
-        name: "description",
-        content:
-          "Polish Station is an independent automotive detailing studio in Dehiwala, Sri Lanka - here's the standard we hold every car to.",
-      },
-      { property: "og:url", content: "https://www.polishstation.lk/about" },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: "About - Polish Station" },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:url", content: `${SITE_URL}/about` },
     ],
-    links: [{ rel: "canonical", href: "https://www.polishstation.lk/about" }],
+    links: [{ rel: "canonical", href: `${SITE_URL}/about` }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+            { "@type": "ListItem", position: 2, name: "About", item: `${SITE_URL}/about` },
+          ],
+        }),
+      },
+    ],
   }),
   component: AboutPage,
 });

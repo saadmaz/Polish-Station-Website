@@ -1,5 +1,6 @@
 import { ArrowUp } from "lucide-react";
 import { Newsletter } from "./Newsletter";
+import logo from "@/assets/logo.webp";
 
 const socials = [
   {
@@ -54,8 +55,12 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center gap-2">
               <img
-                src="/Logo/Polish%20Station%20-%20Logo.png"
+                src={logo}
                 alt="Polish Station"
+                width={96}
+                height={96}
+                loading="lazy"
+                decoding="async"
                 className="h-11 w-11 object-contain"
               />
               <span className="font-display text-sm font-bold tracking-[0.25em]">
@@ -87,7 +92,7 @@ export function Footer() {
                 polishstation.lk
               </a>
               <a href="tel:+94711885252" className="block hover:text-primary">
-                07 11 88 52 52
+                +94 71 188 5252
               </a>
             </div>
 
@@ -132,23 +137,28 @@ export function Footer() {
             </div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li>
-                <a href="/#services" className="hover:text-primary">
+                <a href="/services/paint-correction" className="hover:text-primary">
                   Paint Correction
                 </a>
               </li>
               <li>
-                <a href="/#services" className="hover:text-primary">
+                <a href="/services/ceramic-coating" className="hover:text-primary">
                   Ceramic Coating
                 </a>
               </li>
               <li>
-                <a href="/#services" className="hover:text-primary">
+                <a href="/services/interior-detailing" className="hover:text-primary">
                   Interior Detail
                 </a>
               </li>
               <li>
-                <a href="/#services" className="hover:text-primary">
+                <a href="/services/headlight-restoration" className="hover:text-primary">
                   Headlight Restore
+                </a>
+              </li>
+              <li>
+                <a href="/services" className="hover:text-primary">
+                  All Services
                 </a>
               </li>
             </ul>
@@ -160,13 +170,18 @@ export function Footer() {
             </div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li>
-                <a href="/#gallery" className="hover:text-primary">
+                <a href="/gallery" className="hover:text-primary">
                   Gallery
                 </a>
               </li>
               <li>
                 <a href="/#process" className="hover:text-primary">
                   Process
+                </a>
+              </li>
+              <li>
+                <a href="/contact" className="hover:text-primary">
+                  Contact
                 </a>
               </li>
               <li>
@@ -182,11 +197,6 @@ export function Footer() {
               <li>
                 <a href="/faq" className="hover:text-primary">
                   FAQ
-                </a>
-              </li>
-              <li>
-                <a href="/aftercare" className="hover:text-primary">
-                  Aftercare
                 </a>
               </li>
             </ul>

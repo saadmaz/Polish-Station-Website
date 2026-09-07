@@ -11,6 +11,21 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.polishstation.lk/services</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.polishstation.lk/gallery</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.polishstation.lk/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.polishstation.lk/faq</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -19,11 +34,6 @@
     <loc>https://www.polishstation.lk/book</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.polishstation.lk/aftercare</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.polishstation.lk/blog</loc>

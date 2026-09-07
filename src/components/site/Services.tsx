@@ -1,33 +1,45 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { Reveal } from "@/components/ui/reveal";
 import { services } from "@/lib/data/services";
 
-export function Services() {
+export function Services({
+  limit,
+  showViewAll = false,
+  hideHeading = false,
+}: {
+  limit?: number;
+  showViewAll?: boolean;
+  hideHeading?: boolean;
+}) {
+  const items = limit ? services.slice(0, limit) : services;
+
   return (
     <section id="services" className="section-padding relative">
       <div className="mx-auto max-w-7xl px-6">
-        <Reveal variant="up">
-          <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-            <div className="max-w-2xl">
-              <div className="eyebrow mb-4">
-                <span className="h-px w-8 bg-primary" /> Our Services
+        {!hideHeading && (
+          <Reveal variant="up">
+            <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+              <div className="max-w-2xl">
+                <div className="eyebrow mb-4">
+                  <span className="h-px w-8 bg-primary" /> Our Services
+                </div>
+                <h2 className="font-display text-4xl font-bold uppercase leading-tight md:text-6xl">
+                  Craft &nbsp;<span className="text-gradient-primary">obsessed</span>
+                  <br />
+                  with every micron.
+                </h2>
               </div>
-              <h2 className="font-display text-4xl font-bold uppercase leading-tight md:text-6xl">
-                Craft &nbsp;<span className="text-gradient-primary">obsessed</span>
-                <br />
-                with every micron.
-              </h2>
+              <p className="max-w-sm text-muted-foreground">
+                From paint correction to ceramic protection - a complete catalogue of services
+                performed with surgical precision.
+              </p>
             </div>
-            <p className="max-w-sm text-muted-foreground">
-              From paint correction to ceramic protection - a complete catalogue of services
-              performed with surgical precision.
-            </p>
-          </div>
-        </Reveal>
+          </Reveal>
+        )}
 
         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map((s, i) => (
+          {items.map((s, i) => (
             /* Drive-in: each card slides from the left like entering a garage */
             <Reveal key={s.slug} variant="left" delay={i * 70}>
               <a href={`/services/${s.slug}`} className="block h-full">
@@ -76,6 +88,18 @@ export function Services() {
             </Reveal>
           ))}
         </div>
+
+        {showViewAll && (
+          <div className="mt-12 flex justify-center">
+            <a
+              href="/services"
+              className="group inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 text-sm font-semibold uppercase tracking-wider transition-all hover:bg-primary hover:text-primary-foreground"
+            >
+              View all services
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );

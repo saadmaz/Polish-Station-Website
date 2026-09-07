@@ -62,15 +62,15 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="section-padding relative">
+    <section id="contact" className="section-padding relative pt-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 max-w-2xl">
           <div className="eyebrow mb-4">
             <span className="h-px w-8 bg-primary" /> Visit the Studio
           </div>
-          <h2 className="font-display text-4xl font-bold uppercase leading-tight md:text-6xl">
+          <h1 className="font-display text-4xl font-bold uppercase leading-tight md:text-6xl">
             Get in <span className="text-gradient-primary">touch.</span>
-          </h2>
+          </h1>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
@@ -118,8 +118,12 @@ export function Contact() {
             {status === "success" ? (
               <div className="flex h-full flex-col items-center justify-center text-center">
                 <CheckCircle2 className="h-10 w-10 text-primary" />
-                <p className="mt-4 font-display text-lg font-bold uppercase">Thank you for your message.</p>
-                <p className="mt-2 text-sm text-muted-foreground">Our team will get back to you shortly.</p>
+                <p className="mt-4 font-display text-lg font-bold uppercase">
+                  Thank you for your message.
+                </p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Our team will get back to you within 24 hours.
+                </p>
               </div>
             ) : (
               <Form {...form}>

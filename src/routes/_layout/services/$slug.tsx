@@ -1,7 +1,10 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, X } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { getServiceBySlug, services } from "@/lib/data/services";
+import { packages } from "@/lib/data/pricing";
+import ogServices from "@/assets/og/og-services.jpg";
+import { absoluteUrl, SITE_URL } from "@/lib/seo";
 
 export const Route = createFileRoute("/_layout/services/$slug")({
   loader: ({ params }) => {
@@ -14,12 +17,20 @@ export const Route = createFileRoute("/_layout/services/$slug")({
   head: ({ params }) => {
     const service = getServiceBySlug(params.slug);
     if (!service) return {};
-    const url = `https://www.polishstation.lk/services/${service.slug}`;
+    const url = `${SITE_URL}/services/${service.slug}`;
+    const relatedPackages = packages.filter(
+      (p) => p.includedServiceSlugs.includes(service.slug) && p.priceLkr != null,
+    );
+
     return {
       meta: [
         { title: `${service.title} - Polish Station` },
         { name: "description", content: service.why },
+        { property: "og:title", content: `${service.title} - Polish Station` },
+        { property: "og:description", content: service.shortDesc },
         { property: "og:url", content: url },
+        { property: "og:image", content: absoluteUrl(ogServices) },
+        { name: "twitter:image", content: absoluteUrl(ogServices) },
       ],
       links: [{ rel: "canonical", href: url }],
       scripts: [
@@ -33,9 +44,31 @@ export const Route = createFileRoute("/_layout/services/$slug")({
             provider: {
               "@type": "AutoBodyShop",
               name: "Polish Station",
-              url: "https://www.polishstation.lk",
+              url: SITE_URL,
             },
             areaServed: "Dehiwala, Sri Lanka",
+            ...(relatedPackages.length > 0 && {
+              offers: relatedPackages.map((p) => ({
+                "@type": "Offer",
+                name: p.name,
+                price: p.priceLkr,
+                priceCurrency: "LKR",
+                availability: "https://schema.org/InStock",
+                url: `${SITE_URL}/book?service=${service.slug}`,
+              })),
+            }),
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+              { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/services` },
+              { "@type": "ListItem", position: 3, name: service.title, item: url },
+            ],
           }),
         },
       ],
@@ -103,6 +136,49 @@ function ServicePage() {
           </Reveal>
         </div>
       </section>
+
+      {service.aftercare && (
+        <section className="relative">
+          <div className="mx-auto max-w-4xl px-6 pb-8">
+            <Reveal variant="up">
+              <h2 className="font-display text-2xl font-bold uppercase tracking-wide">Aftercare</h2>
+              <p className="mt-4 leading-relaxed text-foreground/90">
+                {service.aftercare.curingNote}
+              </p>
+            </Reveal>
+            <Reveal variant="up" delay={80}>
+              <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                <div className="rounded-2xl glass p-6">
+                  <div className="mb-4 flex items-center gap-2 font-display text-sm font-bold uppercase tracking-widest">
+                    <Check className="h-4 w-4 text-primary" /> Do
+                  </div>
+                  <ul className="space-y-2.5 text-sm text-foreground/90">
+                    {service.aftercare.dos.map((d) => (
+                      <li key={d} className="flex items-start gap-2">
+                        <Check className="mt-0.5 h-3.5 w-3.5 flex-none text-primary" />
+                        {d}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="rounded-2xl glass p-6">
+                  <div className="mb-4 flex items-center gap-2 font-display text-sm font-bold uppercase tracking-widest">
+                    <X className="h-4 w-4 text-destructive" /> Don't
+                  </div>
+                  <ul className="space-y-2.5 text-sm text-foreground/90">
+                    {service.aftercare.donts.map((d) => (
+                      <li key={d} className="flex items-start gap-2">
+                        <X className="mt-0.5 h-3.5 w-3.5 flex-none text-destructive" />
+                        {d}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       <section className="section-padding relative">
         <div className="mx-auto max-w-4xl px-6">
