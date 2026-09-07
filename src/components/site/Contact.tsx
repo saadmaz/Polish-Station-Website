@@ -118,8 +118,12 @@ export function Contact() {
             {status === "success" ? (
               <div className="flex h-full flex-col items-center justify-center text-center">
                 <CheckCircle2 className="h-10 w-10 text-primary" />
-                <p className="mt-4 font-display text-lg font-bold uppercase">Thank you for your message.</p>
-                <p className="mt-2 text-sm text-muted-foreground">Our team will get back to you shortly.</p>
+                <p className="mt-4 font-display text-lg font-bold uppercase">
+                  Thank you for your message.
+                </p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Our team will get back to you within 24 hours.
+                </p>
               </div>
             ) : (
               <Form {...form}>

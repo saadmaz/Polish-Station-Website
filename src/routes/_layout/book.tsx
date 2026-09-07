@@ -189,8 +189,8 @@ function BookPage() {
           </div>
           <h1 className="mt-6 font-display text-3xl font-bold uppercase">Request sent.</h1>
           <p className="mt-4 text-muted-foreground">
-            We've received your booking request and will confirm your slot by phone or email
-            shortly.
+            We've received your booking request and will confirm your slot by phone or email within
+            24 hours.
           </p>
           <a
             href={whatsappHref}

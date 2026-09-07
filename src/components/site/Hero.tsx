@@ -4,6 +4,7 @@ import heroCar from "@/assets/hero-car.webp";
 import heroCar768 from "@/assets/hero-car-768.webp";
 import heroCar1280 from "@/assets/hero-car-1280.webp";
 import { useCountUp } from "@/hooks/use-count-up";
+import { hasReviews, averageRating, reviewCount, GOOGLE_REVIEWS_URL } from "@/lib/data/reviews";
 
 /* ── Speed lines config ────────────────────────────────────────────────── */
 const SPEED_LINES = [
@@ -78,16 +79,23 @@ export function Hero() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Count-up stats */
+  /* Count-up stats - cars detailed and years experience are business facts,
+     always shown. Reviews-derived rating/count only render once real Google
+     review data exists (reviews.generated.json), so this section can never
+     show an invented rating. */
   const s1 = useCountUp(500, 2000);
-  const s2 = useCountUp(98, 1800);
-  const s3 = useCountUp(5, 1400);
   const s4 = useCountUp(5, 1400);
+  const s2 = useCountUp(reviewCount, 1800);
+  const s3 = useCountUp(averageRating ?? 0, 1400);
 
   const stats = [
     { ref: s1.ref, count: s1.count, suffix: "+", label: "Cars Detailed" },
-    { ref: s2.ref, count: s2.count, suffix: "%", label: "Satisfaction" },
-    { ref: s3.ref, count: s3.count, suffix: "★", label: "Average Rating" },
+    ...(hasReviews
+      ? [
+          { ref: s3.ref, count: s3.count, suffix: "★", label: "Average Rating" },
+          { ref: s2.ref, count: s2.count, suffix: "+", label: "Google Reviews" },
+        ]
+      : []),
     { ref: s4.ref, count: s4.count, suffix: "+", label: "Years Experience" },
   ];
 
@@ -173,41 +181,53 @@ export function Hero() {
         ))}
       </div>
 
-      {/* ── Floating 3D rating badge ─────────────────────────────────────── */}
-      <div className="pointer-events-none absolute right-8 top-32 hidden lg:block animate-float-3d">
-        <div className="glass depth-shadow-lift rounded-2xl p-5 w-48">
-          <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/30 to-transparent rounded-t-2xl" />
-          {/* Periodic gloss sweep on the badge */}
-          <div
-            className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none"
-            aria-hidden
+      {/* ── Floating 3D rating badge - only once real Google review data
+             exists (reviews.generated.json), so this never shows an
+             invented rating ─────────────────────────────────────────── */}
+      {hasReviews && (
+        <div className="absolute right-8 top-32 hidden lg:block animate-float-3d">
+          <a
+            href={GOOGLE_REVIEWS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass depth-shadow-lift block rounded-2xl p-5 w-48 transition-transform hover:scale-105"
           >
+            <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/30 to-transparent rounded-t-2xl" />
+            {/* Periodic gloss sweep on the badge */}
             <div
-              className="absolute inset-y-0 w-12 bg-linear-to-r from-transparent via-white/15 to-transparent"
-              style={{ animation: "gloss-sweep 5s ease-in-out 1s infinite" }}
-            />
-          </div>
-          <div className="relative flex items-center gap-2 mb-3">
-            <span className="grid h-7 w-7 place-items-center rounded-lg bg-primary/20 text-primary">
-              <Star className="h-3.5 w-3.5 fill-primary" />
-            </span>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-              Top Rated
-            </span>
-          </div>
-          <div className="relative font-display text-3xl font-black text-gradient-silver leading-none">
-            5.0
-          </div>
-          <div className="relative mt-1.5 flex gap-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} className="h-3 w-3 fill-primary text-primary" />
-            ))}
-          </div>
-          <div className="relative mt-2.5 text-[10px] leading-snug text-muted-foreground">
-            98% client satisfaction
-          </div>
+              className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none"
+              aria-hidden
+            >
+              <div
+                className="absolute inset-y-0 w-12 bg-linear-to-r from-transparent via-white/15 to-transparent"
+                style={{ animation: "gloss-sweep 5s ease-in-out 1s infinite" }}
+              />
+            </div>
+            <div className="relative flex items-center gap-2 mb-3">
+              <span className="grid h-7 w-7 place-items-center rounded-lg bg-primary/20 text-primary">
+                <Star className="h-3.5 w-3.5 fill-primary" />
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
+                Top Rated
+              </span>
+            </div>
+            <div className="relative font-display text-3xl font-black text-gradient-silver leading-none">
+              {averageRating?.toFixed(1)}
+            </div>
+            <div className="relative mt-1.5 flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star
+                  key={i}
+                  className={`h-3 w-3 ${i < Math.round(averageRating ?? 0) ? "fill-primary text-primary" : "fill-none text-primary/30"}`}
+                />
+              ))}
+            </div>
+            <div className="relative mt-2.5 text-[10px] leading-snug text-muted-foreground">
+              From {reviewCount} Google review{reviewCount === 1 ? "" : "s"}
+            </div>
+          </a>
         </div>
-      </div>
+      )}
 
       {/* ── Main content ────────────────────────────────────────────────── */}
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-28 pb-20">
@@ -251,7 +271,9 @@ export function Hero() {
         </div>
 
         {/* ── Count-up stat cards ─────────────────────────────────────────── */}
-        <div className="relative mt-20 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <div
+          className={`relative mt-20 grid grid-cols-2 gap-3 ${stats.length > 2 ? "md:grid-cols-4" : "max-w-md"}`}
+        >
           {stats.map((s, i) => (
             <div
               key={i}
