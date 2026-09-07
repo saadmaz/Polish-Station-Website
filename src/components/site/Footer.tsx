@@ -1,5 +1,6 @@
 import { ArrowUp } from "lucide-react";
 import { Newsletter } from "./Newsletter";
+import logo from "@/assets/logo.webp";
 
 const socials = [
   {
@@ -54,8 +55,12 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center gap-2">
               <img
-                src="/Logo/Polish%20Station%20-%20Logo.png"
+                src={logo}
                 alt="Polish Station"
+                width={96}
+                height={96}
+                loading="lazy"
+                decoding="async"
                 className="h-11 w-11 object-contain"
               />
               <span className="font-display text-sm font-bold tracking-[0.25em]">

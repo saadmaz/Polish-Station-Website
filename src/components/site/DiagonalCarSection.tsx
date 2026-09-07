@@ -183,6 +183,10 @@ export function DiagonalCarSection() {
               <img
                 src={heroCar}
                 alt="Premium car detailing"
+                width={1920}
+                height={1080}
+                loading="lazy"
+                decoding="async"
                 draggable={false}
                 style={{
                   width: "860px",
@@ -255,6 +259,10 @@ export function DiagonalCarSection() {
             <img
               src={heroCar}
               alt="Premium car detailing"
+              width={1920}
+              height={1080}
+              loading="lazy"
+              decoding="async"
               draggable={false}
               className="h-56 w-full object-cover sm:h-72"
               style={{ filter: "brightness(1.08) contrast(1.06) saturate(1.1)" }}

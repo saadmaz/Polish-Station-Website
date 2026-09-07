@@ -89,7 +89,10 @@ function PostCard({ post }: { post: BlogPostSummary }) {
             <img
               src={imageUrl}
               alt=""
+              width={640}
+              height={400}
               loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           </div>

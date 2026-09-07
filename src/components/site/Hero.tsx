@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { ArrowRight, Play, Star } from "lucide-react";
 import heroCar from "@/assets/hero-car.webp";
+import heroCar768 from "@/assets/hero-car-768.webp";
+import heroCar1280 from "@/assets/hero-car-1280.webp";
 import { useCountUp } from "@/hooks/use-count-up";
 
 /* ── Speed lines config ────────────────────────────────────────────────── */
@@ -96,6 +98,8 @@ export function Hero() {
         <img
           ref={imgRef}
           src={heroCar}
+          srcSet={`${heroCar768} 768w, ${heroCar1280} 1280w, ${heroCar} 1920w`}
+          sizes="100vw"
           alt="Luxury sports car under studio lights"
           width={1920}
           height={1080}

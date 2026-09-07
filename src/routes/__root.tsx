@@ -1,8 +1,7 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
-  createRootRouteWithContext,
+  createRootRoute,
   useRouter,
   HeadContent,
   Scripts,
@@ -74,7 +73,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -88,8 +87,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary" },
     ],
     links: [
-      { rel: "icon", type: "image/png", href: "/Logo/Polish%20Station%20-%20Logo.png" },
-      { rel: "apple-touch-icon", href: "/Logo/Polish%20Station%20-%20Logo.png" },
+      { rel: "icon", type: "image/png", href: "/Logo/favicon-180.png" },
+      { rel: "apple-touch-icon", href: "/Logo/favicon-180.png" },
       { rel: "preload", href: interFont, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
       { rel: "preload", href: manropeFont, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: appCss },
@@ -102,7 +101,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 const GTM_ID = "GTM-TXD57NZF";
-const GA_MEASUREMENT_ID = "G-M915VN9L4Y";
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
@@ -123,27 +121,19 @@ function RootShell({ children }: { children: ReactNode }) {
         {/* End Google Tag Manager (noscript) */}
         {children}
         <Scripts />
-        {/* Google tag (gtag.js) + Google Tag Manager, loaded lazily on first
-            interaction (or shortly after load as a fallback) so they don't
-            compete with the initial render for the main thread. */}
+        {/* Google Tag Manager only - GA4 and Clarity fire as tags configured
+            inside the GTM container itself, not loaded directly here, so
+            there's exactly one source of each pageview/session instead of
+            two. Loaded lazily on first interaction (or shortly after load as
+            a fallback) so it doesn't compete with the initial render for the
+            main thread. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){
   var loaded = false;
-  function loadAnalytics(){
+  function loadGtm(){
     if (loaded) return;
     loaded = true;
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ window.dataLayer.push(arguments); }
-    window.gtag = gtag;
-    gtag('js', new Date());
-    gtag('config', '${GA_MEASUREMENT_ID}');
-
-    var gtagScript = document.createElement('script');
-    gtagScript.async = true;
-    gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}';
-    document.head.appendChild(gtagScript);
-
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -151,9 +141,9 @@ function RootShell({ children }: { children: ReactNode }) {
     })(window,document,'script','dataLayer','${GTM_ID}');
   }
   ["scroll","mousemove","touchstart","keydown","click"].forEach(function(evt){
-    window.addEventListener(evt, loadAnalytics, { once: true, passive: true });
+    window.addEventListener(evt, loadGtm, { once: true, passive: true });
   });
-  window.addEventListener('load', function(){ setTimeout(loadAnalytics, 3500); });
+  window.addEventListener('load', function(){ setTimeout(loadGtm, 3500); });
 })();`,
           }}
         />
@@ -163,12 +153,6 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-    </QueryClientProvider>
-  );
+  // Required: nested routes render here. Removing <Outlet /> breaks all child routes.
+  return <Outlet />;
 }

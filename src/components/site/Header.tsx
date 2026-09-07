@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/logo.webp";
 
 // Blog is deliberately left out until it has published posts - an empty
 // section in the primary nav reads as abandoned. Add it back in once
@@ -48,8 +49,11 @@ export function Header() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <a href="/" className="flex items-center gap-2 group">
           <img
-            src="/Logo/Polish%20Station%20-%20Logo.png"
+            src={logo}
             alt="Polish Station"
+            width={96}
+            height={96}
+            decoding="async"
             className="h-11 w-11 object-contain"
           />
           <span className="font-display text-sm font-bold tracking-[0.25em]">

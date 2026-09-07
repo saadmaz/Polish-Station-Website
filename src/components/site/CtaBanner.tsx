@@ -41,6 +41,7 @@ export function CtaBanner() {
             width={1920}
             height={800}
             loading="lazy"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
             style={{ willChange: "transform" }}
           />

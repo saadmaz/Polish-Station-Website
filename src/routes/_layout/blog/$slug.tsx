@@ -95,7 +95,13 @@ const portableTextComponents: PortableTextComponents = {
       const url = urlForImage(value)?.width(1200).fit("max").url();
       if (!url) return null;
       return (
-        <img src={url} alt={value?.alt ?? ""} loading="lazy" className="mt-8 w-full rounded-2xl" />
+        <img
+          src={url}
+          alt={value?.alt ?? ""}
+          loading="lazy"
+          decoding="async"
+          className="mt-8 aspect-video w-full rounded-2xl object-cover"
+        />
       );
     },
   },
@@ -131,7 +137,13 @@ function BlogPost() {
         <section className="relative">
           <div className="mx-auto max-w-5xl px-6">
             <Reveal variant="scale">
-              <img src={coverUrl} alt="" className="aspect-video w-full rounded-3xl object-cover" />
+              <img
+                src={coverUrl}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="aspect-video w-full rounded-3xl object-cover"
+              />
             </Reveal>
           </div>
         </section>

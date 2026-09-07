@@ -71,6 +71,7 @@ export function BeforeAfter() {
             width={1200}
             height={800}
             loading="lazy"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
           />
           <div
@@ -83,6 +84,7 @@ export function BeforeAfter() {
               width={1200}
               height={800}
               loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover"
             />
           </div>
