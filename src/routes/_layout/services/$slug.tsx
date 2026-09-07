@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, X } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { getServiceBySlug, services } from "@/lib/data/services";
 
@@ -103,6 +103,49 @@ function ServicePage() {
           </Reveal>
         </div>
       </section>
+
+      {service.aftercare && (
+        <section className="relative">
+          <div className="mx-auto max-w-4xl px-6 pb-8">
+            <Reveal variant="up">
+              <h2 className="font-display text-2xl font-bold uppercase tracking-wide">Aftercare</h2>
+              <p className="mt-4 leading-relaxed text-foreground/90">
+                {service.aftercare.curingNote}
+              </p>
+            </Reveal>
+            <Reveal variant="up" delay={80}>
+              <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                <div className="rounded-2xl glass p-6">
+                  <div className="mb-4 flex items-center gap-2 font-display text-sm font-bold uppercase tracking-widest">
+                    <Check className="h-4 w-4 text-primary" /> Do
+                  </div>
+                  <ul className="space-y-2.5 text-sm text-foreground/90">
+                    {service.aftercare.dos.map((d) => (
+                      <li key={d} className="flex items-start gap-2">
+                        <Check className="mt-0.5 h-3.5 w-3.5 flex-none text-primary" />
+                        {d}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="rounded-2xl glass p-6">
+                  <div className="mb-4 flex items-center gap-2 font-display text-sm font-bold uppercase tracking-widest">
+                    <X className="h-4 w-4 text-destructive" /> Don't
+                  </div>
+                  <ul className="space-y-2.5 text-sm text-foreground/90">
+                    {service.aftercare.donts.map((d) => (
+                      <li key={d} className="flex items-start gap-2">
+                        <X className="mt-0.5 h-3.5 w-3.5 flex-none text-destructive" />
+                        {d}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       <section className="section-padding relative">
         <div className="mx-auto max-w-4xl px-6">

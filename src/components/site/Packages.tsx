@@ -1,43 +1,75 @@
-import { Check, ShieldCheck } from "lucide-react";
+import { ArrowRight, Check, ShieldCheck } from "lucide-react";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { Reveal } from "@/components/ui/reveal";
 import { packages, formatLkr, type Package } from "@/lib/data/pricing";
 
-const detailingPackages = packages.filter((p) => p.category === "detailing");
-const coatingPackages = packages.filter((p) => p.category === "coating");
+export function Packages({
+  slugs,
+  hideHeading = false,
+  showViewAll = false,
+}: {
+  /** When given, shows only these packages (in this order) as one flat grid - no category grouping. */
+  slugs?: string[];
+  hideHeading?: boolean;
+  showViewAll?: boolean;
+}) {
+  const teaser = slugs
+    ? slugs.map((slug) => packages.find((p) => p.slug === slug)).filter((p): p is Package => !!p)
+    : null;
+  const detailingPackages = packages.filter((p) => p.category === "detailing");
+  const coatingPackages = packages.filter((p) => p.category === "coating");
 
-export function Packages() {
   return (
     <section id="packages" className="section-padding relative">
       <div className="mx-auto max-w-7xl px-6">
-        <Reveal variant="up">
-          <div className="mb-16 max-w-2xl">
-            <div className="eyebrow mb-4">
-              <span className="h-px w-8 bg-primary" /> Packages & Pricing
+        {!hideHeading && (
+          <Reveal variant="up">
+            <div className="mb-16 max-w-2xl">
+              <div className="eyebrow mb-4">
+                <span className="h-px w-8 bg-primary" /> Packages & Pricing
+              </div>
+              <h2 className="font-display text-4xl font-bold uppercase leading-tight md:text-6xl">
+                Choose your <span className="text-gradient-primary">level.</span>
+              </h2>
+              <p className="mt-4 text-muted-foreground">
+                Prices include paint preparation and professional application. Every coating
+                application includes professional paint correction before it goes on.
+              </p>
             </div>
-            <h2 className="font-display text-4xl font-bold uppercase leading-tight md:text-6xl">
-              Choose your <span className="text-gradient-primary">level.</span>
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              Prices include paint preparation and professional application. Every coating
-              application includes professional paint correction before it goes on.
-            </p>
+          </Reveal>
+        )}
+
+        {teaser ? (
+          <PackageGrid items={teaser} offset={0} />
+        ) : (
+          <>
+            <Reveal variant="up" delay={60}>
+              <h3 className="font-display text-sm font-bold uppercase tracking-[0.25em] text-muted-foreground">
+                Cut & Polish and Interior
+              </h3>
+            </Reveal>
+            <PackageGrid items={detailingPackages} offset={0} />
+
+            <Reveal variant="up" delay={60}>
+              <h3 className="mt-16 font-display text-sm font-bold uppercase tracking-[0.25em] text-muted-foreground">
+                Protective Coatings
+              </h3>
+            </Reveal>
+            <PackageGrid items={coatingPackages} offset={detailingPackages.length} />
+          </>
+        )}
+
+        {showViewAll && (
+          <div className="mt-12 flex justify-center">
+            <a
+              href="/services"
+              className="group inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 text-sm font-semibold uppercase tracking-wider transition-all hover:bg-primary hover:text-primary-foreground"
+            >
+              See full pricing
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </a>
           </div>
-        </Reveal>
-
-        <Reveal variant="up" delay={60}>
-          <h3 className="font-display text-sm font-bold uppercase tracking-[0.25em] text-muted-foreground">
-            Cut & Polish and Interior
-          </h3>
-        </Reveal>
-        <PackageGrid items={detailingPackages} offset={0} />
-
-        <Reveal variant="up" delay={60}>
-          <h3 className="mt-16 font-display text-sm font-bold uppercase tracking-[0.25em] text-muted-foreground">
-            Protective Coatings
-          </h3>
-        </Reveal>
-        <PackageGrid items={coatingPackages} offset={detailingPackages.length} />
+        )}
       </div>
     </section>
   );

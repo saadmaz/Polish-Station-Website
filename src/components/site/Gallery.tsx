@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 import g1 from "@/assets/gallery-1.webp";
 import g2 from "@/assets/gallery-2.webp";
 import g3 from "@/assets/gallery-3.webp";
@@ -33,40 +34,57 @@ const items = [
 
 const cats = ["All", "Sports", "SUV", "Sedan", "4x4", "Interior", "Detail"];
 
-export function Gallery() {
+export function Gallery({
+  limit,
+  hideFilters = false,
+  hideHeading = false,
+  showViewAll = false,
+}: {
+  limit?: number;
+  hideFilters?: boolean;
+  hideHeading?: boolean;
+  showViewAll?: boolean;
+}) {
   const [active, setActive] = useState("All");
-  const filtered = active === "All" ? items : items.filter((i) => i.cat === active);
+  const source = active === "All" || hideFilters ? items : items.filter((i) => i.cat === active);
+  const filtered = limit ? source.slice(0, limit) : source;
 
   return (
     <section id="gallery" className="section-padding relative">
       <div className="mx-auto max-w-7xl px-6">
-        <Reveal variant="up">
-          <div className="mb-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-            <div className="max-w-2xl">
-              <div className="eyebrow mb-4">
-                <span className="h-px w-8 bg-primary" /> Gallery
-              </div>
-              <h2 className="font-display text-4xl font-bold uppercase leading-tight md:text-6xl">
-                Recent <span className="text-gradient-primary">work.</span>
-              </h2>
+        {(!hideHeading || !hideFilters) && (
+          <Reveal variant="up">
+            <div className="mb-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+              {!hideHeading && (
+                <div className="max-w-2xl">
+                  <div className="eyebrow mb-4">
+                    <span className="h-px w-8 bg-primary" /> Gallery
+                  </div>
+                  <h2 className="font-display text-4xl font-bold uppercase leading-tight md:text-6xl">
+                    Recent <span className="text-gradient-primary">work.</span>
+                  </h2>
+                </div>
+              )}
+              {!hideFilters && (
+                <div className="flex flex-wrap gap-2">
+                  {cats.map((c) => (
+                    <button
+                      key={c}
+                      onClick={() => setActive(c)}
+                      className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all ${
+                        active === c
+                          ? "bg-primary text-primary-foreground"
+                          : "glass text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-            <div className="flex flex-wrap gap-2">
-              {cats.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setActive(c)}
-                  className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all ${
-                    active === c
-                      ? "bg-primary text-primary-foreground"
-                      : "glass text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        )}
 
         <div className="grid auto-rows-[220px] grid-cols-2 gap-4 md:grid-cols-3">
           {filtered.map((it, i) => (
@@ -107,6 +125,18 @@ export function Gallery() {
             </Reveal>
           ))}
         </div>
+
+        {showViewAll && (
+          <div className="mt-12 flex justify-center">
+            <a
+              href="/gallery"
+              className="group inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 text-sm font-semibold uppercase tracking-wider transition-all hover:bg-primary hover:text-primary-foreground"
+            >
+              View full gallery
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );

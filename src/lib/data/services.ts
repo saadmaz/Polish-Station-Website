@@ -21,6 +21,8 @@ export type Service = {
   process: string[];
   /** Rough turnaround estimate, e.g. "2-3 hrs", "Full day". */
   timeEstimate: string;
+  /** Short curing/maintenance guidance shown on the service page - coatings only. */
+  aftercare?: { curingNote: string; dos: string[]; donts: string[] };
 };
 
 export const services: Service[] = [
@@ -64,6 +66,20 @@ export const services: Service[] = [
       "Controlled curing away from water and moisture while it bonds permanently",
     ],
     timeEstimate: "Contact us to confirm turnaround",
+    aftercare: {
+      curingNote:
+        "Curing takes 2-3 weeks depending on humidity and temperature - the most important window, while the coating is chemically bonding to your clear coat.",
+      dos: [
+        "Hand wash using the two-bucket technique once the two-week window has passed",
+        "Use only pH-neutral, coating-safe soap",
+        "Wash in the shade with microfiber wash mitts and towels",
+      ],
+      donts: [
+        "Wash the vehicle for at least two weeks after application",
+        "Use an automatic car wash with brushes or mitts",
+        "Apply wax or paint sealant on top of the coating",
+      ],
+    },
   },
   {
     slug: "graphene-coating",
@@ -78,6 +94,20 @@ export const services: Service[] = [
       "Controlled curing: no water for the first 24-48 hours, no soap for the first week",
     ],
     timeEstimate: "Contact us to confirm turnaround",
+    aftercare: {
+      curingNote:
+        "Graphene cures faster than ceramic, but the first week still needs care to lock in maximum protection and gloss.",
+      dos: [
+        "Resume normal washing with pH-neutral soap after 7 days",
+        "Spot-clean any contaminants right away with a gentle water rinse during the first week",
+        "Use a graphene-safe detail spray to boost gloss between full washes",
+      ],
+      donts: [
+        "Wash or expose the car to water for the first 24-48 hours",
+        "Use soap or detergent-based washes during the first week",
+        "Let bird droppings, sap or water spots sit on the car while curing",
+      ],
+    },
   },
   {
     slug: "interior-detailing",

@@ -62,15 +62,15 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="section-padding relative">
+    <section id="contact" className="section-padding relative pt-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 max-w-2xl">
           <div className="eyebrow mb-4">
             <span className="h-px w-8 bg-primary" /> Visit the Studio
           </div>
-          <h2 className="font-display text-4xl font-bold uppercase leading-tight md:text-6xl">
+          <h1 className="font-display text-4xl font-bold uppercase leading-tight md:text-6xl">
             Get in <span className="text-gradient-primary">touch.</span>
-          </h2>
+          </h1>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">

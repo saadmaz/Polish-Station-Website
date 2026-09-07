@@ -228,14 +228,14 @@ export function Hero() {
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <a
-              href="#contact"
+              href="/book"
               className="group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-4 text-sm font-semibold uppercase tracking-wider text-primary-foreground shadow-glow-primary transition-all hover:scale-105"
             >
               Book Appointment
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <a
-              href="#services"
+              href="/services"
               className="group inline-flex items-center gap-3 rounded-full glass px-7 py-4 text-sm font-semibold uppercase tracking-wider text-foreground transition-all hover:bg-card/80"
             >
               <span className="grid h-6 w-6 place-items-center rounded-full bg-primary/20">

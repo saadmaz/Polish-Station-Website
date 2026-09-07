@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
+// Blog is deliberately left out until it has published posts - an empty
+// section in the primary nav reads as abandoned. Add it back in once
+// posts are live in Sanity.
 const links = [
-  { href: "/#services", label: "Services" },
-  { href: "/#packages", label: "Pricing" },
-  { href: "/#gallery", label: "Gallery" },
   { href: "/about", label: "About" },
-  { href: "/blog", label: "Blog" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/aftercare", label: "Aftercare" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/services", label: "Services" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function Header() {

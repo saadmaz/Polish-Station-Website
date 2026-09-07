@@ -8,6 +8,11 @@ RewriteCond %{HTTP_HOST} !^www\. [NC]
 RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
 RewriteRule ^ https://www.%1%{REQUEST_URI} [R=301,L]
 
+# /aftercare was retired - its content moved into the Ceramic Coating and
+# Graphene Coating service pages (plus a dedicated blog post once
+# published). Permanent redirect so the old URL isn't left 404ing.
+RewriteRule ^aftercare/?$ /services/ceramic-coating [R=301,L]
+
 # Serve existing files/directories as-is; send everything else to the
 # prerendered app shell so client-side routes still resolve.
 RewriteCond %{REQUEST_FILENAME} !-f

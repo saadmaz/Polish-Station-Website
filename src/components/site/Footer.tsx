@@ -132,23 +132,28 @@ export function Footer() {
             </div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li>
-                <a href="/#services" className="hover:text-primary">
+                <a href="/services/paint-correction" className="hover:text-primary">
                   Paint Correction
                 </a>
               </li>
               <li>
-                <a href="/#services" className="hover:text-primary">
+                <a href="/services/ceramic-coating" className="hover:text-primary">
                   Ceramic Coating
                 </a>
               </li>
               <li>
-                <a href="/#services" className="hover:text-primary">
+                <a href="/services/interior-detailing" className="hover:text-primary">
                   Interior Detail
                 </a>
               </li>
               <li>
-                <a href="/#services" className="hover:text-primary">
+                <a href="/services/headlight-restoration" className="hover:text-primary">
                   Headlight Restore
+                </a>
+              </li>
+              <li>
+                <a href="/services" className="hover:text-primary">
+                  All Services
                 </a>
               </li>
             </ul>
@@ -160,13 +165,18 @@ export function Footer() {
             </div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li>
-                <a href="/#gallery" className="hover:text-primary">
+                <a href="/gallery" className="hover:text-primary">
                   Gallery
                 </a>
               </li>
               <li>
                 <a href="/#process" className="hover:text-primary">
                   Process
+                </a>
+              </li>
+              <li>
+                <a href="/contact" className="hover:text-primary">
+                  Contact
                 </a>
               </li>
               <li>
@@ -182,11 +192,6 @@ export function Footer() {
               <li>
                 <a href="/faq" className="hover:text-primary">
                   FAQ
-                </a>
-              </li>
-              <li>
-                <a href="/aftercare" className="hover:text-primary">
-                  Aftercare
                 </a>
               </li>
             </ul>
