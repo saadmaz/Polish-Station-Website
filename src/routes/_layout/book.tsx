@@ -8,6 +8,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Select,
   SelectContent,
@@ -374,7 +375,12 @@ function BookPage() {
                     <FormItem>
                       <FormLabel>Preferred date</FormLabel>
                       <FormControl>
-                        <Input type="date" min={todayIso()} {...field} />
+                        <DatePicker
+                          value={field.value}
+                          onChange={field.onChange}
+                          min={todayIso()}
+                          placeholder="Pick a date"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
