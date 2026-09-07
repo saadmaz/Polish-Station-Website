@@ -87,7 +87,7 @@ export function Footer() {
                 polishstation.lk
               </a>
               <a href="tel:+94711885252" className="block hover:text-primary">
-                07 11 88 52 52
+                +94 71 188 5252
               </a>
             </div>
 
