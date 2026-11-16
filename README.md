@@ -6,12 +6,12 @@
 
 The official website of Polish Station, a premium automotive detailing studio in Dehiwala, Sri Lanka.
 
-[![Website](https://img.shields.io/badge/website-polishstation.lk-C9A227?style=flat-square&labelColor=0B0B0B)](https://www.polishstation.lk)
-[![Deploy](https://github.com/saadmaz/Polish-Station-Website/actions/workflows/deploy.yml/badge.svg)](https://github.com/saadmaz/Polish-Station-Website/actions/workflows/deploy.yml)
+[![Website](https://img.shields.io/badge/website-polishstation.lk-374151?style=flat-square&labelColor=111827)](https://www.polishstation.lk)
 [![CI](https://github.com/saadmaz/Polish-Station-Website/actions/workflows/ci.yml/badge.svg)](https://github.com/saadmaz/Polish-Station-Website/actions/workflows/ci.yml)
-![License](https://img.shields.io/badge/license-proprietary-0B0B0B?style=flat-square)
+[![Version](https://img.shields.io/badge/version-v1.0.0-374151?style=flat-square&labelColor=111827)](https://github.com/saadmaz/Polish-Station-Website/releases)
+![License](https://img.shields.io/badge/license-proprietary-374151?style=flat-square&labelColor=111827)
 
-[**polishstation.lk**](https://www.polishstation.lk) · [Report a bug](https://github.com/saadmaz/Polish-Station-Website/issues/new?template=bug_report.yml) · [Request a change](https://github.com/saadmaz/Polish-Station-Website/issues/new?template=feature_request.yml)
+[**polishstation.lk**](https://www.polishstation.lk) · [Documentation](docs/README.md) · [Report a bug](https://github.com/saadmaz/Polish-Station-Website/issues/new?template=bug_report.yml) · [Request a change](https://github.com/saadmaz/Polish-Station-Website/issues/new?template=feature_request.yml)
 
 </div>
 
@@ -26,9 +26,9 @@ The official website of Polish Station, a premium automotive detailing studio in
 - [Getting started](#getting-started)
 - [Configuration](#configuration)
 - [Project structure](#project-structure)
-- [Content management](#content-management)
 - [Quality checks](#quality-checks)
 - [Deployment](#deployment)
+- [Documentation](#documentation)
 - [Releases and versioning](#releases-and-versioning)
 - [Contributing](#contributing)
 - [Security](#security)
@@ -41,6 +41,7 @@ Polish Station restores, protects and perfects vehicle finishes using paint-dept
 |                  |                                                                         |
 | ---------------- | ----------------------------------------------------------------------- |
 | **Organisation** | Polish Station (Pvt) Ltd                                                |
+| **Status**       | Live                                                                    |
 | **Website**      | [polishstation.lk](https://www.polishstation.lk)                        |
 | **Studio**       | 22C, Saranankara Road, Dehiwala · Mon to Sat, 8:00 to 19:00             |
 | **Contact**      | [info@polishstation.lk](mailto:info@polishstation.lk) · +94 71 188 5252 |
@@ -59,17 +60,9 @@ Polish Station restores, protects and perfects vehicle finishes using paint-dept
 
 ## Architecture
 
-```mermaid
-flowchart LR
-  Visitor((Visitor)) --> Site["polishstation.lk<br/>static HTML on cPanel"]
-  Site -- booking, newsletter --> POSAPI["pos.polishstation.lk<br/>public intake API"]
-  Site -- contact form --> Firestore[("Firestore<br/>inquiries")]
-  POSAPI --> Firestore
-  Sanity["Sanity Studio<br/>blog posts"] -- publish webhook --> GHA["GitHub Actions<br/>build and deploy"]
-  GHA -- deploy branch over SSH --> Site
-```
+A TanStack Start site prerendered to static HTML and served from cPanel shared hosting. It stores no customer data: bookings and newsletter sign-ups go to the [Polish Station POS](https://github.com/saadmaz/Polish-Station-POS) intake API and contact enquiries to the POS Firestore project. Blog posts come from Sanity, and publishing triggers a rebuild.
 
-The website holds no customer data of its own. Every submission is handed to the [Polish Station POS](https://github.com/saadmaz/Polish-Station-POS), where staff manage bookings, leads and subscribers.
+The full picture, with diagrams, is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Significant decisions are recorded as [ADRs](docs/adr/README.md).
 
 ## Tech stack
 
@@ -120,16 +113,9 @@ Vite prints the local address when the server starts.
 
 ## Configuration
 
-Copy [`.env.example`](.env.example) to `.env`. Every `VITE_*` value is compiled into the browser bundle and is a public identifier, not a secret.
+All `VITE_*` values are public identifiers compiled into the bundle: the POS API URL, the Sanity project and the Firebase web config. The Google Places key is used only at build time to refresh reviews.
 
-| Variable                                        | Purpose                                                                 |
-| ----------------------------------------------- | ----------------------------------------------------------------------- |
-| `VITE_POS_API_BASE_URL`                         | Base URL of the POS public intake API (`https://pos.polishstation.lk`)  |
-| `VITE_SANITY_PROJECT_ID`, `VITE_SANITY_DATASET` | Sanity project for the blog. Unset renders an empty blog                |
-| `VITE_FIREBASE_*`                               | Firebase web app config for the POS Firestore project (contact form)    |
-| `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID`      | Used only by `fetch:reviews` at build time; never shipped to the client |
-
-In CI these come from GitHub Actions secrets (see [Deployment](#deployment)).
+Every variable, where it is set and which are secret: [docs/CONFIGURATION.md](docs/CONFIGURATION.md). How to update content is in [docs/CONTENT.md](docs/CONTENT.md).
 
 ## Project structure
 
@@ -155,21 +141,9 @@ In CI these come from GitHub Actions secrets (see [Deployment](#deployment)).
 └── studio/                  # Sanity Studio for writing blog posts
 ```
 
-## Content management
-
-| Task                                   | Where                                                                                                                                         |
-| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| Edit services and service detail pages | `src/lib/data/services.ts`                                                                                                                    |
-| Edit packages and pricing              | `src/lib/data/pricing.ts`                                                                                                                     |
-| Edit FAQ                               | `src/lib/data/faq.ts`                                                                                                                         |
-| Add gallery images                     | `src/assets/` and `src/lib/data/gallery-images.ts`                                                                                            |
-| Refresh Google reviews                 | `bun run fetch:reviews`, then commit `reviews.generated.json`                                                                                 |
-| Write and publish a blog post          | [Sanity Studio](https://polishstation.sanity.studio). Publishing triggers a rebuild automatically; see [`studio/README.md`](studio/README.md) |
-| Add a page                             | Create a route in `src/routes/_layout/`, set its metadata with `src/lib/seo.ts` and add it to `scripts/generate-sitemap.ts`                   |
-
 ## Quality checks
 
-Pull requests into `main` run the [CI workflow](.github/workflows/ci.yml): lint, formatting, type check and a full production build. Run the same checks locally before opening a pull request:
+Every push and pull request to `main` runs the [CI workflow](.github/workflows/ci.yml): lint, formatting, type check and a production build. Run the same checks locally before opening a pull request:
 
 ```sh
 bun run lint && bun run format:check && bun run typecheck && bun run build
@@ -177,25 +151,28 @@ bun run lint && bun run format:check && bun run typecheck && bun run build
 
 ## Deployment
 
-The site is static HTML served from cPanel shared hosting. [`deploy.yml`](.github/workflows/deploy.yml) publishes it on every push to `main`, on manual dispatch, and whenever a post is published in Sanity (`repository_dispatch: sanity-publish`).
+Every push to `main`, manual run or Sanity publish builds the site on GitHub Actions, publishes it to the `deploy` branch and runs the cPanel deployment over SSH.
 
-1. GitHub Actions installs dependencies and runs `bun run build` with production values from repository secrets.
-2. The prerendered output in `dist/client/` is force-pushed to the `deploy` branch together with [`.cpanel.yml`](.cpanel.yml).
-3. The workflow connects over SSH, checks out `deploy` on the server and runs the cPanel deployment, which copies the files into `public_html`.
+Setup, secrets and post-deployment checks are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). To release or roll back, follow the [runbooks](docs/runbooks/README.md).
 
-The `deploy` branch is a build artefact. Never commit to it by hand.
+## Documentation
 
-### Required secrets
+All documentation lives in [`docs/`](docs/README.md), using the same layout in every STTPS repository.
 
-| Secret                                                                                                                                          | Purpose                                  |
-| ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| `SANITY_PROJECT_ID`, `SANITY_DATASET`                                                                                                           | Blog content at build time               |
-| `FIREBASE_API_KEY`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_APP_ID` | Firebase web config for the contact form |
-| `ZIRCON_SSH_HOST`, `ZIRCON_SSH_PORT`, `ZIRCON_SSH_USER`, `ZIRCON_SSH_KEY`                                                                       | SSH access to the hosting account        |
+| Document                                  | Covers                                              |
+| ----------------------------------------- | --------------------------------------------------- |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md)   | How the system is built and how data flows          |
+| [CONFIGURATION.md](docs/CONFIGURATION.md) | Environment variables and configuration files       |
+| [DEPLOYMENT.md](docs/DEPLOYMENT.md)       | Hosting, the delivery pipeline and first-time setup |
+| [CONTENT.md](docs/CONTENT.md)             | Updating copy, business data, imagery and articles  |
+| [adr/](docs/adr/README.md)                | Architecture decision records                       |
+| [runbooks/](docs/runbooks/README.md)      | Release and rollback procedures                     |
+
+Product and reference documents for this project are listed in the [documentation index](docs/README.md).
 
 ## Releases and versioning
 
-The project follows [Semantic Versioning](https://semver.org). Each release is tagged `vX.Y.Z` and published on the [Releases](https://github.com/saadmaz/Polish-Station-Website/releases) page. Notable changes are recorded in [CHANGELOG.md](CHANGELOG.md).
+The project follows [Semantic Versioning](https://semver.org). Each release is tagged `vX.Y.Z` and published on the [Releases](https://github.com/saadmaz/Polish-Station-Website/releases) page. Notable changes are recorded in [CHANGELOG.md](CHANGELOG.md), and the release procedure is in [docs/runbooks/release.md](docs/runbooks/release.md).
 
 ## Contributing
 

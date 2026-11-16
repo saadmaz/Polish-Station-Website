@@ -13,7 +13,7 @@ Only the version currently deployed to production, built from the `main` branch,
 
 Please **do not** open a public issue, pull request or discussion for a security problem.
 
-Report it privately by email to **[info@polishstation.lk](mailto:info@polishstation.lk)** with the subject line `Security report`, or use GitHub's [private vulnerability reporting](https://github.com/saadmaz/Polish-Station-Website/security/advisories/new). Include:
+Report it privately by email to **[info@polishstation.lk](mailto:info@polishstation.lk)** with the subject line `Security report`. Include:
 
 - a description of the issue and its potential impact,
 - the affected URL, screen, endpoint or file,
@@ -34,7 +34,7 @@ We will keep you informed throughout and let you know when the issue is resolved
 
 In scope:
 
-- polishstation.lk and its subdomains,
+- www.polishstation.lk and its subdomains,
 - the website and its forms,
 - the source code in this repository.
 

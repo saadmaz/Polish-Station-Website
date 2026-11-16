@@ -1,6 +1,10 @@
+# Continuous integration: the merge gate for every pull request into main.
+# Production deployment is handled separately (see docs/DEPLOYMENT.md).
 name: CI
 
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -14,7 +18,7 @@ permissions:
 
 jobs:
   verify:
-    name: Lint, type check and build
+    name: Verify
     runs-on: ubuntu-24.04
     timeout-minutes: 15
 

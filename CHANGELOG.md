@@ -24,8 +24,9 @@ First versioned release of [polishstation.lk](https://www.polishstation.lk), cov
 - Google Tag Manager and Search Console verification.
 - Sticky mobile Call / WhatsApp / Book bar and a floating WhatsApp button.
 - Automated deployment to cPanel through a `deploy` branch and SSH.
-- Pull request CI: lint, formatting, type check and production build.
-- Project documentation, contribution guidelines, security policy, code of conduct, issue forms, pull request template, CODEOWNERS and Dependabot.
+- Continuous integration on every push and pull request: lint, formatting, type check and production build.
+- Project governance: proprietary licence, security policy, contribution guidelines, code of conduct, issue forms, pull request template, CODEOWNERS and Dependabot.
+- Standard documentation layout shared by every STTPS repository: architecture, configuration, deployment, decision records (ADRs) and release and rollback runbooks, indexed in `docs/README.md`.
 
 ### Changed
 
