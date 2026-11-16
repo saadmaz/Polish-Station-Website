@@ -1,7 +1,22 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "polish-station-website",
+  "version": "1.0.0",
+  "description": "Official website of Polish Station: professional paint correction, ceramic and graphene coating, and vehicle detailing in Sri Lanka.",
+  "homepage": "https://www.polishstation.lk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saadmaz/Polish-Station-Website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/saadmaz/Polish-Station-Website/issues"
+  },
+  "author": "Saad Mazhar (https://github.com/saadmaz)",
+  "license": "UNLICENSED",
   "private": true,
-  "sideEffects": false,
+  "packageManager": "bun@1.4.4",
+  "engines": {
+    "node": ">=20"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite dev",
@@ -9,10 +24,13 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
-    "fetch:reviews": "bun scripts/fetch-google-reviews.ts",
-    "generate:sitemap": "bun scripts/generate-sitemap.ts"
+    "format:check": "prettier --check .",
+    "generate:sitemap": "bun scripts/generate-sitemap.ts",
+    "fetch:reviews": "bun scripts/fetch-google-reviews.ts"
   },
+  "sideEffects": false,
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@portabletext/react": "^8.0.0",
