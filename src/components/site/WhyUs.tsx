@@ -3,17 +3,32 @@ import { TiltCard } from "@/components/ui/tilt-card";
 import { Reveal } from "@/components/ui/reveal";
 
 const items = [
-  { icon: Award,        title: "Expert Technicians", desc: "Certified detailers with thousands of hours of paint experience." },
-  { icon: FlaskConical, title: "Premium Products",   desc: "Only the top-tier coatings and compounds make it to your car." },
-  { icon: Cpu,          title: "Advanced Equipment", desc: "Calibrated polishers, paint gauges and controlled environments." },
-  { icon: ScanSearch,   title: "Attention to Detail",desc: "We inspect under multiple light sources - nothing is missed." },
+  {
+    icon: Award,
+    title: "Expert Technicians",
+    desc: "Certified detailers with thousands of hours of paint experience.",
+  },
+  {
+    icon: FlaskConical,
+    title: "Premium Products",
+    desc: "Only the top-tier coatings and compounds make it to your car.",
+  },
+  {
+    icon: Cpu,
+    title: "Advanced Equipment",
+    desc: "Calibrated polishers, paint gauges and controlled environments.",
+  },
+  {
+    icon: ScanSearch,
+    title: "Attention to Detail",
+    desc: "We inspect under multiple light sources - nothing is missed.",
+  },
 ];
 
 export function WhyUs() {
   return (
     <section className="section-padding relative">
       <div className="mx-auto max-w-7xl px-6">
-
         <Reveal variant="up">
           <div className="mb-14 grid items-end gap-8 md:grid-cols-2">
             <div>
@@ -26,8 +41,8 @@ export function WhyUs() {
               </h2>
             </div>
             <p className="text-muted-foreground md:text-right">
-              We don't wash cars. We preserve and elevate automotive excellence
-              with the rigor of a precision workshop.
+              We don't wash cars. We preserve and elevate automotive excellence with the rigor of a
+              precision workshop.
             </p>
           </div>
         </Reveal>
@@ -70,7 +85,9 @@ export function WhyUs() {
                     <div className="absolute inset-x-1 bottom-0 top-2 rounded-full bg-black/50 blur-lg" />
                     <it.icon className="relative h-8 w-8 text-primary" strokeWidth={1.4} />
                   </div>
-                  <h3 className="mt-8 font-display text-lg font-bold uppercase tracking-wide">{it.title}</h3>
+                  <h3 className="mt-8 font-display text-lg font-bold uppercase tracking-wide">
+                    {it.title}
+                  </h3>
                   <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{it.desc}</p>
                 </div>
               </TiltCard>

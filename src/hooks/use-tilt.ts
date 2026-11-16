@@ -25,7 +25,7 @@ export function useTilt(intensity = 10) {
         }
       });
     },
-    [intensity]
+    [intensity],
   );
 
   const onMouseLeave = useCallback(() => {

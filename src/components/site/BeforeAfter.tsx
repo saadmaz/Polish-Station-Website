@@ -89,8 +89,12 @@ export function BeforeAfter() {
             />
           </div>
 
-          <span className="absolute left-5 top-5 rounded-full glass-strong px-3 py-1 text-[10px] font-bold uppercase tracking-widest">Before</span>
-          <span className="absolute right-5 top-5 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary-foreground">After</span>
+          <span className="absolute left-5 top-5 rounded-full glass-strong px-3 py-1 text-[10px] font-bold uppercase tracking-widest">
+            Before
+          </span>
+          <span className="absolute right-5 top-5 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary-foreground">
+            After
+          </span>
 
           <div
             role="slider"
