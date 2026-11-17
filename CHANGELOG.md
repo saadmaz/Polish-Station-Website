@@ -37,6 +37,7 @@
 
 ### Removed
 
+- An unused hook and 20 unused dependencies. Installs and the repository are smaller; the site is unchanged.
 - cPanel deployment: `.cpanel.yml`, the Apache `.htaccess` and the SSH deploy-branch pipeline.
 
 ## [1.1.3] - 2026-11-17
