@@ -1,5 +1,9 @@
 # Content
 
+<!-- nav -->
+
+<sub><a href="../README.md">Project README</a> · <a href="README.md">Documentation index</a></sub>
+
 > How to update services, pricing, gallery, reviews and the blog on polishstation.lk. Part of the [project documentation](README.md).
 
 | Task                                   | Where                                                                                                                                            |

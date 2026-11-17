@@ -1,6 +1,11 @@
 # Rollback
 
-Use this when a deploy has broken production.
+<!-- nav -->
+
+<sub><a href="../../README.md">Project README</a> · <a href="../README.md">Documentation index</a></sub>
+
+> [!WARNING]
+> Use this when a deploy has broken production. Restore service first, then fix the cause.
 
 Production is rebuilt from `main` on every deploy, so rollback is a revert.
 
