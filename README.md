@@ -75,7 +75,7 @@ Polish Station restores, protects and perfects vehicle finishes using paint-dept
 <table>
 <tr><td width="50%" valign="top"><strong>Service pages</strong><br/>Paint correction, cut and polish, ceramic and graphene coating, interior and exterior detailing, engine bay cleaning and headlight restoration, each with its own detail page.</td><td width="50%" valign="top"><strong>Online booking</strong><br/>A multi-service booking form with a date picker, sent straight into the Polish Station POS.</td></tr>
 <tr><td width="50%" valign="top"><strong>Contact and newsletter</strong><br/>Enquiries land in the POS Inquiries screen; newsletter sign-ups are stored as POS subscribers.</td><td width="50%" valign="top"><strong>Blog</strong><br/>Articles written and published in Sanity Studio, rebuilt and deployed automatically on publish.</td></tr>
-<tr><td width="50%" valign="top"><strong>Social proof</strong><br/>Google reviews fetched at build time, before-and-after comparisons and a gallery.</td><td width="50%" valign="top"><strong>Fully static</strong><br/>Every route is prerendered to HTML, so the site is fast and runs on plain shared hosting.</td></tr>
+<tr><td width="50%" valign="top"><strong>Social proof</strong><br/>Google reviews fetched at build time, before-and-after comparisons and a gallery.</td><td width="50%" valign="top"><strong>Fully static</strong><br/>Every route is prerendered to HTML, so the site is fast and served straight from Cloudflare's edge.</td></tr>
 <tr><td width="50%" valign="top"><strong>SEO</strong><br/>Per-page metadata and Open Graph images, a generated <code>sitemap.xml</code>, <code>robots.txt</code> and <code>llms.txt</code>.</td><td width="50%" valign="top"><strong>Mobile-first contact</strong><br/>Sticky Call / WhatsApp / Book bar on phones and a floating WhatsApp button.</td></tr>
 </table>
 
@@ -83,16 +83,16 @@ Polish Station restores, protects and perfects vehicle finishes using paint-dept
 
 ## Architecture
 
-A TanStack Start site prerendered to static HTML and served from cPanel shared hosting. It stores no customer data: bookings and newsletter sign-ups go to the [Polish Station POS](https://github.com/saadmaz/Polish-Station-POS) intake API and contact enquiries to the POS Firestore project. Blog posts come from Sanity, and publishing triggers a rebuild.
+A TanStack Start site prerendered to static HTML and served by an assets-only Cloudflare Worker. It stores no customer data: bookings and newsletter sign-ups go to the [Polish Station POS](https://github.com/saadmaz/Polish-Station-POS) intake API and contact enquiries to the POS Firestore project. Blog posts come from Sanity, and publishing triggers a rebuild.
 
 ```mermaid
 flowchart LR
-  Visitor((Visitor)) --> Site["polishstation.lk<br/>static HTML on cPanel"]
+  Visitor((Visitor)) --> Site["polishstation.lk<br/>static Worker on Cloudflare"]
   Site -- booking, newsletter --> POSAPI["pos.polishstation.lk<br/>public intake API"]
   Site -- contact form --> Firestore[("Firestore<br/>inquiries")]
   POSAPI --> Firestore
   Sanity["Sanity Studio<br/>blog posts"] -- publish webhook --> GHA["GitHub Actions<br/>build and deploy"]
-  GHA -- deploy branch over SSH --> Site
+  GHA -- wrangler deploy --> Site
 ```
 
 > [!TIP]
@@ -125,7 +125,7 @@ flowchart LR
 | Content   | Sanity (blog), Google Places API (reviews, build time only)                                        |
 | Data      | Firebase Firestore and the POS intake API                                                          |
 | Build     | Vite                                                                                               |
-| Hosting   | cPanel shared hosting, deployed by GitHub Actions                                                  |
+| Hosting   | Cloudflare Workers (static assets), deployed by GitHub Actions with Wrangler                       |
 | Tooling   | Bun, ESLint, Prettier                                                                              |
 
 </details>
@@ -201,9 +201,8 @@ Where each value is set, and which are secret: [docs/CONFIGURATION.md](docs/CONF
 ```
 .
 ├── .github/workflows/       # CI on pull requests, deploy on main
-├── .cpanel.yml              # Server-side copy into public_html
 ├── content/blog-drafts/     # Article drafts in Markdown before they go into Sanity
-├── public/                  # robots.txt, sitemap.xml, llms.txt, logo
+├── public/                  # robots.txt, sitemap.xml, llms.txt, _headers and _redirects for Cloudflare
 ├── scripts/                 # Sitemap generator and Google reviews fetcher
 ├── src/
 │   ├── assets/              # Photography, fonts and Open Graph images
@@ -217,6 +216,7 @@ Where each value is set, and which are secret: [docs/CONFIGURATION.md](docs/CONF
 │   │   └── seo.ts           # Page metadata helpers
 │   ├── routes/              # File-based routes (see src/routes/README.md)
 │   └── styles.css           # Design tokens and global styles
+├── wrangler.jsonc           # Cloudflare Worker configuration
 └── studio/                  # Sanity Studio for writing blog posts
 ```
 
@@ -252,7 +252,7 @@ flowchart LR
   M -- auto deploy --> PROD(["Production"])
 ```
 
-The Deploy workflow builds on GitHub Actions, publishes the static site to a deploy branch and runs the cPanel deployment over SSH. Environments, setup, secrets and post-deployment checks are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+The Deploy workflow builds the site on GitHub Actions and deploys it to Cloudflare Workers with Wrangler; Sanity publishes trigger it too. Cloudflare deploys switch on with the `CLOUDFLARE_ENABLED` variable, and the live site stays on the previous host until DNS moves. Environments, setup, secrets and post-deployment checks are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 > [!TIP]
 > To ship or undo a release, follow the [release](docs/runbooks/release.md) and [rollback](docs/runbooks/rollback.md) runbooks.

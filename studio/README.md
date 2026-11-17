@@ -64,11 +64,11 @@ nothing breaks.
 ## Publishing a post
 
 Write and publish it from the Studio URL above. **Publishing does not
-instantly update the live site** - the site is fully static (see
-`.cpanel.yml`), so a new build has to run for the post to appear. Either:
+instantly update the live site** - the site is fully static (prerendered and deployed to
+Cloudflare), so a new build has to run for the post to appear. Either:
 
-- push any commit to `main` (triggers the existing deploy workflow), or
-- manually re-run the "Build & publish deploy branch" GitHub Action, or
+- push any commit to `main` (triggers the Deploy workflow), or
+- manually run the "Deploy" GitHub Action, or
 - set up the auto-deploy webhook below (one-time, ~5 min) so publishing
   triggers a rebuild automatically.
 

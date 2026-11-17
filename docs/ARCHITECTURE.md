@@ -10,12 +10,12 @@
 
 ```mermaid
 flowchart LR
-  Visitor((Visitor)) --> Site["polishstation.lk<br/>static HTML on cPanel"]
+  Visitor((Visitor)) --> Site["polishstation.lk<br/>static Worker on Cloudflare"]
   Site -- booking, newsletter --> POSAPI["pos.polishstation.lk<br/>public intake API"]
   Site -- contact form --> Firestore[("Firestore<br/>inquiries")]
   POSAPI --> Firestore
   Sanity["Sanity Studio<br/>blog posts"] -- publish webhook --> GHA["GitHub Actions<br/>build and deploy"]
-  GHA -- deploy branch over SSH --> Site
+  GHA -- wrangler deploy --> Site
 ```
 
 The website holds no customer data of its own. Every submission is handed to the [Polish Station POS](https://github.com/saadmaz/Polish-Station-POS), where staff manage bookings, leads and subscribers.
