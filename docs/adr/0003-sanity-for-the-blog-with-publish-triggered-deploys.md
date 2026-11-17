@@ -1,5 +1,9 @@
 # ADR-0003: Sanity for the blog, with publish-triggered deploys
 
+<!-- nav -->
+
+<sub><a href="../../README.md">Project README</a> · <a href="../README.md">Documentation index</a></sub>
+
 | Status   | Date       |
 | -------- | ---------- |
 | Accepted | 2026-08-15 |
