@@ -1,5 +1,9 @@
 # Configuration
 
+<!-- nav -->
+
+<sub><a href="../README.md">Project README</a> · <a href="README.md">Documentation index</a></sub>
+
 > Environment variables and settings for polishstation.lk. Part of the [project documentation](README.md).
 
 Copy [`.env.example`](../.env.example) to `.env`. Every `VITE_*` value is compiled into the browser bundle and is a public identifier, not a secret.

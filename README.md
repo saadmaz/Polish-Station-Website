@@ -4,7 +4,7 @@
 
 <img src=".github/assets/banner.svg" alt="Polish Station: Restore. Protect. Perfect." width="100%">
 
-<br/><br/>
+<br/>
 
 <p><strong>The official website of Polish Station, a premium automotive detailing studio in Dehiwala, Sri Lanka.</strong></p>
 
@@ -14,14 +14,14 @@
 <a href="https://github.com/saadmaz/Polish-Station-Website/commits/develop"><img alt="Last commit" src="https://img.shields.io/github/last-commit/saadmaz/Polish-Station-Website/develop?style=flat-square&labelColor=111827&color=374151"></a>
 <img alt="License" src="https://img.shields.io/badge/license-proprietary-374151?style=flat-square&labelColor=111827">
 
-<br/><br/>
+<br/>
 
 <a href="https://www.polishstation.lk"><img alt="Visit polishstation.lk" src="https://img.shields.io/badge/Visit%20polishstation.lk-1f1f1f?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
 <a href="docs/README.md"><img alt="Documentation" src="https://img.shields.io/badge/Documentation-1f1f1f?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
 <a href="https://github.com/saadmaz/Polish-Station-Website/issues/new?template=bug_report.yml"><img alt="Report a bug" src="https://img.shields.io/badge/Report%20a%20bug-1f1f1f?style=for-the-badge&logo=github&logoColor=white"></a>
 <a href="https://github.com/saadmaz/Polish-Station-Website/issues/new?template=feature_request.yml"><img alt="Request a change" src="https://img.shields.io/badge/Request%20a%20change-1f1f1f?style=for-the-badge&logo=github&logoColor=white"></a>
 
-<br/><br/>
+<br/>
 
 <a href="#about">About</a> ·
 <a href="#features">Features</a> ·
@@ -59,7 +59,7 @@
 
 Polish Station restores, protects and perfects vehicle finishes using paint-depth analysis, certified technicians, premium products and multi-light inspection. This repository powers [polishstation.lk](https://www.polishstation.lk): the services, gallery, reviews and booking flow customers use to book a detail.
 
-|                  |                                                                         |
+| At a glance      |                                                                         |
 | ---------------- | ----------------------------------------------------------------------- |
 | **Organisation** | Polish Station (Pvt) Ltd                                                |
 | **Status**       | Live                                                                    |

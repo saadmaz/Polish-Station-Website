@@ -1,5 +1,9 @@
 # ADR-0002: Customer submissions are owned by the POS
 
+<!-- nav -->
+
+<sub><a href="../../README.md">Project README</a> · <a href="../README.md">Documentation index</a></sub>
+
 | Status   | Date       |
 | -------- | ---------- |
 | Accepted | 2026-08-16 |
