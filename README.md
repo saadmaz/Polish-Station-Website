@@ -151,9 +151,14 @@ bun run lint && bun run format:check && bun run typecheck && bun run build
 
 ## Deployment
 
-Every push to `main`, manual run or Sanity publish builds the site on GitHub Actions, publishes it to the `deploy` branch and runs the cPanel deployment over SSH.
+| Environment | Branch    | URL                                                  |
+| ----------- | --------- | ---------------------------------------------------- |
+| Development | `develop` | [dev.polishstation.lk](https://dev.polishstation.lk) |
+| Production  | `main`    | [www.polishstation.lk](https://www.polishstation.lk) |
 
-Setup, secrets and post-deployment checks are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). To release or roll back, follow the [runbooks](docs/runbooks/README.md).
+The Deploy workflow builds on GitHub Actions, publishes the static site to a deploy branch and runs the cPanel deployment over SSH. Work merges into `develop` and deploys to development; a release pull request from `develop` into `main` deploys to production.
+
+Environments, setup, secrets and post-deployment checks are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). To release or roll back, follow the [runbooks](docs/runbooks/README.md).
 
 ## Documentation
 

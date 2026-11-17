@@ -2,6 +2,27 @@
 
 > How polishstation.lk reaches production. Part of the [project documentation](README.md).
 
+## Environments
+
+| Environment   | Branch    | URL                                                  | Deploys                                                                      |
+| ------------- | --------- | ---------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `development` | `develop` | [dev.polishstation.lk](https://dev.polishstation.lk) | Automatically on every merge into `develop`                                  |
+| `production`  | `main`    | [www.polishstation.lk](https://www.polishstation.lk) | Automatically when `develop` is promoted to `main` by a release pull request |
+
+The Deploy workflow builds on GitHub Actions, publishes the static site to a deploy branch and runs the cPanel deployment over SSH. Each environment is a GitHub Environment with its own variables (`APP_URL` and host settings) and secrets, so one workflow serves both. Production accepts deployments from `main` only; development from `develop` only.
+
+Development deploys are switched on per repository by setting the `DEVELOPMENT_ENABLED` repository variable to `true` once the development host exists. Until then, `develop` is built and tested by CI but not deployed.
+
+### Setting up development
+
+cPanel: create `dev.polishstation.lk` with document root `dev.polishstation.lk`, and clone this repository to `repositories/polish-station-development` tracking `deploy-development`.
+
+### Promotion
+
+1. Feature branches merge into `develop` and deploy to development.
+2. When development is verified, open a release pull request from `develop` into `main` (see [runbooks/release.md](runbooks/release.md)).
+3. Merging it deploys to production.
+
 The site is static HTML served from cPanel shared hosting. [`deploy.yml`](../.github/workflows/deploy.yml) publishes it on every push to `main`, on manual dispatch, and whenever a post is published in Sanity (`repository_dispatch: sanity-publish`).
 
 1. GitHub Actions installs dependencies and runs `bun run build` with production values from repository secrets.
