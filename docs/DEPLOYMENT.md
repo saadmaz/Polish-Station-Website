@@ -19,6 +19,9 @@ Development deploys are switched on per repository by setting the `DEVELOPMENT_E
 
 ### Setting up development
 
+Once development is live, replace the grey development badge in the README Deployment table with the live status badge:
+`https://img.shields.io/github/deployments/saadmaz/Polish-Station-Website/development?style=flat-square&label=development&labelColor=111827`.
+
 cPanel: create `dev.polishstation.lk` with document root `dev.polishstation.lk`, and clone this repository to `repositories/polish-station-development` tracking `deploy-development`.
 
 ### Promotion
