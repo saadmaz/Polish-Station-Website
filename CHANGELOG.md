@@ -31,6 +31,15 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Hosting moves from cPanel shared hosting to an assets-only Cloudflare Worker deployed with Wrangler. Security headers, asset caching and redirects now live in `public/_headers`, `public/_redirects` and `wrangler.jsonc`. Production deploys switch on with the `CLOUDFLARE_ENABLED` variable.
+
+### Removed
+
+- An unused hook and 20 unused dependencies. Installs and the repository are smaller; the site is unchanged.
+- cPanel deployment: `.cpanel.yml`, the Apache `.htaccess` and the SSH deploy-branch pipeline.
+
 ## [1.1.3] - 2026-11-17
 
 ### Changed

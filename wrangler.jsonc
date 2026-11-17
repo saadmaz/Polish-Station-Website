@@ -1,0 +1,28 @@
+{
+  // Cloudflare Workers configuration for polishstation.lk.
+  //
+  // An assets-only Worker: every route is prerendered to static HTML by
+  // `bun run build`, so no Worker code runs on a request. public/_headers and
+  // public/_redirects are copied into dist/client by the build and applied by
+  // Cloudflare. Deploys run from .github/workflows/deploy.yml.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "polish-station-website",
+  "compatibility_date": "2026-11-17",
+  "assets": {
+    "directory": "./dist/client",
+    // Prerendered routes are directory indexes (about/index.html), served at
+    // /about without a trailing slash to match links and the sitemap.
+    "html_handling": "drop-trailing-slash",
+    // Any path without a file falls back to the app shell, as on the old host.
+    "not_found_handling": "single-page-application",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  "env": {
+    // `wrangler deploy --env development` publishes a separate Worker.
+    "development": {
+      "name": "polish-station-website-development",
+    },
+  },
+}
