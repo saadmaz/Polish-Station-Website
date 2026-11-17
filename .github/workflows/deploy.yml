@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   workflow_dispatch:
   # Fired by a Sanity webhook (Settings > API > Webhooks in sanity.io/manage)
   # on every publish/unpublish, so a new blog post goes live without anyone
@@ -23,14 +23,31 @@ permissions:
 # Queuing them and cancelling superseded ones is safe: every queued run
 # builds from the same `main`, so only the newest one actually needs to run.
 concurrency:
-  group: deploy
+  group: deploy-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  deploy:
+    # main (and Sanity publishes) deploy to production; develop deploys to
+    # development once the DEVELOPMENT_ENABLED repository variable is "true".
+    if: github.ref_name == 'main' || vars.DEVELOPMENT_ENABLED == 'true'
+    name: ${{ github.ref_name == 'main' && 'Production' || 'Development' }}
+    runs-on: ubuntu-24.04
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'development' }}
+      url: ${{ vars.APP_URL }}
+    env:
+      DEPLOY_BRANCH: ${{ vars.DEPLOY_BRANCH }}
+      SERVER_REPO: ${{ vars.SERVER_REPO }}
+      PUBLIC_DIR: ${{ vars.PUBLIC_DIR }}
     steps:
       - uses: actions/checkout@v5
+
+      - name: Check environment configuration
+        run: |
+          for v in DEPLOY_BRANCH SERVER_REPO PUBLIC_DIR; do
+            [ -n "${!v}" ] || { echo "::error::$v is not set for this environment"; exit 1; }
+          done
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -43,7 +60,7 @@ jobs:
         env:
           VITE_SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
           VITE_SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
-          VITE_POS_API_BASE_URL: https://pos.polishstation.lk
+          VITE_POS_API_BASE_URL: ${{ vars.POS_API_URL }}
           VITE_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
           VITE_FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
@@ -53,31 +70,32 @@ jobs:
         run: bun run build
 
       - name: Add cPanel deploy file
-        run: cp .cpanel.yml dist/client/.cpanel.yml
+        run: sed "s#public_html#$PUBLIC_DIR#g" .cpanel.yml > dist/client/.cpanel.yml
 
       - name: Push built site to deploy branch
         run: |
           cd dist/client
-          git init -b deploy
+          git init -b "$DEPLOY_BRANCH"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Deploy ${GITHUB_SHA::7}"
-          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" deploy
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" "$DEPLOY_BRANCH"
 
       - name: Trigger cPanel pull & deploy over SSH
         uses: appleboy/ssh-action@v1
         with:
+          envs: DEPLOY_BRANCH,SERVER_REPO
           host: ${{ secrets.ZIRCON_SSH_HOST }}
           port: ${{ secrets.ZIRCON_SSH_PORT }}
           username: ${{ secrets.ZIRCON_SSH_USER }}
           key: ${{ secrets.ZIRCON_SSH_KEY }}
           script: |
             set -e
-            REPO=$HOME/repositories/polish-station
+            REPO=$HOME/$SERVER_REPO
             git -C "$REPO" fetch origin
-            git -C "$REPO" checkout deploy
-            git -C "$REPO" reset --hard origin/deploy
+            git -C "$REPO" checkout "$DEPLOY_BRANCH"
+            git -C "$REPO" reset --hard "origin/$DEPLOY_BRANCH"
 
             # The deployment task runs in cPanel's background task queue, and
             # its process gets killed once this SSH session closes (jailshell
