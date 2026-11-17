@@ -8,7 +8,7 @@ The official website of Polish Station, a premium automotive detailing studio in
 
 [![Website](https://img.shields.io/badge/website-polishstation.lk-374151?style=flat-square&labelColor=111827)](https://www.polishstation.lk)
 [![CI](https://github.com/saadmaz/Polish-Station-Website/actions/workflows/ci.yml/badge.svg)](https://github.com/saadmaz/Polish-Station-Website/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-v1.0.0-374151?style=flat-square&labelColor=111827)](https://github.com/saadmaz/Polish-Station-Website/releases)
+[![Version](https://img.shields.io/badge/version-v1.1.0-374151?style=flat-square&labelColor=111827)](https://github.com/saadmaz/Polish-Station-Website/releases)
 ![License](https://img.shields.io/badge/license-proprietary-374151?style=flat-square&labelColor=111827)
 
 [**polishstation.lk**](https://www.polishstation.lk) · [Documentation](docs/README.md) · [Report a bug](https://github.com/saadmaz/Polish-Station-Website/issues/new?template=bug_report.yml) · [Request a change](https://github.com/saadmaz/Polish-Station-Website/issues/new?template=feature_request.yml)
@@ -151,9 +151,14 @@ bun run lint && bun run format:check && bun run typecheck && bun run build
 
 ## Deployment
 
-Every push to `main`, manual run or Sanity publish builds the site on GitHub Actions, publishes it to the `deploy` branch and runs the cPanel deployment over SSH.
+| Environment | Branch    | URL                                                  |
+| ----------- | --------- | ---------------------------------------------------- |
+| Development | `develop` | [dev.polishstation.lk](https://dev.polishstation.lk) |
+| Production  | `main`    | [www.polishstation.lk](https://www.polishstation.lk) |
 
-Setup, secrets and post-deployment checks are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). To release or roll back, follow the [runbooks](docs/runbooks/README.md).
+The Deploy workflow builds on GitHub Actions, publishes the static site to a deploy branch and runs the cPanel deployment over SSH. Work merges into `develop` and deploys to development; a release pull request from `develop` into `main` deploys to production.
+
+Environments, setup, secrets and post-deployment checks are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). To release or roll back, follow the [runbooks](docs/runbooks/README.md).
 
 ## Documentation
 
