@@ -43,7 +43,7 @@ Static behaviour is configured in the repository:
 ## First-time setup
 
 1. **Cloudflare API token.** Create a token with the _Edit Cloudflare Workers_ template and store it as the `CLOUDFLARE_API_TOKEN` repository secret. `CLOUDFLARE_ACCOUNT_ID` is already set as a repository variable.
-2. **Build secrets.** In each GitHub Environment, set `SANITY_PROJECT_ID`, `SANITY_DATASET` and the `FIREBASE_*` web config values.
+2. **Build secrets.** `SANITY_PROJECT_ID`, `SANITY_DATASET` and the `FIREBASE_*` web config values are repository secrets already used by every environment. Add environment-level secrets with the same names only if development should use a different project.
 3. **Switch on deploys.** Set the repository variable `CLOUDFLARE_ENABLED` to `true`, then run the **Deploy** workflow on `main`.
 4. **Domains.** In the Worker's settings, add `www.polishstation.lk` as a custom domain. On the `polishstation.lk` zone, enable **Always Use HTTPS** and add a Redirect Rule from `polishstation.lk/*` to `https://www.polishstation.lk/${1}` (301).
 5. **Sanity webhook.** Keep the webhook posting `{"event_type": "sanity-publish"}` to this repository's dispatches endpoint (see [`studio/README.md`](../studio/README.md)).
