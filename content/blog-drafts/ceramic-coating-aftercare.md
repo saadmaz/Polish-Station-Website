@@ -8,7 +8,7 @@ don't type it by hand.
 This is the relocated content from the old /aftercare page, expanded
 into a standalone post. /aftercare now 301-redirects to
 /services/ceramic-coating until this post is published - once it's
-live, update the redirect target in public/.htaccess to
+live, update the redirect targets in public/_redirects to
 /blog/ceramic-coating-aftercare instead.
 -->
 
