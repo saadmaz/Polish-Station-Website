@@ -1,17 +1,35 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "polish-station-website",
+  "version": "1.0.0",
+  "description": "Website for Polish Station, a premium automotive detailing studio in Sri Lanka: services, gallery, reviews and booking.",
+  "homepage": "https://www.polishstation.lk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saadmaz/Polish-Station-Website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/saadmaz/Polish-Station-Website/issues"
+  },
+  "author": "Saad Mazhar (https://github.com/saadmaz)",
+  "license": "UNLICENSED",
   "private": true,
-  "sideEffects": false,
+  "packageManager": "bun@1.4.4",
+  "engines": {
+    "node": ">=20"
+  },
   "type": "module",
+  "sideEffects": false,
   "scripts": {
     "dev": "vite dev",
     "build": "bun scripts/generate-sitemap.ts && vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
-    "fetch:reviews": "bun scripts/fetch-google-reviews.ts",
-    "generate:sitemap": "bun scripts/generate-sitemap.ts"
+    "format:check": "prettier --check .",
+    "generate:sitemap": "bun scripts/generate-sitemap.ts",
+    "fetch:reviews": "bun scripts/fetch-google-reviews.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

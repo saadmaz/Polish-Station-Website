@@ -4,8 +4,8 @@ import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 type RevealVariant = "up" | "left" | "right" | "scale";
 
 const variantClass: Record<RevealVariant, string> = {
-  up:    "reveal",
-  left:  "reveal-left",
+  up: "reveal",
+  left: "reveal-left",
   right: "reveal-right",
   scale: "reveal-scale",
 };

@@ -76,7 +76,7 @@ instantly update the live site** - the site is fully static (see
 
 The GitHub Actions workflow (`.github/workflows/deploy.yml`) already listens
 for this - you just need to tell Sanity to call it. Two steps, both need
-your own login (can't be automated by an agent):
+your own login:
 
 1. **Create a GitHub Personal Access Token:**
    [github.com/settings/tokens](https://github.com/settings/personal-access-tokens/new) -> generate a fine-grained token

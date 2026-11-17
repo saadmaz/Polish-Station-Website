@@ -33,8 +33,18 @@ export const Route = createFileRoute("/_layout/services/")({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.polishstation.lk/" },
-            { "@type": "ListItem", position: 2, name: "Services", item: "https://www.polishstation.lk/services" },
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://www.polishstation.lk/",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Services",
+              item: "https://www.polishstation.lk/services",
+            },
           ],
         }),
       },

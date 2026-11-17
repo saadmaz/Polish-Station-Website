@@ -1,52 +1,106 @@
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const steps = [
-  { n: "01", title: "Pre Wash",               desc: "Active foam dissolves dirt and road grime before you physically touch the paint, preventing swirl marks and scratches." },
-  { n: "02", title: "Paint Correction",       desc: "Safely polishing your paint to permanently remove swirl marks, scratches, and haze, restoring a smooth, mirror-like finish." },
-  { n: "03", title: "Surface Preparation",    desc: "A deep-cleaning step that strips away leftover polishes, oils, and waxes so the coating can bond properly using a specialised cleaning agent." },
-  { n: "04", title: "Coating Application",    desc: "The liquid ceramic or graphene coating is carefully spread over the paint, left to flash, and wiped flat to form a permanent protective barrier." },
-  { n: "05", title: "Controlled Curing",      desc: "The critical waiting period where the coating is kept away from water, moisture, and harsh elements while it fully hardens and permanently bonds to the paint." },
+  {
+    n: "01",
+    title: "Pre Wash",
+    desc: "Active foam dissolves dirt and road grime before you physically touch the paint, preventing swirl marks and scratches.",
+  },
+  {
+    n: "02",
+    title: "Paint Correction",
+    desc: "Safely polishing your paint to permanently remove swirl marks, scratches, and haze, restoring a smooth, mirror-like finish.",
+  },
+  {
+    n: "03",
+    title: "Surface Preparation",
+    desc: "A deep-cleaning step that strips away leftover polishes, oils, and waxes so the coating can bond properly using a specialised cleaning agent.",
+  },
+  {
+    n: "04",
+    title: "Coating Application",
+    desc: "The liquid ceramic or graphene coating is carefully spread over the paint, left to flash, and wiped flat to form a permanent protective barrier.",
+  },
+  {
+    n: "05",
+    title: "Controlled Curing",
+    desc: "The critical waiting period where the coating is kept away from water, moisture, and harsh elements while it fully hardens and permanently bonds to the paint.",
+  },
 ];
 
 /* ── Top-down car SVG ──────────────────────────────────────────────────── */
 function TopDownCar() {
   return (
-    <svg viewBox="0 0 24 44" fill="none" className="w-full h-auto drop-shadow-[0_0_6px_rgba(210,11,11,0.8)]">
+    <svg
+      viewBox="0 0 24 44"
+      fill="none"
+      className="w-full h-auto drop-shadow-[0_0_6px_rgba(210,11,11,0.8)]"
+    >
       {/* Body */}
       <path
         d="M3 8 Q3 2 12 2 Q21 2 21 8 L22 34 Q22 42 12 43 Q2 42 2 34 Z"
         fill="var(--color-primary)"
       />
       {/* Windshield (front = bottom - car moves downward) */}
-      <path
-        d="M6 10 Q6 6 12 5 Q18 6 18 10 L18 17 Q12 18 6 17 Z"
-        fill="rgba(180,220,255,0.4)"
-      />
+      <path d="M6 10 Q6 6 12 5 Q18 6 18 10 L18 17 Q12 18 6 17 Z" fill="rgba(180,220,255,0.4)" />
       {/* Rear window */}
-      <path
-        d="M6 27 L6 35 Q12 37 18 35 L18 27 Q12 28 6 27 Z"
-        fill="rgba(180,220,255,0.22)"
-      />
+      <path d="M6 27 L6 35 Q12 37 18 35 L18 27 Q12 28 6 27 Z" fill="rgba(180,220,255,0.22)" />
       {/* Left front wheel */}
-      <rect x="0"    y="8"  width="3.5" height="9" rx="1.5" fill="#1B1B1B" stroke="var(--color-primary)" strokeWidth="0.5" />
+      <rect
+        x="0"
+        y="8"
+        width="3.5"
+        height="9"
+        rx="1.5"
+        fill="#1B1B1B"
+        stroke="var(--color-primary)"
+        strokeWidth="0.5"
+      />
       {/* Right front wheel */}
-      <rect x="20.5" y="8"  width="3.5" height="9" rx="1.5" fill="#1B1B1B" stroke="var(--color-primary)" strokeWidth="0.5" />
+      <rect
+        x="20.5"
+        y="8"
+        width="3.5"
+        height="9"
+        rx="1.5"
+        fill="#1B1B1B"
+        stroke="var(--color-primary)"
+        strokeWidth="0.5"
+      />
       {/* Left rear wheel */}
-      <rect x="0"    y="27" width="3.5" height="9" rx="1.5" fill="#1B1B1B" stroke="var(--color-primary)" strokeWidth="0.5" />
+      <rect
+        x="0"
+        y="27"
+        width="3.5"
+        height="9"
+        rx="1.5"
+        fill="#1B1B1B"
+        stroke="var(--color-primary)"
+        strokeWidth="0.5"
+      />
       {/* Right rear wheel */}
-      <rect x="20.5" y="27" width="3.5" height="9" rx="1.5" fill="#1B1B1B" stroke="var(--color-primary)" strokeWidth="0.5" />
+      <rect
+        x="20.5"
+        y="27"
+        width="3.5"
+        height="9"
+        rx="1.5"
+        fill="#1B1B1B"
+        stroke="var(--color-primary)"
+        strokeWidth="0.5"
+      />
       {/* Headlights (bottom = front) */}
-      <rect x="7"    y="41.5" width="3.5" height="1.5" rx="0.75" fill="rgba(255,210,60,0.95)" />
+      <rect x="7" y="41.5" width="3.5" height="1.5" rx="0.75" fill="rgba(255,210,60,0.95)" />
       <rect x="13.5" y="41.5" width="3.5" height="1.5" rx="0.75" fill="rgba(255,210,60,0.95)" />
       {/* Taillights (top = rear) */}
-      <rect x="7"    y="1"    width="3.5" height="1.5" rx="0.75" fill="rgba(255,50,50,0.85)" />
-      <rect x="13.5" y="1"    width="3.5" height="1.5" rx="0.75" fill="rgba(255,50,50,0.85)" />
+      <rect x="7" y="1" width="3.5" height="1.5" rx="0.75" fill="rgba(255,50,50,0.85)" />
+      <rect x="13.5" y="1" width="3.5" height="1.5" rx="0.75" fill="rgba(255,50,50,0.85)" />
     </svg>
   );
 }
 
 /* ── Step item with individual scroll reveal ───────────────────────────── */
-function StepItem({ step, index }: { step: typeof steps[0]; index: number }) {
+function StepItem({ step, index }: { step: (typeof steps)[0]; index: number }) {
   const ref = useScrollReveal() as React.RefObject<HTMLDivElement>;
 
   return (
@@ -111,7 +165,8 @@ export function Process() {
             <div
               className="absolute inset-0 rounded-full overflow-hidden"
               style={{
-                backgroundImage: "repeating-linear-gradient(to bottom, transparent 0px, transparent 8px, rgba(210,11,11,0.55) 8px, rgba(210,11,11,0.55) 24px)",
+                backgroundImage:
+                  "repeating-linear-gradient(to bottom, transparent 0px, transparent 8px, rgba(210,11,11,0.55) 8px, rgba(210,11,11,0.55) 24px)",
                 backgroundSize: "4px 24px",
                 backgroundPosition: "center 0",
                 animation: "road-dash-move 0.45s linear infinite",

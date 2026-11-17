@@ -57,7 +57,8 @@ export const services: Service[] = [
     slug: "ceramic-coating",
     icon: Shield,
     title: "Ceramic Coating",
-    shortDesc: "A hard, glass-like shield that locks in a high-gloss shine and repels water, dirt and UV damage.",
+    shortDesc:
+      "A hard, glass-like shield that locks in a high-gloss shine and repels water, dirt and UV damage.",
     why: "Wax and sealants wear off in weeks. A ceramic coating chemically bonds to the clear coat, forming a hard, hydrophobic layer that protects against UV fading, bird droppings, road salt and light abrasion for years, not weeks - and it's what makes a car sheet water off on the highway instead of pooling. Every coating application includes professional paint correction beforehand, and comes in 9H (3-year durability) or 10H (3-year durability) grades.",
     process: [
       "Full paint correction (a coating locks in whatever is underneath it)",
@@ -85,7 +86,8 @@ export const services: Service[] = [
     slug: "graphene-coating",
     icon: Atom,
     title: "Graphene Coating",
-    shortDesc: "An advanced, carbon-infused shield with a high-gloss finish and long-lasting hydrophobic protection.",
+    shortDesc:
+      "An advanced, carbon-infused shield with a high-gloss finish and long-lasting hydrophobic protection.",
     why: "An advanced coating chemistry that layers graphene with the ceramic base for better heat dissipation and slightly more flexibility than pure ceramic, which matters most on dark-colored cars that run hotter in direct sun. It's our longest-lasting protective option, rated for 5 years of durability, and repels heat and water spots while delivering a high-gloss finish.",
     process: [
       "Full paint correction",
@@ -113,7 +115,8 @@ export const services: Service[] = [
     slug: "interior-detailing",
     icon: Sofa,
     title: "Interior Detailing",
-    shortDesc: "Deep cleaning and conditioning for seats, carpets, dashboard and interior surfaces.",
+    shortDesc:
+      "Deep cleaning and conditioning for seats, carpets, dashboard and interior surfaces.",
     why: "Interior wear is what actually shows up at resale time - cracked leather, stained fabric and faded trim age a car faster than the exterior does. Deep extraction and conditioning gets ahead of that instead of just vacuuming around it.",
     process: [
       "Full interior vacuum, including seat tracks and vents",

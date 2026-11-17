@@ -34,7 +34,7 @@ export function useCountUp(target: number, duration = 1800) {
           observer.unobserve(el);
         }
       },
-      { threshold: 0.6 }
+      { threshold: 0.6 },
     );
 
     observer.observe(el);
