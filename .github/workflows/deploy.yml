@@ -1,62 +1,52 @@
+# Builds the prerendered site and deploys it to Cloudflare Workers.
+# main (and Sanity publishes) deploy to production once the CLOUDFLARE_ENABLED
+# repository variable is "true"; develop deploys to development once
+# DEVELOPMENT_ENABLED is "true". Needs the CLOUDFLARE_API_TOKEN secret and the
+# CLOUDFLARE_ACCOUNT_ID variable (see docs/DEPLOYMENT.md).
 name: Deploy
 
 on:
   push:
     branches: [main, develop]
   workflow_dispatch:
-  # Fired by a Sanity webhook (Settings > API > Webhooks in sanity.io/manage)
-  # on every publish/unpublish, so a new blog post goes live without anyone
-  # having to push a commit or click "Run workflow" manually. The webhook
-  # POSTs to https://api.github.com/repos/<owner>/<repo>/dispatches with
-  # body {"event_type": "sanity-publish"} and an Authorization header
-  # carrying a GitHub PAT (repo scope) - see studio/README.md.
+  # Sent by the Sanity publish webhook so a new post goes live without a commit.
   repository_dispatch:
     types: [sanity-publish]
 
-permissions:
-  contents: write
-
-# A single Sanity publish can fire several webhook deliveries in the same
-# few seconds (one per underlying document mutation), each triggering its
-# own run here - without this, they race to force-push the same `deploy`
-# branch and GitHub's ref-lock rejects all but one as a hard failure.
-# Queuing them and cancelling superseded ones is safe: every queued run
-# builds from the same `main`, so only the newest one actually needs to run.
 concurrency:
   group: deploy-${{ github.ref_name }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
-    # main (and Sanity publishes) deploy to production; develop deploys to
-    # development once the DEVELOPMENT_ENABLED repository variable is "true".
-    if: github.ref_name == 'main' || vars.DEVELOPMENT_ENABLED == 'true'
+    if: >-
+      (github.ref_name == 'main' && vars.CLOUDFLARE_ENABLED == 'true') ||
+      (github.ref_name == 'develop' && vars.DEVELOPMENT_ENABLED == 'true')
     name: ${{ github.ref_name == 'main' && 'Production' || 'Development' }}
     runs-on: ubuntu-24.04
+    timeout-minutes: 20
     environment:
       name: ${{ github.ref_name == 'main' && 'production' || 'development' }}
       url: ${{ vars.APP_URL }}
     env:
-      DEPLOY_BRANCH: ${{ vars.DEPLOY_BRANCH }}
-      SERVER_REPO: ${{ vars.SERVER_REPO }}
-      PUBLIC_DIR: ${{ vars.PUBLIC_DIR }}
+      APP_URL: ${{ vars.APP_URL }}
+
     steps:
-      - uses: actions/checkout@v5
+      - name: Check out
+        uses: actions/checkout@v5
 
-      - name: Check environment configuration
-        run: |
-          for v in DEPLOY_BRANCH SERVER_REPO PUBLIC_DIR; do
-            [ -n "${!v}" ] || { echo "::error::$v is not set for this environment"; exit 1; }
-          done
-
-      - uses: oven-sh/setup-bun@v2
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.4
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Build static site
+      - name: Build
         env:
           VITE_SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
           VITE_SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
@@ -69,47 +59,25 @@ jobs:
           VITE_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
         run: bun run build
 
-      - name: Add cPanel deploy file
-        run: sed "s#public_html#$PUBLIC_DIR#g" .cpanel.yml > dist/client/.cpanel.yml
-
-      - name: Push built site to deploy branch
-        run: |
-          cd dist/client
-          git init -b "$DEPLOY_BRANCH"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Deploy ${GITHUB_SHA::7}"
-          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" "$DEPLOY_BRANCH"
-
-      - name: Trigger cPanel pull & deploy over SSH
-        uses: appleboy/ssh-action@v1
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
         with:
-          envs: DEPLOY_BRANCH,SERVER_REPO
-          host: ${{ secrets.ZIRCON_SSH_HOST }}
-          port: ${{ secrets.ZIRCON_SSH_PORT }}
-          username: ${{ secrets.ZIRCON_SSH_USER }}
-          key: ${{ secrets.ZIRCON_SSH_KEY }}
-          script: |
-            set -e
-            REPO=$HOME/$SERVER_REPO
-            git -C "$REPO" fetch origin
-            git -C "$REPO" checkout "$DEPLOY_BRANCH"
-            git -C "$REPO" reset --hard "origin/$DEPLOY_BRANCH"
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy ${{ github.ref_name == 'develop' && '--env development' || '' }}
 
-            # The deployment task runs in cPanel's background task queue, and
-            # its process gets killed once this SSH session closes (jailshell
-            # doesn't let it linger past the session). So wait here and
-            # confirm it actually finished before disconnecting.
-            OUT=$(uapi --output=jsonpretty VersionControlDeployment create repository_root="$REPO")
-            LOG=$(echo "$OUT" | grep -o '"log_path" : "[^"]*"' | sed 's/.*: "\(.*\)"/\1/')
-            for i in $(seq 1 30); do
-              if grep -q "Build completed" "$LOG" 2>/dev/null; then
-                cat "$LOG"
-                exit 0
-              fi
-              sleep 1
-            done
-            echo "Timed out waiting for deployment to finish"
-            cat "$LOG" 2>/dev/null
-            exit 1
+      - name: Smoke test
+        run: |
+          for i in $(seq 1 10); do
+            code=$(curl -s -o /dev/null -D headers.txt -w "%{http_code}" --max-time 30 -L "$APP_URL/" || echo 000)
+            echo "$APP_URL -> $code"
+            [ "$code" = "200" ] && exit 0
+            if [ "$code" = "403" ] && grep -qi '^cf-mitigated: challenge' headers.txt; then
+              echo "::notice::$APP_URL is up (Cloudflare challenged the CI runner)"
+              exit 0
+            fi
+            sleep 15
+          done
+          cat headers.txt
+          echo "::error::$APP_URL did not return 200"
+          exit 1

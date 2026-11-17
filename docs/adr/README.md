@@ -15,8 +15,9 @@ An architecture decision record (ADR) captures one significant technical decisio
 
 ## Index
 
-| ADR                                                                | Decision                                            | Status   |
-| ------------------------------------------------------------------ | --------------------------------------------------- | -------- |
-| [0001](0001-full-static-prerender-on-shared-hosting.md)            | Full static prerender on shared hosting             | Accepted |
-| [0002](0002-customer-submissions-are-owned-by-the-pos.md)          | Customer submissions are owned by the POS           | Accepted |
-| [0003](0003-sanity-for-the-blog-with-publish-triggered-deploys.md) | Sanity for the blog, with publish-triggered deploys | Accepted |
+| ADR                                                                | Decision                                            | Status     |
+| ------------------------------------------------------------------ | --------------------------------------------------- | ---------- |
+| [0001](0001-full-static-prerender-on-shared-hosting.md)            | Full static prerender on shared hosting             | Superseded |
+| [0002](0002-customer-submissions-are-owned-by-the-pos.md)          | Customer submissions are owned by the POS           | Accepted   |
+| [0003](0003-sanity-for-the-blog-with-publish-triggered-deploys.md) | Sanity for the blog, with publish-triggered deploys | Accepted   |
+| [0004](0004-host-the-static-site-on-cloudflare-workers.md)         | Host the static site on Cloudflare Workers          | Accepted   |

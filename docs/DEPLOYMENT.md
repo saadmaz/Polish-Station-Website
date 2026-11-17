@@ -6,42 +6,59 @@
 
 > How polishstation.lk reaches production. Part of the [project documentation](README.md).
 
+> [!IMPORTANT]
+> The site is moving from shared hosting to **Cloudflare Workers**. The version live at [www.polishstation.lk](https://www.polishstation.lk) stays on the previous host until DNS moves. Cloudflare deploys switch on with the `CLOUDFLARE_ENABLED` repository variable, so nothing reaches production before you are ready.
+
 ## Environments
 
-| Environment   | Branch    | URL                                                  | Deploys                                                                      |
-| ------------- | --------- | ---------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `development` | `develop` | [dev.polishstation.lk](https://dev.polishstation.lk) | Automatically on every merge into `develop`                                  |
-| `production`  | `main`    | [www.polishstation.lk](https://www.polishstation.lk) | Automatically when `develop` is promoted to `main` by a release pull request |
+| Environment   | Branch    | URL                                                  | Worker                               |
+| ------------- | --------- | ---------------------------------------------------- | ------------------------------------ |
+| `development` | `develop` | [dev.polishstation.lk](https://dev.polishstation.lk) | `polish-station-website-development` |
+| `production`  | `main`    | [www.polishstation.lk](https://www.polishstation.lk) | `polish-station-website`             |
 
-The Deploy workflow builds on GitHub Actions, publishes the static site to a deploy branch and runs the cPanel deployment over SSH. Each environment is a GitHub Environment with its own variables (`APP_URL` and host settings) and secrets, so one workflow serves both. Production accepts deployments from `main` only; development from `develop` only.
-
-Development deploys are switched on per repository by setting the `DEVELOPMENT_ENABLED` repository variable to `true` once the development host exists. Until then, `develop` is built and tested by CI but not deployed.
-
-### Setting up development
-
-Once development is live, replace the grey development badge in the README Deployment table with the live status badge:
-`https://img.shields.io/github/deployments/saadmaz/Polish-Station-Website/development?style=flat-square&label=development&labelColor=111827`.
-
-cPanel: create `dev.polishstation.lk` with document root `dev.polishstation.lk`, and clone this repository to `repositories/polish-station-development` tracking `deploy-development`.
+Each is a GitHub Environment with its own variables (`APP_URL`, `POS_API_URL`) and secrets. Production accepts deployments from `main` only; development from `develop` only.
 
 ### Promotion
 
-1. Feature branches merge into `develop` and deploy to development.
-2. When development is verified, open a release pull request from `develop` into `main` (see [runbooks/release.md](runbooks/release.md)).
-3. Merging it deploys to production.
+1. Feature branches merge into `develop` and deploy to development (once `DEVELOPMENT_ENABLED` is `true`).
+2. A release pull request from `develop` into `main` (see [runbooks/release.md](runbooks/release.md)) promotes the change.
+3. Merging it deploys to production (once `CLOUDFLARE_ENABLED` is `true`).
 
-The site is static HTML served from cPanel shared hosting. [`deploy.yml`](../.github/workflows/deploy.yml) publishes it on every push to `main`, on manual dispatch, and whenever a post is published in Sanity (`repository_dispatch: sanity-publish`).
+## How a deploy works
 
-1. GitHub Actions installs dependencies and runs `bun run build` with production values from repository secrets.
-2. The prerendered output in `dist/client/` is force-pushed to the `deploy` branch together with [`.cpanel.yml`](../.cpanel.yml).
-3. The workflow connects over SSH, checks out `deploy` on the server and runs the cPanel deployment, which copies the files into `public_html`.
+[`deploy.yml`](../.github/workflows/deploy.yml) runs on every push to `main` or `develop`, on manual dispatch, and whenever a post is published in Sanity (`repository_dispatch: sanity-publish`):
 
-The `deploy` branch is a build artefact. Never commit to it by hand.
+1. Install dependencies and run `bun run build`, which prerenders every route into `dist/client/` using the environment's Sanity, Firebase and POS values.
+2. Deploy `dist/client/` with Wrangler as an assets-only Worker ([`wrangler.jsonc`](../wrangler.jsonc)). No Worker code runs on a request.
+3. Smoke-test the environment URL.
 
-## Required secrets
+Static behaviour is configured in the repository:
 
-| Secret                                                                                                                                          | Purpose                                  |
-| ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| `SANITY_PROJECT_ID`, `SANITY_DATASET`                                                                                                           | Blog content at build time               |
-| `FIREBASE_API_KEY`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_APP_ID` | Firebase web config for the contact form |
-| `ZIRCON_SSH_HOST`, `ZIRCON_SSH_PORT`, `ZIRCON_SSH_USER`, `ZIRCON_SSH_KEY`                                                                       | SSH access to the hosting account        |
+| File                | Controls                                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `wrangler.jsonc`    | Worker names, the assets directory, `/about` without a trailing slash, and the app-shell fallback for unknown paths |
+| `public/_headers`   | Security headers and one-year caching for `/assets/*`                                                               |
+| `public/_redirects` | Path redirects such as `/aftercare` → `/services/ceramic-coating`                                                   |
+
+## First-time setup
+
+1. **Cloudflare API token.** Create a token with the _Edit Cloudflare Workers_ template and store it as the `CLOUDFLARE_API_TOKEN` repository secret. `CLOUDFLARE_ACCOUNT_ID` is already set as a repository variable.
+2. **Build secrets.** In each GitHub Environment, set `SANITY_PROJECT_ID`, `SANITY_DATASET` and the `FIREBASE_*` web config values.
+3. **Switch on deploys.** Set the repository variable `CLOUDFLARE_ENABLED` to `true`, then run the **Deploy** workflow on `main`.
+4. **Domains.** In the Worker's settings, add `www.polishstation.lk` as a custom domain. On the `polishstation.lk` zone, enable **Always Use HTTPS** and add a Redirect Rule from `polishstation.lk/*` to `https://www.polishstation.lk/${1}` (301).
+5. **Sanity webhook.** Keep the webhook posting `{"event_type": "sanity-publish"}` to this repository's dispatches endpoint (see [`studio/README.md`](../studio/README.md)).
+6. Repeat steps 2 to 4 for development with `dev.polishstation.lk`, then set `DEVELOPMENT_ENABLED` to `true`.
+
+## Preview locally
+
+```sh
+bun run preview:worker   # build, then serve in Cloudflare's runtime at http://localhost:8787
+bun run deploy           # build and deploy from your machine (after `npx wrangler login`)
+```
+
+## Post-deployment checks
+
+1. https://www.polishstation.lk and an inner page such as `/services/ceramic-coating` load directly.
+2. `https://polishstation.lk` redirects to `https://www.polishstation.lk`, and `/aftercare` redirects to the ceramic coating page.
+3. A test booking arrives in the POS.
+4. Publishing a post in Sanity starts a **Deploy** run and the post appears on `/blog`.

@@ -1,0 +1,5 @@
+# Path redirects, read by Cloudflare from the root of the static assets.
+# Host-level rules (HTTPS and the apex -> www redirect) are Cloudflare
+# Redirect Rules on the zone; see docs/DEPLOYMENT.md.
+/aftercare /services/ceramic-coating 301
+/aftercare/ /services/ceramic-coating 301

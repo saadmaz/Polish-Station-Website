@@ -1,5 +1,5 @@
 // Build-time script - NOT run by the deployed site (there is no server in
-// production; see .cpanel.yml). Run this manually before each deploy to
+// production; the site is static files on Cloudflare). Run this manually to
 // refresh src/lib/data/reviews.generated.json with real Google reviews:
 //
 //   GOOGLE_PLACES_API_KEY=... GOOGLE_PLACE_ID=... bun run fetch:reviews

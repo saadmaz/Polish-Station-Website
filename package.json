@@ -24,6 +24,8 @@
     "build": "bun scripts/generate-sitemap.ts && vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
+    "preview:worker": "bun run build && wrangler dev",
+    "deploy": "bun run build && wrangler deploy",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
@@ -96,6 +98,7 @@
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "wrangler": "^4"
   }
 }
