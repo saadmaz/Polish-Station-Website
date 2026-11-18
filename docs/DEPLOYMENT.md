@@ -26,9 +26,9 @@ Each is a GitHub Environment with its own variables (`APP_URL`, `POS_API_URL`) a
 
 ## How a deploy works
 
-[`deploy.yml`](../.github/workflows/deploy.yml) runs on every push to `main` or `develop`, on manual dispatch, and whenever a post is published in Sanity (`repository_dispatch: sanity-publish`):
+[`deploy.yml`](../.github/workflows/deploy.yml) runs on every push to `main` or `develop` and on manual dispatch:
 
-1. Install dependencies and run `bun run build`, which prerenders every route into `dist/client/` using the environment's Sanity, Firebase and POS values.
+1. Install dependencies and run `bun run build`, which prerenders every route into `dist/client/` using the environment's Firebase and POS values.
 2. Deploy `dist/client/` with Wrangler as an assets-only Worker ([`wrangler.jsonc`](../wrangler.jsonc)). No Worker code runs on a request.
 3. Smoke-test the environment URL.
 
@@ -38,16 +38,15 @@ Static behaviour is configured in the repository:
 | ------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `wrangler.jsonc`    | Worker names, the assets directory, `/about` without a trailing slash, and the app-shell fallback for unknown paths |
 | `public/_headers`   | Security headers and one-year caching for `/assets/*`                                                               |
-| `public/_redirects` | Path redirects such as `/aftercare` → `/services/ceramic-coating`                                                   |
+| `public/_redirects` | Path redirects such as `/aftercare` → `/services/ceramic-coating`, and `/blog` → `/` while the blog is paused       |
 
 ## First-time setup
 
 1. **Cloudflare API token.** Create a token with the _Edit Cloudflare Workers_ template and store it as the `CLOUDFLARE_API_TOKEN` repository secret. `CLOUDFLARE_ACCOUNT_ID` is already set as a repository variable.
-2. **Build secrets.** `SANITY_PROJECT_ID`, `SANITY_DATASET` and the `FIREBASE_*` web config values are repository secrets already used by every environment. Add environment-level secrets with the same names only if development should use a different project.
+2. **Build secrets.** The `FIREBASE_*` web config values are repository secrets already used by every environment. Add environment-level secrets with the same names only if development should use a different project.
 3. **Switch on deploys.** Set the repository variable `CLOUDFLARE_ENABLED` to `true`, then run the **Deploy** workflow on `main`.
 4. **Domains.** In the Worker's settings, add `www.polishstation.lk` as a custom domain. On the `polishstation.lk` zone, enable **Always Use HTTPS** and add a Redirect Rule from `polishstation.lk/*` to `https://www.polishstation.lk/${1}` (301).
-5. **Sanity webhook.** Keep the webhook posting `{"event_type": "sanity-publish"}` to this repository's dispatches endpoint (see [`studio/README.md`](../studio/README.md)).
-6. Repeat steps 2 to 4 for development with `dev.polishstation.lk`, then set `DEVELOPMENT_ENABLED` to `true`.
+5. Repeat steps 2 to 4 for development with `dev.polishstation.lk`, then set `DEVELOPMENT_ENABLED` to `true`.
 
 ## Preview locally
 
@@ -60,5 +59,4 @@ bun run deploy           # build and deploy from your machine (after `npx wrangl
 
 1. https://www.polishstation.lk and an inner page such as `/services/ceramic-coating` load directly.
 2. `https://polishstation.lk` redirects to `https://www.polishstation.lk`, and `/aftercare` redirects to the ceramic coating page.
-3. A test booking arrives in the POS.
-4. Publishing a post in Sanity starts a **Deploy** run and the post appears on `/blog`.
+3. A test booking arrives in the POS, and a test message from `/contact` arrives on the POS Inquiries screen.

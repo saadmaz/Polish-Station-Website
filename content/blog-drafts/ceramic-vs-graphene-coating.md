@@ -1,6 +1,6 @@
 <!--
-Draft for Sanity Studio (studio/schemaTypes/post.ts). See the note at the
-top of ceramic-coating-aftercare.md for how to paste this in.
+Blog draft, kept for when the blog returns through the Polish Station admin
+portal. See the note at the top of ceramic-coating-aftercare.md.
 -->
 
 Title: Ceramic vs Graphene Coating: Which One Actually Fits Your Car?

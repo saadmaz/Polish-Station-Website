@@ -31,7 +31,13 @@
 
 ## [Unreleased]
 
+### Removed
+
+- Sanity and the blog. `/blog` now redirects to the home page until posts return through the Polish Station admin portal; drafts are kept in `content/blog-drafts/`.
+
 ### Fixed
+
+- The contact form asks visitors to call or WhatsApp when online messages aren't configured, instead of failing on submit.
 
 - The Google reviews fetch now uses Places API (New). The legacy Places API it called can no longer be enabled on new Google Cloud projects.
 
