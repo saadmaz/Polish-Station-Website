@@ -74,7 +74,7 @@ Polish Station restores, protects and perfects vehicle finishes using paint-dept
 
 <table>
 <tr><td width="50%" valign="top"><strong>Service pages</strong><br/>Paint correction, cut and polish, ceramic and graphene coating, interior and exterior detailing, engine bay cleaning and headlight restoration, each with its own detail page.</td><td width="50%" valign="top"><strong>Online booking</strong><br/>A multi-service booking form with a date picker, sent straight into the Polish Station POS.</td></tr>
-<tr><td width="50%" valign="top"><strong>Contact and newsletter</strong><br/>Enquiries land in the POS Inquiries screen; newsletter sign-ups are stored as POS subscribers.</td><td width="50%" valign="top"><strong>Blog</strong><br/>Articles written and published in Sanity Studio, rebuilt and deployed automatically on publish.</td></tr>
+<tr><td width="50%" valign="top"><strong>Contact and newsletter</strong><br/>Enquiries land in the POS Inquiries screen; newsletter sign-ups are stored as POS subscribers.</td><td width="50%" valign="top"><strong>Blog (paused)</strong><br/>Article drafts are kept in <code>content/blog-drafts/</code> until the blog returns through the Polish Station admin portal.</td></tr>
 <tr><td width="50%" valign="top"><strong>Social proof</strong><br/>Google reviews fetched at build time, before-and-after comparisons and a gallery.</td><td width="50%" valign="top"><strong>Fully static</strong><br/>Every route is prerendered to HTML, so the site is fast and served straight from Cloudflare's edge.</td></tr>
 <tr><td width="50%" valign="top"><strong>SEO</strong><br/>Per-page metadata and Open Graph images, a generated <code>sitemap.xml</code>, <code>robots.txt</code> and <code>llms.txt</code>.</td><td width="50%" valign="top"><strong>Mobile-first contact</strong><br/>Sticky Call / WhatsApp / Book bar on phones and a floating WhatsApp button.</td></tr>
 </table>
@@ -83,7 +83,7 @@ Polish Station restores, protects and perfects vehicle finishes using paint-dept
 
 ## Architecture
 
-A TanStack Start site prerendered to static HTML and served by an assets-only Cloudflare Worker. It stores no customer data: bookings and newsletter sign-ups go to the [Polish Station POS](https://github.com/saadmaz/Polish-Station-POS) intake API and contact enquiries to the POS Firestore project. Blog posts come from Sanity, and publishing triggers a rebuild.
+A TanStack Start site prerendered to static HTML and served by an assets-only Cloudflare Worker. It stores no customer data: bookings and newsletter sign-ups go to the [Polish Station POS](https://github.com/saadmaz/Polish-Station-POS) intake API and contact enquiries to the POS Firestore project.
 
 ```mermaid
 flowchart LR
@@ -91,8 +91,7 @@ flowchart LR
   Site -- booking, newsletter --> POSAPI["pos.polishstation.lk<br/>public intake API"]
   Site -- contact form --> Firestore[("Firestore<br/>inquiries")]
   POSAPI --> Firestore
-  Sanity["Sanity Studio<br/>blog posts"] -- publish webhook --> GHA["GitHub Actions<br/>build and deploy"]
-  GHA -- wrangler deploy --> Site
+  GHA["GitHub Actions<br/>build and deploy"] -- wrangler deploy --> Site
 ```
 
 > [!TIP]
@@ -108,7 +107,6 @@ flowchart LR
 <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white">
 <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white">
 <img alt="Vite" src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white">
-<img alt="Sanity" src="https://img.shields.io/badge/Sanity-F03E2F?style=flat-square&logo=sanity&logoColor=white">
 <img alt="Firebase" src="https://img.shields.io/badge/Firebase-DD2C00?style=flat-square&logo=firebase&logoColor=white">
 <img alt="Bun" src="https://img.shields.io/badge/Bun-000000?style=flat-square&logo=bun&logoColor=white">
 </p>
@@ -122,7 +120,7 @@ flowchart LR
 | Language  | TypeScript (strict)                                                                                |
 | Styling   | Tailwind CSS v4 and Radix-based UI primitives                                                      |
 | Forms     | React Hook Form + Zod                                                                              |
-| Content   | Sanity (blog), Google Places API (reviews, build time only)                                        |
+| Content   | Google Places API (reviews, build time only)                                                       |
 | Data      | Firebase Firestore and the POS intake API                                                          |
 | Build     | Vite                                                                                               |
 | Hosting   | Cloudflare Workers (static assets), deployed by GitHub Actions with Wrangler                       |
@@ -172,17 +170,16 @@ Vite prints the local address when the server starts.
 
 ## Configuration
 
-All `VITE_*` values are public identifiers compiled into the bundle: the POS API URL, the Sanity project and the Firebase web config. The Google Places key is used only at build time to refresh reviews.
+All `VITE_*` values are public identifiers compiled into the bundle: the POS API URL and the Firebase web config. The Google Places key is used only at build time to refresh reviews.
 
 <details>
 <summary><strong>Environment variables</strong></summary>
 
-| Variable                                        | Purpose                                                                 |
-| ----------------------------------------------- | ----------------------------------------------------------------------- |
-| `VITE_POS_API_BASE_URL`                         | Base URL of the POS public intake API (`https://pos.polishstation.lk`)  |
-| `VITE_SANITY_PROJECT_ID`, `VITE_SANITY_DATASET` | Sanity project for the blog. Unset renders an empty blog                |
-| `VITE_FIREBASE_*`                               | Firebase web app config for the POS Firestore project (contact form)    |
-| `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID`      | Used only by `fetch:reviews` at build time; never shipped to the client |
+| Variable                                   | Purpose                                                                 |
+| ------------------------------------------ | ----------------------------------------------------------------------- |
+| `VITE_POS_API_BASE_URL`                    | Base URL of the POS public intake API (`https://pos.polishstation.lk`)  |
+| `VITE_FIREBASE_*`                          | Firebase web app config for the POS Firestore project (contact form)    |
+| `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID` | Used only by `fetch:reviews` at build time; never shipped to the client |
 
 Where each value is set, and which are secret: [docs/CONFIGURATION.md](docs/CONFIGURATION.md).
 
@@ -201,7 +198,7 @@ Where each value is set, and which are secret: [docs/CONFIGURATION.md](docs/CONF
 ```
 .
 ├── .github/workflows/       # CI on pull requests, deploy on main
-├── content/blog-drafts/     # Article drafts in Markdown before they go into Sanity
+├── content/blog-drafts/     # Article drafts kept for the blog's return
 ├── public/                  # robots.txt, sitemap.xml, llms.txt, _headers and _redirects for Cloudflare
 ├── scripts/                 # Sitemap generator and Google reviews fetcher
 ├── src/
@@ -212,12 +209,11 @@ Where each value is set, and which are secret: [docs/CONFIGURATION.md](docs/CONF
 │   ├── hooks/               # Scroll reveal, count-up and tilt effects
 │   ├── lib/
 │   │   ├── api/             # POS intake API and Firestore inquiries
-│   │   ├── data/            # Services, pricing, FAQ, gallery, reviews, blog client
+│   │   ├── data/            # Services, pricing, FAQ, gallery, reviews
 │   │   └── seo.ts           # Page metadata helpers
 │   ├── routes/              # File-based routes (see src/routes/README.md)
 │   └── styles.css           # Design tokens and global styles
-├── wrangler.jsonc           # Cloudflare Worker configuration
-└── studio/                  # Sanity Studio for writing blog posts
+└── wrangler.jsonc           # Cloudflare Worker configuration
 ```
 
 </details>
@@ -252,7 +248,7 @@ flowchart LR
   M -- auto deploy --> PROD(["Production"])
 ```
 
-The Deploy workflow builds the site on GitHub Actions and deploys it to Cloudflare Workers with Wrangler; Sanity publishes trigger it too. Cloudflare deploys switch on with the `CLOUDFLARE_ENABLED` variable, and the live site stays on the previous host until DNS moves. Environments, setup, secrets and post-deployment checks are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+The Deploy workflow builds the site on GitHub Actions and deploys it to Cloudflare Workers with Wrangler. Cloudflare deploys switch on with the `CLOUDFLARE_ENABLED` variable, and the live site stays on the previous host until DNS moves. Environments, setup, secrets and post-deployment checks are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 > [!TIP]
 > To ship or undo a release, follow the [release](docs/runbooks/release.md) and [rollback](docs/runbooks/rollback.md) runbooks.

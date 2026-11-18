@@ -3,3 +3,9 @@
 # Redirect Rules on the zone; see docs/DEPLOYMENT.md.
 /aftercare /services/ceramic-coating 301
 /aftercare/ /services/ceramic-coating 301
+
+# The blog is paused until it moves to the in-house admin portal. Temporary
+# (302) so the URLs can come back without search engines dropping them.
+/blog / 302
+/blog/ / 302
+/blog/* / 302

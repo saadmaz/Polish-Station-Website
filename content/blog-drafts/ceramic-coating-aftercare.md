@@ -1,14 +1,13 @@
 <!--
-Draft for Sanity Studio (studio/schemaTypes/post.ts). Paste each field
-into the matching Studio field. Body headings below map to block styles:
-## -> H2, ### -> H3, plain paragraphs -> Normal. Add a cover image in
-Studio (none is included here). Click "Generate" for the slug field -
-don't type it by hand.
+Blog draft, kept for when the blog returns through the Polish Station admin
+portal (see docs/adr/0005-remove-sanity-and-pause-the-blog.md). Body
+headings: ## -> H2, ### -> H3. No cover image is included. Use the slug
+below as written.
 
 This is the relocated content from the old /aftercare page, expanded
 into a standalone post. /aftercare now 301-redirects to
 /services/ceramic-coating until this post is published - once it's
-live, update the redirect target in public/.htaccess to
+live, update the redirect targets in public/_redirects to
 /blog/ceramic-coating-aftercare instead.
 -->
 

@@ -2,9 +2,6 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import logo from "@/assets/logo.webp";
 
-// Blog is deliberately left out until it has published posts - an empty
-// section in the primary nav reads as abandoned. Add it back in once
-// posts are live in Sanity.
 const links = [
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },

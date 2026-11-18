@@ -14,5 +14,10 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID as string,
 };
 
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+// Unset in a build without the Firebase values; the contact form then asks
+// people to call or WhatsApp instead of failing on submit.
+export const firebaseConfigured = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId);
+
+export const db = firebaseConfigured
+  ? getFirestore(getApps().length ? getApp() : initializeApp(firebaseConfig))
+  : null;

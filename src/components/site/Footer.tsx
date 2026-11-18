@@ -190,11 +190,6 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/blog" className="hover:text-primary">
-                  Blog
-                </a>
-              </li>
-              <li>
                 <a href="/faq" className="hover:text-primary">
                   FAQ
                 </a>

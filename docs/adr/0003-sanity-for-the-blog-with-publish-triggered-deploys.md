@@ -4,9 +4,9 @@
 
 <sub><a href="../../README.md">Project README</a> · <a href="../README.md">Documentation index</a></sub>
 
-| Status   | Date       |
-| -------- | ---------- |
-| Accepted | 2026-08-15 |
+| Status                                                             | Date       |
+| ------------------------------------------------------------------ | ---------- |
+| Superseded by [ADR-0005](0005-remove-sanity-and-pause-the-blog.md) | 2026-08-15 |
 
 ## Decision
 
