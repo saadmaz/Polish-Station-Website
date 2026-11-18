@@ -31,6 +31,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- The Google reviews fetch now uses Places API (New). The legacy Places API it called can no longer be enabled on new Google Cloud projects.
+
 ## [1.2.0] - 2026-11-17
 
 ### Changed

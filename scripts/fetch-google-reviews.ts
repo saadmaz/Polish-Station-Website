@@ -4,6 +4,9 @@
 //
 //   GOOGLE_PLACES_API_KEY=... GOOGLE_PLACE_ID=... bun run fetch:reviews
 //
+// Uses Places API (New). The legacy Places API can no longer be enabled on
+// new Google Cloud projects. Google returns at most five reviews per place.
+//
 // The API key never ships to the client - it's only used here, at build
 // time, on your own machine or in CI.
 
@@ -15,6 +18,14 @@ export type GeneratedReview = {
   rating: number;
   text: string;
   relativeTime: string;
+};
+
+type PlaceReview = {
+  rating?: number;
+  text?: { text?: string };
+  originalText?: { text?: string };
+  authorAttribution?: { displayName?: string };
+  relativePublishTimeDescription?: string;
 };
 
 const OUTPUT_PATH = fileURLToPath(
@@ -30,32 +41,35 @@ async function main() {
     process.exit(1);
   }
 
-  const url = new URL("https://maps.googleapis.com/maps/api/place/details/json");
-  url.searchParams.set("place_id", placeId);
-  url.searchParams.set("fields", "reviews,rating,user_ratings_total");
-  url.searchParams.set("key", apiKey);
+  const res = await fetch(
+    `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`,
+    {
+      headers: {
+        "X-Goog-Api-Key": apiKey,
+        "X-Goog-FieldMask": "rating,userRatingCount,reviews",
+      },
+    },
+  );
+  const data = (await res.json().catch(() => null)) as {
+    reviews?: PlaceReview[];
+    error?: { status?: string; message?: string };
+  } | null;
 
-  const res = await fetch(url);
-  const data = await res.json();
-
-  if (data.status !== "OK") {
-    console.error(`Places API error: ${data.status} - ${data.error_message ?? "unknown"}`);
+  if (!res.ok || !data) {
+    console.error(
+      `Places API error: ${data?.error?.status ?? res.status} - ${data?.error?.message ?? "unknown"}`,
+    );
     process.exit(1);
   }
 
-  const reviews: GeneratedReview[] = (data.result?.reviews ?? []).map(
-    (r: {
-      author_name: string;
-      rating: number;
-      text: string;
-      relative_time_description: string;
-    }) => ({
-      name: r.author_name,
-      rating: r.rating,
-      text: r.text,
-      relativeTime: r.relative_time_description,
-    }),
-  );
+  const reviews: GeneratedReview[] = (data.reviews ?? [])
+    .map((r) => ({
+      name: r.authorAttribution?.displayName ?? "Google user",
+      rating: r.rating ?? 0,
+      text: r.originalText?.text ?? r.text?.text ?? "",
+      relativeTime: r.relativePublishTimeDescription ?? "",
+    }))
+    .filter((r) => r.rating > 0 && r.text.trim().length > 0);
 
   writeFileSync(OUTPUT_PATH, JSON.stringify(reviews, null, 2) + "\n");
   console.log(`Wrote ${reviews.length} reviews to ${OUTPUT_PATH}`);
