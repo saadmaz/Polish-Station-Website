@@ -1,5 +1,5 @@
 # Builds the prerendered site and deploys it to Cloudflare Workers.
-# main (and Sanity publishes) deploy to production once the CLOUDFLARE_ENABLED
+# main deploys to production once the CLOUDFLARE_ENABLED
 # repository variable is "true"; develop deploys to development once
 # DEVELOPMENT_ENABLED is "true". Needs the CLOUDFLARE_API_TOKEN secret and the
 # CLOUDFLARE_ACCOUNT_ID variable (see docs/DEPLOYMENT.md).
@@ -9,9 +9,6 @@ on:
   push:
     branches: [main, develop]
   workflow_dispatch:
-  # Sent by the Sanity publish webhook so a new post goes live without a commit.
-  repository_dispatch:
-    types: [sanity-publish]
 
 concurrency:
   group: deploy-${{ github.ref_name }}
@@ -48,8 +45,6 @@ jobs:
 
       - name: Build
         env:
-          VITE_SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
-          VITE_SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
           VITE_POS_API_BASE_URL: ${{ vars.POS_API_URL }}
           VITE_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}

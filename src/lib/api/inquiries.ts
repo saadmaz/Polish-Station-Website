@@ -14,6 +14,12 @@ export async function createInquiry(payload: {
   email: string | null;
   message: string;
 }): Promise<ApiResult> {
+  if (!db) {
+    return {
+      ok: false,
+      error: "Online messages aren't set up yet - please call or WhatsApp us instead.",
+    };
+  }
   const id = crypto.randomUUID();
   try {
     await setDoc(doc(db, "inquiries", id), {
