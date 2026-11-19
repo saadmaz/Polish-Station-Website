@@ -27,7 +27,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { services, getServiceBySlug } from "@/lib/data/services";
 import { packages } from "@/lib/data/pricing";
-import { createBooking } from "@/lib/api/pos";
+import { createBooking } from "@/lib/api/os";
 
 const TIME_WINDOWS = [
   "8:00 AM - 11:00 AM",
@@ -36,7 +36,7 @@ const TIME_WINDOWS = [
   "5:00 PM - 7:00 PM",
 ];
 
-// The POS's /api/public/booking only accepts these exact strings in
+// The OS's /api/public/booking only accepts these exact strings in
 // `services` (case-sensitive) - the first 8 happen to already match this
 // site's service titles verbatim, "Other" doesn't correspond to a real
 // service and needs its own free-text field (`otherService`) when picked.

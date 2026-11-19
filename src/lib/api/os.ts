@@ -1,17 +1,20 @@
-// Client-side calls to pos.polishstation.lk's public intake endpoints
+// Client-side calls to os.polishstation.lk's public intake endpoints
 // (/api/public/*). These are cross-origin, unauthenticated, and expected to
 // be rate-limited + honeypot-checked server-side - this file only shapes the
 // request and normalizes the response, it does no validation of its own.
 //
-// The contact form does not use this file - it writes directly to the POS's
+// The contact form does not use this file - it writes directly to the OS's
 // Firestore project instead (see src/lib/api/inquiries.ts).
 
 export type ApiResult = { ok: true } | { ok: false; error: string };
 
-const POS_BASE_URL = import.meta.env.VITE_POS_API_BASE_URL as string | undefined;
+// VITE_POS_API_BASE_URL is the setting's old name, still accepted so an older
+// build configuration keeps working.
+const OS_BASE_URL = (import.meta.env.VITE_OS_API_BASE_URL ??
+  import.meta.env.VITE_POS_API_BASE_URL) as string | undefined;
 
-async function postToPos(path: string, payload: Record<string, unknown>): Promise<ApiResult> {
-  if (!POS_BASE_URL) {
+async function postToOs(path: string, payload: Record<string, unknown>): Promise<ApiResult> {
+  if (!OS_BASE_URL) {
     return {
       ok: false,
       error: "Online submission isn't set up yet - please call or WhatsApp us instead.",
@@ -19,7 +22,7 @@ async function postToPos(path: string, payload: Record<string, unknown>): Promis
   }
 
   try {
-    const res = await fetch(`${POS_BASE_URL}${path}`, {
+    const res = await fetch(`${OS_BASE_URL}${path}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -36,7 +39,7 @@ async function postToPos(path: string, payload: Record<string, unknown>): Promis
 }
 
 export function createNewsletterSubscriber(payload: { email: string; company?: string }) {
-  return postToPos("/api/public/newsletter", payload);
+  return postToOs("/api/public/newsletter", payload);
 }
 
 export function createBooking(payload: {
@@ -50,5 +53,5 @@ export function createBooking(payload: {
   notes: string;
   company: string;
 }) {
-  return postToPos("/api/public/booking", payload);
+  return postToOs("/api/public/booking", payload);
 }

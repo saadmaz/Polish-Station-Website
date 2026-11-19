@@ -5,7 +5,7 @@ import { z } from "zod";
 import { Loader2, CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { createNewsletterSubscriber } from "@/lib/api/pos";
+import { createNewsletterSubscriber } from "@/lib/api/os";
 
 const newsletterSchema = z.object({
   email: z.string().email("Enter a valid email"),

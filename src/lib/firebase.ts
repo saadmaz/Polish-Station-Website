@@ -1,6 +1,6 @@
-// Client-side Firebase app for writing directly into the Polish Station POS's
+// Client-side Firebase app for writing directly into the Polish Station OS's
 // Firestore project (pos-polishstation). Submissions here show up on the
-// POS's "Inquiries" screen. This config is a public web app identifier, not
+// OS's "Inquiries" screen. This config is a public web app identifier, not
 // a secret - same as any other Firebase web API key (see .env.example).
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";

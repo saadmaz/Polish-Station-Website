@@ -10,8 +10,8 @@ Copy [`.env.example`](../.env.example) to `.env`. Every `VITE_*` value is compil
 
 | Variable                                   | Purpose                                                                 |
 | ------------------------------------------ | ----------------------------------------------------------------------- |
-| `VITE_POS_API_BASE_URL`                    | Base URL of the POS public intake API (`https://pos.polishstation.lk`)  |
-| `VITE_FIREBASE_*`                          | Firebase web app config for the POS Firestore project (contact form)    |
+| `VITE_OS_API_BASE_URL`                     | Base URL of the OS public intake API (`https://os.polishstation.lk`)    |
+| `VITE_FIREBASE_*`                          | Firebase web app config for the OS Firestore project (contact form)     |
 | `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID` | Used only by `fetch:reviews` at build time; never shipped to the client |
 
 In CI these come from GitHub Actions secrets (see [Deployment](#deployment)).
