@@ -73,8 +73,8 @@ Polish Station restores, protects and perfects vehicle finishes using paint-dept
 ## Features
 
 <table>
-<tr><td width="50%" valign="top"><strong>Service pages</strong><br/>Paint correction, cut and polish, ceramic and graphene coating, interior and exterior detailing, engine bay cleaning and headlight restoration, each with its own detail page.</td><td width="50%" valign="top"><strong>Online booking</strong><br/>A multi-service booking form with a date picker, sent straight into the Polish Station POS.</td></tr>
-<tr><td width="50%" valign="top"><strong>Contact and newsletter</strong><br/>Enquiries land in the POS Inquiries screen; newsletter sign-ups are stored as POS subscribers.</td><td width="50%" valign="top"><strong>Blog (paused)</strong><br/>Article drafts are kept in <code>content/blog-drafts/</code> until the blog returns through the Polish Station admin portal.</td></tr>
+<tr><td width="50%" valign="top"><strong>Service pages</strong><br/>Paint correction, cut and polish, ceramic and graphene coating, interior and exterior detailing, engine bay cleaning and headlight restoration, each with its own detail page.</td><td width="50%" valign="top"><strong>Online booking</strong><br/>A multi-service booking form with a date picker, sent straight into the Polish Station OS.</td></tr>
+<tr><td width="50%" valign="top"><strong>Contact and newsletter</strong><br/>Enquiries land in the OS Inquiries screen; newsletter sign-ups are stored as OS subscribers.</td><td width="50%" valign="top"><strong>Blog (paused)</strong><br/>Article drafts are kept in <code>content/blog-drafts/</code> until the blog returns through the Polish Station admin portal.</td></tr>
 <tr><td width="50%" valign="top"><strong>Social proof</strong><br/>Google reviews fetched at build time, before-and-after comparisons and a gallery.</td><td width="50%" valign="top"><strong>Fully static</strong><br/>Every route is prerendered to HTML, so the site is fast and served straight from Cloudflare's edge.</td></tr>
 <tr><td width="50%" valign="top"><strong>SEO</strong><br/>Per-page metadata and Open Graph images, a generated <code>sitemap.xml</code>, <code>robots.txt</code> and <code>llms.txt</code>.</td><td width="50%" valign="top"><strong>Mobile-first contact</strong><br/>Sticky Call / WhatsApp / Book bar on phones and a floating WhatsApp button.</td></tr>
 </table>
@@ -83,14 +83,14 @@ Polish Station restores, protects and perfects vehicle finishes using paint-dept
 
 ## Architecture
 
-A TanStack Start site prerendered to static HTML and served by an assets-only Cloudflare Worker. It stores no customer data: bookings and newsletter sign-ups go to the [Polish Station POS](https://github.com/saadmaz/Polish-Station-POS) intake API and contact enquiries to the POS Firestore project.
+A TanStack Start site prerendered to static HTML and served by an assets-only Cloudflare Worker. It stores no customer data: bookings and newsletter sign-ups go to the [Polish Station OS](https://github.com/saadmaz/Polish-Station-OS) intake API and contact enquiries to the OS Firestore project.
 
 ```mermaid
 flowchart LR
   Visitor((Visitor)) --> Site["polishstation.lk<br/>static Worker on Cloudflare"]
-  Site -- booking, newsletter --> POSAPI["pos.polishstation.lk<br/>public intake API"]
+  Site -- booking, newsletter --> OSAPI["os.polishstation.lk<br/>public intake API"]
   Site -- contact form --> Firestore[("Firestore<br/>inquiries")]
-  POSAPI --> Firestore
+  OSAPI --> Firestore
   GHA["GitHub Actions<br/>build and deploy"] -- wrangler deploy --> Site
 ```
 
@@ -121,7 +121,7 @@ flowchart LR
 | Styling   | Tailwind CSS v4 and Radix-based UI primitives                                                      |
 | Forms     | React Hook Form + Zod                                                                              |
 | Content   | Google Places API (reviews, build time only)                                                       |
-| Data      | Firebase Firestore and the POS intake API                                                          |
+| Data      | Firebase Firestore and the OS intake API                                                           |
 | Build     | Vite                                                                                               |
 | Hosting   | Cloudflare Workers (static assets), deployed by GitHub Actions with Wrangler                       |
 | Tooling   | Bun, ESLint, Prettier                                                                              |
@@ -170,15 +170,15 @@ Vite prints the local address when the server starts.
 
 ## Configuration
 
-All `VITE_*` values are public identifiers compiled into the bundle: the POS API URL and the Firebase web config. The Google Places key is used only at build time to refresh reviews.
+All `VITE_*` values are public identifiers compiled into the bundle: the OS API URL and the Firebase web config. The Google Places key is used only at build time to refresh reviews.
 
 <details>
 <summary><strong>Environment variables</strong></summary>
 
 | Variable                                   | Purpose                                                                 |
 | ------------------------------------------ | ----------------------------------------------------------------------- |
-| `VITE_POS_API_BASE_URL`                    | Base URL of the POS public intake API (`https://pos.polishstation.lk`)  |
-| `VITE_FIREBASE_*`                          | Firebase web app config for the POS Firestore project (contact form)    |
+| `VITE_OS_API_BASE_URL`                     | Base URL of the OS public intake API (`https://os.polishstation.lk`)    |
+| `VITE_FIREBASE_*`                          | Firebase web app config for the OS Firestore project (contact form)     |
 | `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID` | Used only by `fetch:reviews` at build time; never shipped to the client |
 
 Where each value is set, and which are secret: [docs/CONFIGURATION.md](docs/CONFIGURATION.md).
@@ -208,7 +208,7 @@ Where each value is set, and which are secret: [docs/CONFIGURATION.md](docs/CONF
 │   │   └── ui/              # Radix-based UI primitives
 │   ├── hooks/               # Scroll reveal, count-up and tilt effects
 │   ├── lib/
-│   │   ├── api/             # POS intake API and Firestore inquiries
+│   │   ├── api/             # OS intake API and Firestore inquiries
 │   │   ├── data/            # Services, pricing, FAQ, gallery, reviews
 │   │   └── seo.ts           # Page metadata helpers
 │   ├── routes/              # File-based routes (see src/routes/README.md)

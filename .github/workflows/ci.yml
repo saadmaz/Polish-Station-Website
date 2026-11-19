@@ -47,5 +47,5 @@ jobs:
 
       - name: Build
         env:
-          VITE_POS_API_BASE_URL: https://pos.polishstation.lk
+          VITE_OS_API_BASE_URL: https://os.polishstation.lk
         run: bun run build

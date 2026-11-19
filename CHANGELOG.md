@@ -31,6 +31,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Bookings and newsletter sign-ups go to Polish Station OS at `os.polishstation.lk` (renamed from the POS). The build setting is now `VITE_OS_API_BASE_URL`; the old `VITE_POS_API_BASE_URL` is still accepted.
+
 ## [1.3.0] - 2026-11-18
 
 ### Removed

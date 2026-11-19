@@ -16,7 +16,7 @@
 | `development` | `develop` | [dev.polishstation.lk](https://dev.polishstation.lk) | `polish-station-website-development` |
 | `production`  | `main`    | [www.polishstation.lk](https://www.polishstation.lk) | `polish-station-website`             |
 
-Each is a GitHub Environment with its own variables (`APP_URL`, `POS_API_URL`) and secrets. Production accepts deployments from `main` only; development from `develop` only.
+Each is a GitHub Environment with its own variables (`APP_URL`, `OS_API_URL`) and secrets. Production accepts deployments from `main` only; development from `develop` only.
 
 ### Promotion
 
@@ -28,7 +28,7 @@ Each is a GitHub Environment with its own variables (`APP_URL`, `POS_API_URL`) a
 
 [`deploy.yml`](../.github/workflows/deploy.yml) runs on every push to `main` or `develop` and on manual dispatch:
 
-1. Install dependencies and run `bun run build`, which prerenders every route into `dist/client/` using the environment's Firebase and POS values.
+1. Install dependencies and run `bun run build`, which prerenders every route into `dist/client/` using the environment's Firebase and OS values.
 2. Deploy `dist/client/` with Wrangler as an assets-only Worker ([`wrangler.jsonc`](../wrangler.jsonc)). No Worker code runs on a request.
 3. Smoke-test the environment URL.
 
@@ -59,4 +59,4 @@ bun run deploy           # build and deploy from your machine (after `npx wrangl
 
 1. https://www.polishstation.lk and an inner page such as `/services/ceramic-coating` load directly.
 2. `https://polishstation.lk` redirects to `https://www.polishstation.lk`, and `/aftercare` redirects to the ceramic coating page.
-3. A test booking arrives in the POS, and a test message from `/contact` arrives on the POS Inquiries screen.
+3. A test booking arrives in the OS, and a test message from `/contact` arrives on the OS Inquiries screen.

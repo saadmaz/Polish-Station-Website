@@ -11,13 +11,13 @@
 ```mermaid
 flowchart LR
   Visitor((Visitor)) --> Site["polishstation.lk<br/>static Worker on Cloudflare"]
-  Site -- booking, newsletter --> POSAPI["pos.polishstation.lk<br/>public intake API"]
+  Site -- booking, newsletter --> OSAPI["os.polishstation.lk<br/>public intake API"]
   Site -- contact form --> Firestore[("Firestore<br/>inquiries")]
-  POSAPI --> Firestore
+  OSAPI --> Firestore
   GHA["GitHub Actions<br/>build and deploy"] -- wrangler deploy --> Site
 ```
 
-The website holds no customer data of its own. Every submission is handed to the [Polish Station POS](https://github.com/saadmaz/Polish-Station-POS), where staff manage bookings, leads and subscribers.
+The website holds no customer data of its own. Every submission is handed to the [Polish Station OS](https://github.com/saadmaz/Polish-Station-OS), where staff manage bookings, leads and subscribers.
 
 ## Building blocks
 
@@ -25,7 +25,7 @@ The website holds no customer data of its own. Every submission is handed to the
 | ---------------- | -------------------------------------------------------------- |
 | `src/routes/`    | File-based routes, every one prerendered to HTML               |
 | `src/lib/data/`  | Services, pricing, FAQ, gallery and reviews                    |
-| `src/lib/api/`   | POS intake API client and Firestore enquiries                  |
+| `src/lib/api/`   | OS intake API client and Firestore enquiries                   |
 | `src/lib/seo.ts` | Page metadata and structured data                              |
 | `scripts/`       | Sitemap generation and Google reviews fetch, run at build time |
 

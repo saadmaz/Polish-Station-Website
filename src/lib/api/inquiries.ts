@@ -1,5 +1,5 @@
-// Writes contact-form submissions directly into the POS's Firestore project
-// (collection "inquiries"), where they show up on the POS's "Inquiries"
+// Writes contact-form submissions directly into the OS's Firestore project
+// (collection "inquiries"), where they show up on the OS's "Inquiries"
 // screen. Security rules only allow unauthenticated `create` on this
 // collection, with these exact six fields and length bounds - anything else
 // is rejected outright, so validate client-side before calling this.
